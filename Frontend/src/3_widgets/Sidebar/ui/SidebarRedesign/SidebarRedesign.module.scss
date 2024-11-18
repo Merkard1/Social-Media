@@ -1,0 +1,61 @@
+.SidebarRedesigned {
+  position: relative;
+  width: 220px;
+  height: 100%;
+  background: var(--light-bg-redesigned);
+  transition: width 0.3s ease-in-out;
+  border-radius: 32px;
+  overflow: hidden;
+
+  .appLogo {
+    transition: transform 0.3s ease-in-out;
+    padding-top: 20px;
+  }
+
+  .items {
+    transition: transform 0.3s ease-in-out;
+    margin-top: 40px;
+    white-space: nowrap;
+    overflow: hidden;
+    transform: translateX(0);
+  }
+
+  .collapseBtn {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    z-index: 10;
+    transition: transform 0.3s ease-in-out;
+    transform: rotate(90deg);
+  }
+
+  .switchers {
+    position: absolute;
+    bottom: 40px;
+    display: flex;
+    width: 100%;
+    transition: transform 0.3s ease-in-out;
+    justify-content: center;
+    gap: 16px;
+  }
+}
+
+.collapsedRedesigned {
+  width: 50px;
+  transition: width 0.3s ease-in-out;
+
+  .items {
+    transition: transform 0.3s ease-in-out;
+    transform: scale(1);
+  }
+
+  .switchers {
+    flex-direction: column;
+    align-items: center;
+    transform: scale(0.8);
+  }
+
+  .collapseBtn {
+    transform: rotate(-90deg);
+  }
+}

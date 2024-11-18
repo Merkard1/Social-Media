@@ -1,0 +1,12 @@
+import { Profile } from "@/5_entities/Profile";
+
+import { ValidateProfileError } from "../consts/consts";
+
+export interface ProfileSchema {
+    data?: Profile;
+    form?: Profile;
+    isLoading: boolean;
+    error?: string;
+    readOnly: boolean;
+    validateErrors?: ValidateProfileError[];
+}

@@ -1,0 +1,99 @@
+name: Linting, Testing, Building
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-and-ui-testing:
+    runs-on: ubuntu-latest
+    concurrency: ci-${{ github.ref }}
+    needs: checks
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
+    strategy:
+      matrix:
+        node-version: [ 18.x ]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install modules
+        run: npm ci --force
+
+      - name: Build production project
+        run: npm run build:prod
+
+      - name: Build Storybook
+        run: npm run storybook:build
+
+      - name: Screenshot testing
+        run: npm run test:ui:ci
+
+      - name: Unit testing
+        run: npm run test:unit
+
+      - name: Generate HTML report
+        run: npm run test:report:ui
+
+      - name: Move Loki reports
+        run: mkdir -p reports && mv .loki reports/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+
+      - name: Upload artifact
+        id: upload_artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'reports'
+
+  deploy:
+    needs: build-and-ui-testing
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
+
+  checks:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 18.x ]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install modules
+        run: npm ci --force
+
+      - name: Linting TypeScript
+        run: npm run lint:ts
+
+      - name: Linting SCSS
+        run: npm run lint:scss

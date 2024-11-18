@@ -1,0 +1,47 @@
+@use "reset";
+@use "variables/global";
+@use "themes/normal";
+@use "themes/dark";
+
+.app_redesigned {
+  font: var(--font-m-redesigned);
+  color: var(--text-redesigned);
+  background: var(--bg-redesigned);
+  min-height: 100vh;
+}
+
+.content-page {
+  display: flex;
+}
+
+/* Global scrollbar styles */
+*::-webkit-scrollbar {
+  width: 12px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-redesigned); /* Set the scrollbar track to black */
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 1px solid var(--accent-redesigned);
+  background-color: var(--icon-redesigned);
+  border-radius: 20px;
+}
+
+/* Specific scrollbar styles for .app */
+.app *::-webkit-scrollbar {
+  width: 12px;
+  height: 8px;
+}
+
+.app *::-webkit-scrollbar-track {
+  background: var(--scrollbar-redesigned); /* Set the scrollbar track to black */
+}
+
+.app *::-webkit-scrollbar-thumb {
+  border: 2px solid var(--primary-color);
+  background-color: var(--inverted-primary-color);
+  border-radius: 20px;
+}

@@ -1,0 +1,15 @@
+# Node.js dependencies
+node_modules/
+
+# Build outputs (specific to dist only)
+dist/
+storybook-static/
+
+# Reports and logs
+.loki/report.html
+.loki/report.json
+/reports/unit
+
+# Ignore temporary files
+.DS_Store
+.idea/

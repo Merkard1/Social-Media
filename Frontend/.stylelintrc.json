@@ -1,0 +1,103 @@
+{
+  "extends": ["stylelint-config-standard", "stylelint-config-recommended-scss"],
+  "plugins": ["stylelint-scss", "stylelint-order"],
+  "rules": {
+    "no-empty-source": null,
+    "selector-class-pattern": null,
+    "at-rule-no-unknown": null,
+    "scss/at-rule-no-unknown": true,
+    "color-no-invalid-hex": true,
+    "unit-allowed-list": [
+      "em",
+      "rem",
+      "%",
+      "s",
+      "px",
+      "vh",
+      "vw",
+      "deg",
+      "grad",
+      "rad",
+      "fr"
+    ],
+    "order/properties-order": [
+      [
+        {
+          "groupName": "positioning",
+          "properties": [
+            "position",
+            "top",
+            "bottom",
+            "right",
+            "left",
+            "z-index"
+          ]
+        },
+        {
+          "groupName": "box-model",
+          "properties": [
+            "display",
+            "width",
+            "height",
+            "margin",
+            "padding",
+            "border",
+            "border-width",
+            "border-style",
+            "border-color",
+            "box-sizing"
+          ]
+        },
+        {
+          "groupName": "typography",
+          "properties": [
+            "font",
+            "font-family",
+            "font-size",
+            "font-weight",
+            "line-height",
+            "text-align",
+            "color"
+          ]
+        },
+        {
+          "groupName": "visual",
+          "properties": [
+            "background",
+            "background-color",
+            "background-image",
+            "background-size",
+            "background-position",
+            "background-repeat",
+            "box-shadow",
+            "opacity"
+          ]
+        },
+        {
+          "groupName": "animation",
+          "properties": [
+            "transition",
+            "transition-delay",
+            "transition-duration",
+            "transition-property",
+            "transition-timing-function",
+            "animation",
+            "animation-name",
+            "animation-duration",
+            "animation-timing-function",
+            "animation-delay",
+            "animation-iteration-count",
+            "animation-direction",
+            "animation-fill-mode",
+            "animation-play-state"
+          ]
+        }
+      ],
+      {
+        "unspecified": "bottom"
+      }
+    ],
+    "import-notation": null,
+    "block-no-empty": null
+  }
+}

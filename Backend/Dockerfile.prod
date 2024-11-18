@@ -1,0 +1,34 @@
+# Stage 1: Build the application
+FROM node:18 AS builder
+
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install --production
+
+# Copy the rest of the source code
+COPY . .
+
+# Build the application (if applicable)
+RUN npm run build
+
+# Stage 2: Run the application
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy only the necessary files from the builder stage
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package*.json ./
+
+# Install only production dependencies
+RUN npm install --production
+
+# Expose the backend port
+EXPOSE 4444
+
+# Command to run your application
+CMD ["node", "dist/main.js"]

@@ -1,0 +1,19 @@
+# Node.js dependencies
+node_modules/
+
+# Logs
+logs/
+*.log
+
+# Environment files
+.env
+**/.env
+
+# Generated directories
+postgres-data/
+dist/
+docker/
+DS_Store
+
+# Ignore temporary files
+.idea/
