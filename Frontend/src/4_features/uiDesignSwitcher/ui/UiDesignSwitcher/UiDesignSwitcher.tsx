@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 import { getUserAuthData } from "@/5_entities/User";
 
-import { updateFeatureFlag, getFeatureFlag } from "@/6_shared/lib/features";
+import { updateFeatureFlag } from "@/6_shared/lib/features";
 import { useAppDispatch } from "@/6_shared/lib/hooks/useAppDispatch/useAppDispatch";
 import { useForceUpdate } from "@/6_shared/lib/render/forceUpdate";
 import { ListBox } from "@/6_shared/ui/Popups";
@@ -16,10 +16,13 @@ interface UiDesignSwitcherProps {
     className?: string;
 }
 
+/**
+ * @deprecated
+ */
+// App already redeesigned
 export const UiDesignSwitcher = memo((props: UiDesignSwitcherProps) => {
   const { className } = props;
   const { t } = useTranslation();
-  const isAppRedesigned = getFeatureFlag("isAppRedesigned");
   const dispatch = useAppDispatch();
   const authData = useSelector(getUserAuthData);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,10 +32,6 @@ export const UiDesignSwitcher = memo((props: UiDesignSwitcherProps) => {
     {
       content: t("New"),
       value: "new",
-    },
-    {
-      content: t("Old"),
-      value: "old",
     },
   ];
 
@@ -61,7 +60,7 @@ export const UiDesignSwitcher = memo((props: UiDesignSwitcherProps) => {
         <ListBox
           onChange={onChange}
           items={items}
-          value={isAppRedesigned ? "new" : "old"}
+          value="new"
           className={className}
         />
       )}

@@ -56,7 +56,6 @@ const ProfileCard = memo((props : ProfileCardProps) => {
               <Skeleton width="100%" height={38} />
             </VStack>
           </HStack>
-          {/* TODO change to image loader */}
           <Skeleton width="100%" height={180} />
         </VStack>
       </Card>);

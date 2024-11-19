@@ -103,7 +103,7 @@ module.exports = {
         ignoreAttribute: [
           "data-testid", "to", "justify", "direction",
           "align", "size", "wrap", "data-testid",
-          "role", "as", "gap", "target", "border",
+          "role", "as", "gap", "target", "border", "value",
           "feature", "color", "variant", "name", "alt"],
       },
     ],

@@ -11,8 +11,6 @@ import { NotFoundPage } from "@/2_pages/NotFoundPage";
 import { ProfilePage } from "@/2_pages/ProfilePage";
 import { SettingsPage } from "@/2_pages/SettingsPage";
 
-import { UserRole } from "@/5_entities/User";
-
 import { AppRoutes, AppRoutesProps } from "./routeType";
 
 // Navigation
@@ -79,7 +77,7 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
     path: getRouteAdminPanel(),
     element: <AdminPanelPage />,
     authOnly: true,
-    roles: [UserRole.ADMIN, UserRole.MANAGER],
+    roles: ["ADMIN", "MANAGER"],
   },
 
   [AppRoutes.FORBIDDEN]: {

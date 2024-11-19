@@ -12,7 +12,7 @@ interface LoginModalProps {
   onClose: () => void;
 }
 
-const LoginModal = ({
+export const LoginModal = ({
   className,
   isOpen = false,
   onClose,
@@ -28,5 +28,3 @@ const LoginModal = ({
     </Suspense>
   </Modal>
 );
-
-export default LoginModal;
