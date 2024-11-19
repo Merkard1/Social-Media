@@ -2,7 +2,7 @@
   position: absolute;
   z-index: 10000;
   display: flex;
-  background: var(--dark-bg-redesigned);
+  background: var(--dark-bg);
   flex-direction: column;
 }
 
@@ -10,12 +10,12 @@
   width: 100%;
   padding: 10px 25px;
   border: none;
-  color: var(--text-redesigned);
+  color: var(--text);
   background: none;
   outline: none;
   cursor: pointer;
 }
 
 .item:hover {
-  background: var(--light-bg-redesigned);
+  background: var(--light-bg);
 }

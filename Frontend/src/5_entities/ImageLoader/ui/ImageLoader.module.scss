@@ -2,9 +2,9 @@
   display: flex;
   width: 100%;
   padding: 16px;
-  border: 2px dashed var(--bg-redesigned);
+  border: 2px dashed var(--bg);
   text-align: center;
-  background-color: var(--light-bg-redesigned);
+  background-color: var(--light-bg);
   transition: border-color 0.2s ease, background-color 0.2s ease;
   min-height: 200px;
   border-radius: 8px;
@@ -13,14 +13,14 @@
   cursor: pointer;
 
   &:hover {
-    border-color: var(--accent-redesigned);
-    background-color: var(--dark-bg-redesigned);
+    border-color: var(--accent);
+    background-color: var(--dark-bg);
   }
 }
 
 .placeholder {
   font-size: 1rem;
-  color: var(--text-redesigned);
+  color: var(--text);
 }
 
 .input {

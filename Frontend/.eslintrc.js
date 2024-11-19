@@ -124,6 +124,13 @@ module.exports = {
       },
     },
     {
+      files: ["*.stories.tsx"],
+      rules: {
+        "react/button-has-type": "off",
+        "i18next/no-literal-string": "off",
+      },
+    },
+    {
       files: ["**/scripts/**/*.{ts,tsx,js}"],
       rules: {
         "wrap-iife": "off",

@@ -3,7 +3,7 @@
 }
 
 .menu {
-  border: 1px solid var(--accent-redesigned);
+  border: 1px solid var(--accent);
   border-radius: 18px;
   overflow: hidden;
 }
@@ -18,25 +18,25 @@
 }
 
 .active {
-  background: var(--light-bg-redesigned);
-}
-
-.optionsBottomLeft {
-  top: 100%;
-  right: 0;
+  background: var(--light-bg);
 }
 
 .optionsBottomRight {
   top: 100%;
-  left: 0;
+  right: 0;
 }
 
-.optionsTopRight {
-  bottom: 100%;
+.optionsBottomLeft {
+  top: 100%;
   left: 0;
 }
 
 .optionsTopLeft {
+  bottom: 100%;
+  left: 0;
+}
+
+.optionsTopRight {
   bottom: 100%;
   right: 0;
 }

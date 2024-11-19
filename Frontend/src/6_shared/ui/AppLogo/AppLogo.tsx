@@ -21,7 +21,6 @@ export const AppLogo = memo(({ className, size = 50 }: AppLogoProps) => (
     <AppSvg
       width={size}
       height={size}
-      // color="#74a2b2"
       className={cls.appLogo}
     />
     <div className={cls.gradientBig} />

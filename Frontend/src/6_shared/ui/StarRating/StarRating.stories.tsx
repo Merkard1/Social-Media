@@ -12,5 +12,15 @@ export default {
 
 const Template: ComponentStory<typeof StarRating> = (args) => <StarRating {...args} />;
 
-export const Normal = Template.bind({});
-Normal.args = {};
+export const Default = Template.bind({});
+Default.args = {};
+
+export const PreSelected = Template.bind({});
+PreSelected.args = {
+  selectedStars: 3,
+};
+
+export const CustomSize = Template.bind({});
+CustomSize.args = {
+  size: 50,
+};

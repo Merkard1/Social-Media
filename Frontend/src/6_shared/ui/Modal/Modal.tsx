@@ -47,7 +47,7 @@ export const Modal = (props: ModalProps) => {
           className,
           theme,
           "app_modal",
-          cls.modalNew,
+          cls.modal,
         ])}
       >
         <Overlay onClick={close} />

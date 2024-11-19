@@ -1,24 +1,29 @@
 .addonRight svg,
 .addonLeft svg {
-  color: var(--hint-redesigned);
+  color: var(--hint);
 }
 
 .Button {
   display: flex;
   padding: 6px 16px;
-  color: var(--text-redesigned);
+  color: var(--text);
   transition: color 0.2s ease;
   cursor: pointer;
   align-items: center;
 
   &:hover {
-    color: var(--accent-redesigned);
+    color: var(--accent);
 
     .addonLeft svg,
     .addonRight svg {
-      color: var(--accent-redesigned);
+      color: var(--accent);
     }
   }
+
+  // &:focus {
+  //   outline: 2px solid var(--accent);
+  //   outline-offset: 4px;
+  // }
 }
 
 .withAddon {
@@ -39,7 +44,7 @@
 
 .filled {
   border: none;
-  background: var(--light-bg-redesigned);
+  background: var(--light-bg);
   outline: none;
   border-radius: 34px;
 }
@@ -50,7 +55,7 @@
   border-radius: 34px;
 
   &:hover {
-    border: 2px solid var(--accent-redesigned);
+    border: 2px solid var(--accent);
   }
 
   &:active {
@@ -58,20 +63,21 @@
   }
 
   &.normal {
-    border: 2px solid var(--icon-redesigned);
+    border: 2px solid var(--icon);
   }
 
   &.error {
-    border: 2px solid var(--cancel-redesigned);
+    border: 2px solid var(--cancel);
   }
 
   &.success {
-    border: 2px solid var(--save-redesigned);
+    border: 2px solid var(--save);
   }
 }
 
 .square {
   padding: 0;
+  border-radius: 0%;
 }
 
 .square.m {
@@ -90,15 +96,15 @@
 }
 
 .m {
-  font: var(--font-m-redesigned);
+  font: var(--font-m);
 }
 
 .l {
-  font: var(--font-l-redesigned);
+  font: var(--font-l);
 }
 
 .xl {
-  font: var(--font-xl-redesigned);
+  font: var(--font-xl);
 }
 
 .disabled {
@@ -108,3 +114,138 @@
 .fullWidth {
   width: 100%;
 }
+// TODO check styles
+// .addonRight svg,
+// .addonLeft svg {
+//   color: var(--hint);
+// }
+
+// .Button {
+//   display: flex;
+//   padding: 6px 16px;
+//   color: var(--text);
+//   transition: color 0.2s ease, transform 0.1s ease;
+//   cursor: pointer;
+//   align-items: center;
+//   justify-content: center;
+//   border: none;
+
+//   &:hover {
+//     color: var(--accent);
+
+//     .addonLeft svg,
+//     .addonRight svg {
+//       color: var(--accent);
+//     }
+//   }
+
+//   &:focus {
+//     outline: 2px solid var(--accent);
+//     outline-offset: 4px;
+//   }
+// }
+
+// .withAddon {
+//   padding: 0 calc(var(--addon-spacing) + 16px);
+// }
+
+// .addonLeft,
+// .addonRight {
+//   display: flex;
+// }
+
+// .clear {
+//   padding: 0;
+//   border: none;
+//   background: none;
+//   outline: none;
+
+//   &:hover {
+//     color: var(--accent);
+//   }
+
+//   &:active {
+//     transform: scale(0.98);
+//   }
+// }
+
+// .filled {
+//   border: none;
+//   background: var(--light-bg);
+//   outline: none;
+//   border-radius: 34px;
+
+//   &:hover {
+//     background: var(--accent-light);
+//   }
+// }
+
+// .outline {
+//   background: none;
+//   transition: transform 0.1s ease;
+//   border-radius: 34px;
+
+//   &:hover {
+//     border: 2px solid var(--accent);
+//   }
+
+//   &:active {
+//     transform: scale(1.05);
+//   }
+
+//   &.normal {
+//     border: 2px solid var(--icon);
+//   }
+
+//   &.error {
+//     border: 2px solid var(--cancel);
+//   }
+
+//   &.success {
+//     border: 2px solid var(--save);
+//   }
+// }
+
+// .square {
+//   padding: 0;
+//   display: inline-flex;
+//   justify-content: center;
+//   align-items: center;
+// }
+
+// .square.m {
+//   width: var(--font-line-m);
+//   height: var(--font-line-m);
+// }
+
+// .square.l {
+//   width: var(--font-line-l);
+//   height: var(--font-line-l);
+// }
+
+// .square.xl {
+//   width: var(--font-line-xl);
+//   height: var(--font-line-xl);
+// }
+
+// .m {
+//   font: var(--font-m);
+// }
+
+// .l {
+//   font: var(--font-l);
+// }
+
+// .xl {
+//   font: var(--font-xl);
+// }
+
+// .disabled {
+//   pointer-events: none;
+//   opacity: 0.5;
+//   cursor: not-allowed;
+// }
+
+// .fullWidth {
+//   width: 100%;
+// }

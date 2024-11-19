@@ -4,9 +4,9 @@
 @use "themes/dark";
 
 .app_redesigned {
-  font: var(--font-m-redesigned);
-  color: var(--text-redesigned);
-  background: var(--bg-redesigned);
+  font: var(--font-m);
+  color: var(--text);
+  background: var(--bg);
   min-height: 100vh;
 }
 
@@ -21,12 +21,12 @@
 }
 
 *::-webkit-scrollbar-track {
-  background: var(--scrollbar-redesigned); /* Set the scrollbar track to black */
+  background: var(--scrollbar); /* Set the scrollbar track to black */
 }
 
 *::-webkit-scrollbar-thumb {
-  border: 1px solid var(--accent-redesigned);
-  background-color: var(--icon-redesigned);
+  border: 1px solid var(--accent);
+  background-color: var(--icon);
   border-radius: 20px;
 }
 
@@ -37,7 +37,7 @@
 }
 
 .app *::-webkit-scrollbar-track {
-  background: var(--scrollbar-redesigned); /* Set the scrollbar track to black */
+  background: var(--scrollbar); /* Set the scrollbar track to black */
 }
 
 .app *::-webkit-scrollbar-thumb {

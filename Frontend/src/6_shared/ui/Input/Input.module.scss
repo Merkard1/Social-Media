@@ -2,7 +2,7 @@
   display: flex;
   width: 100%;
   padding: 8px 16px;
-  border: 2px solid var(--icon-redesigned);
+  border: 2px solid var(--icon);
   align-items: center;
   border-radius: 48px;
 }
@@ -33,23 +33,23 @@
 }
 
 .focused {
-  border: 2px solid var(--accent-redesigned);
+  border: 2px solid var(--accent);
 
   .addonLeft svg,
   .addonRight svg {
-    color: var(--accent-redesigned);
+    color: var(--accent);
   }
 }
 
 .input {
   width: 100%;
   border: none;
-  color: var(--text-redesigned);
+  color: var(--text);
   background: none;
   outline: none;
 
   &::placeholder {
-    color: var(--hint-redesigned);
+    color: var(--hint);
   }
 }
 

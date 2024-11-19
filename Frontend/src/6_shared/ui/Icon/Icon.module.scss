@@ -1,9 +1,9 @@
 .Icon {
-  color: var(--icon-redesigned);
+  color: var(--icon);
   transition: color 0.3s ease;
 
   &:hover {
-    color: var(--accent-redesigned);
+    color: var(--accent);
   }
 }
 
@@ -16,6 +16,6 @@
   cursor: pointer;
 
   &:disabled {
-    pointer-events: none;  // Disable any interaction when the button is non-clickable
+    pointer-events: none;
   }
 }

@@ -13,8 +13,8 @@ export default {
 
 const Template: ComponentStory<typeof Code> = (args) => <Code {...args} />;
 
-export const Normal = Template.bind({});
-Normal.args = {
+export const Dafault = Template.bind({});
+Dafault.args = {
   text:
         "export default {\n"
         + "    title: 'shared/Code',\n"

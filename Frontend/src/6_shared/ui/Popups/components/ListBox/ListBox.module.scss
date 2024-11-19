@@ -9,8 +9,8 @@
 .options {
   position: absolute;
   z-index: 10000;
-  background: var(--dark-bg-redesigned);
-  box-shadow: 4px 4px 8px var(--dark-bg-redesigned);
+  background: var(--dark-bg);
+  box-shadow: 4px 4px 8px var(--dark-bg);
   border-radius: 12px;
 }
 
@@ -19,5 +19,5 @@
 }
 
 .selected {
-  background: var(--light-bg-redesigned);
+  background: var(--light-bg);
 }

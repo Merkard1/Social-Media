@@ -9,8 +9,9 @@
 .CodeRedesigned {
   position: relative;
   padding: 20px;
-  border: 1px solid var(--accent-redesigned);
-  background: var(--light-bg-redesigned);
+  border: 1px solid var(--accent);
+  color: var(--text);
+  background: var(--light-bg);
   overflow: auto;
   border-radius: 16px;
 }
