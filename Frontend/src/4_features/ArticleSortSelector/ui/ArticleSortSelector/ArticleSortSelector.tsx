@@ -41,15 +41,15 @@ export const ArticleSortSelector = memo((props: ArticleSortSelectorProps) => {
   const sortFieldOptions = useMemo<SelectOption<ArticleSortField>[]>(
     () => [
       {
-        value: ArticleSortField.CREATED,
+        value: "createdAt",
         content: t("date"),
       },
       {
-        value: ArticleSortField.TITLE,
+        value: "title",
         content: t("name"),
       },
       {
-        value: ArticleSortField.VIEWS,
+        value: "views",
         content: t("views"),
       },
     ],

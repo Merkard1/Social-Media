@@ -21,7 +21,7 @@ export const ArticleListItemSkeleton = memo(
 
     const Skeleton = SkeletonRedesigned;
 
-    if (view === ArticleView.BIG) {
+    if (view === "BIG") {
       const cardContent = (
         <>
           <div className={cls.header}>

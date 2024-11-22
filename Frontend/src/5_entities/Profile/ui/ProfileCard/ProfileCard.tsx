@@ -86,7 +86,7 @@ const ProfileCard = memo((props : ProfileCardProps) => {
         <HStack gap="24" max>
           <VStack gap="16" max>
             <Input
-              value={data?.name}
+              value={data?.first}
               label={`${t("Name")}:`}
               onChange={(value: string) => onChangeFormField("name", value)}
               readOnly={readOnly}

@@ -1,8 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { PayloadAction } from "@reduxjs/toolkit";
 
-import { LOCAL_STORAGE_LAST_DESIGN_KEY, LOCAL_STORAGE_USER } from "@/6_shared/const/localstorage";
-import { setFeatureFlags } from "@/6_shared/lib/features";
+import { LOCAL_STORAGE_USER_ID } from "@/6_shared/const/localstorage";
 import { buildSlice } from "@/6_shared/lib/store/buildSlice";
 
 import { initAuthData } from "../services/initAuthData";
@@ -11,25 +10,25 @@ import { JsonSettings } from "../types/jsonSettings";
 import { User, UserSchema } from "../types/user";
 
 const initialState: UserSchema = {
+  isLoading: false,
+  error: undefined,
   _inited: false,
+  access_token: "",
 };
 
 export const userSlice = buildSlice({
   name: "user",
   initialState,
   reducers: {
-    setAuthData: (state, { payload }: PayloadAction<User>) => {
-      state.authData = payload;
-      setFeatureFlags(payload.features);
-      localStorage.setItem(LOCAL_STORAGE_USER, payload.id);
-      localStorage.setItem(
-        LOCAL_STORAGE_LAST_DESIGN_KEY,
-        payload.features?.isAppRedesigned ? "new" : "old",
-      );
+    setAuthData: (state, action: PayloadAction<User>) => {
+      state.authData = {
+        ...state.authData,
+        ...action.payload,
+      };
     },
     logout: (state) => {
       state.authData = undefined;
-      localStorage.removeItem(LOCAL_STORAGE_USER);
+      localStorage.removeItem(LOCAL_STORAGE_USER_ID);
     },
   },
   extraReducers: (builder) => {
@@ -41,14 +40,11 @@ export const userSlice = buildSlice({
         }
       },
     );
-    builder.addCase(
-      initAuthData.fulfilled,
-      (state, { payload }: PayloadAction<User>) => {
-        state.authData = payload;
-        setFeatureFlags(payload.features);
-        state._inited = true;
-      },
-    );
+    builder.addCase(initAuthData.fulfilled, (state, action) => {
+      state.authData = action.payload;
+      state._inited = true;
+    });
+
     builder.addCase(initAuthData.rejected, (state) => {
       state._inited = true;
     });

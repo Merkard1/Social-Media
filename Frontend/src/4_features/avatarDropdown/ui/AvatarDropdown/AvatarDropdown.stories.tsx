@@ -26,7 +26,9 @@ Default.decorators = [
       authData: {
         id: "1",
         username: "TestUser",
-        avatar: "https://via.placeholder.com/150",
+        profile: {
+          avatar: "https://via.placeholder.com/150",
+        },
         roles: ["USER"],
       },
     },
@@ -40,7 +42,9 @@ AdminAccess.decorators = [
       authData: {
         id: "1",
         username: "AdminUser",
-        avatar: "https://via.placeholder.com/150",
+        profile: {
+          avatar: "https://via.placeholder.com/150",
+        },
         roles: ["ADMIN"],
       },
     },
@@ -54,7 +58,9 @@ ManagerAccess.decorators = [
       authData: {
         id: "1",
         username: "ManagerUser",
-        avatar: "https://via.placeholder.com/150",
+        profile: {
+          avatar: "https://via.placeholder.com/150",
+        },
         roles: ["MANAGER"],
       },
     },

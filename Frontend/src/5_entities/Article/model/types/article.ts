@@ -8,18 +8,18 @@ export interface ArticleBlockBase {
 }
 
 export interface ArticleCodeBlock extends ArticleBlockBase {
-  type: ArticleBlockType.CODE;
+  type: "CODE";
   code: string;
 }
 
 export interface ArticleImageBlock extends ArticleBlockBase {
-  type: ArticleBlockType.IMAGE;
+  type: "IMAGE";
   src: string;
   title: string;
 }
 
 export interface ArticleTextBlock extends ArticleBlockBase {
-  type: ArticleBlockType.TEXT;
+  type: "TEXT";
   paragraphs: string[];
   title?: string;
 }

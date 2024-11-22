@@ -3,10 +3,9 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { getRouteArticleEdit, getRouteArticles } from "@/1_app/config/routeConfig/routeConfig";
-
 import { useArticleDetailsData } from "@/5_entities/Article/model/selectors/articleDetails";
 
+import { getRouteArticleEdit, getRouteArticles } from "@/6_shared/const/router";
 import { Button } from "@/6_shared/ui/Button/Button";
 import { HStack } from "@/6_shared/ui/Stack";
 

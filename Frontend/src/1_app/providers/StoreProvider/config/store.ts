@@ -8,7 +8,7 @@ import { scrollRestorationReducer } from "@/4_features/ScrollRestoration";
 import { userReducer } from "@/5_entities/User";
 
 import { $api } from "@/6_shared/api/api";
-import { rtkApi } from "@/6_shared/api/rtkApi";
+import rtkApi from "@/6_shared/api/rtkApi";
 
 import { createReducerManager } from "./reducerManager";
 import { StateSchema, ThunkExtraArg } from "./StateSchema";

@@ -1,7 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { ArticleType } from "@/5_entities/Article";
-
 import { ArticleTypeTabs } from "./ArticleTypeTabs";
 
 export default {
@@ -14,7 +12,7 @@ export default {
     },
     value: {
       control: { type: "select" },
-      options: [ArticleType.ALL, ArticleType.IT, ArticleType.ECONOMICS, ArticleType.SCIENCE],
+      options: ["ALL", "IT", "ECONOMICS", "SCIENCE"],
       description: "The currently selected article type",
     },
     onChangeType: {
@@ -28,20 +26,20 @@ const Template: ComponentStory<typeof ArticleTypeTabs> = (args) => <ArticleTypeT
 
 export const AllArticles = Template.bind({});
 AllArticles.args = {
-  value: ArticleType.ALL,
+  value: "ALL",
 };
 
 export const ITArticles = Template.bind({});
 ITArticles.args = {
-  value: ArticleType.IT,
+  value: "IT",
 };
 
 export const EconomicsArticles = Template.bind({});
 EconomicsArticles.args = {
-  value: ArticleType.ECONOMICS,
+  value: "ECONOMICS",
 };
 
 export const ScienceArticles = Template.bind({});
 ScienceArticles.args = {
-  value: ArticleType.SCIENCE,
+  value: "SCIENCE",
 };

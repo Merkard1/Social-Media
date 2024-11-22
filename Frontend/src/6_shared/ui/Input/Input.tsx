@@ -46,6 +46,7 @@ export const Input = memo((props: InputProps) => {
     addonRight,
     label,
     size = "m",
+
     ...otherProps
   } = props;
   const ref = useRef<HTMLInputElement>(null);

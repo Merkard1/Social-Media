@@ -1,42 +1,37 @@
-import {
-  Entity,
-  Column,
-  OneToOne,
-  JoinColumn,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { User } from '../../users/entities/user.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import { Exclude } from 'class-transformer';
+import { User } from 'src/users/entities/user.entity';
 
 @Entity()
 export class Profile {
   @PrimaryGeneratedColumn('uuid')
+  @Exclude()
   id: string;
 
-  @Column()
+  @Column({ nullable: true, default: '' })
   first: string;
 
-  @Column()
+  @Column({ nullable: true, default: '' })
   lastname: string;
 
-  @Column()
+  @Column({ nullable: true, default: 0 })
   age: number;
 
-  @Column()
+  @Column({ nullable: true, default: '' })
   currency: string;
 
-  @Column()
+  @Column({ nullable: true, default: '' })
   country: string;
 
-  @Column()
+  @Column({ nullable: true, default: '' })
   city: string;
 
   @Column({ nullable: true })
   avatar: string;
 
-  @Column({ nullable: true })
-  name: string;
-
-  @OneToOne(() => User, (user) => user.profile, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'id' })
+  @OneToOne(() => User, (user) => user.profile, {
+    onDelete: 'CASCADE',
+  })
+  @Exclude()
   user: User;
 }

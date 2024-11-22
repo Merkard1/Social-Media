@@ -2,8 +2,6 @@ import React, { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getRouteAdminPanel, getRouteProfile, getRouteSettings } from "@/1_app/config/routeConfig/routeConfig";
-
 import {
   getUserAuthData,
   isUserAdmin,
@@ -11,6 +9,8 @@ import {
   userActions,
 } from "@/5_entities/User";
 
+import { getRouteAdminPanel } from "@/6_shared/api/getRoutes/getRoute";
+import { getRouteProfile, getRouteSettings } from "@/6_shared/const/router";
 import { classNames } from "@/6_shared/lib/classNames/classNames";
 import { Avatar } from "@/6_shared/ui/Avatar/Avatar";
 import { Dropdown } from "@/6_shared/ui/Popups";
@@ -65,7 +65,7 @@ export const AvatarDropdown = memo((props: AvatarDropdownProps) => {
       direction="bottom left"
       className={classNames("", {}, [className])}
       items={items}
-      trigger={<Avatar size={40} src={authData.avatar} />}
+      trigger={<Avatar size={40} src={authData.profile?.avatar} />}
     />
   );
 });

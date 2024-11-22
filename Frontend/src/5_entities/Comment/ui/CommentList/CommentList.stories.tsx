@@ -18,12 +18,28 @@ Normal.args = {
     {
       id: "1",
       text: "hello world",
-      user: { id: "1", username: "Vasya" },
+      user: {
+        id: "1",
+        username: "usename1",
+        email: "usename1@email.com",
+        roles: [],
+        features: null,
+        jsonSettings: null,
+        profile: null,
+      },
     },
     {
       id: "2",
       text: "Comment 2",
-      user: { id: "1", username: "Petya" },
+      user: {
+        id: "2",
+        username: "username2",
+        email: "usename2@email.com",
+        roles: [],
+        features: null,
+        jsonSettings: null,
+        profile: null,
+      },
     },
   ],
 };

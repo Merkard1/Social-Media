@@ -21,7 +21,7 @@ interface ArticleListProps {
 }
 
 const getSkeletons = (view: ArticleView) =>
-  new Array(view === ArticleView.SMALL ? 12 : 4)
+  new Array(view === "SMALL" ? 12 : 4)
     .fill(0)
     .map((_, index) => (
       <ArticleListItemSkeleton
@@ -35,7 +35,7 @@ export const ArticleList = memo((props: ArticleListProps) => {
   const {
     className,
     articles,
-    view = ArticleView.SMALL,
+    view = "SMALL",
     isLoading,
     target,
   } = props;

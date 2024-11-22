@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { memo } from "react";
 
 import AppSvg from "@/6_shared/assets/icons/app-image.svg";
 import { classNames } from "@/6_shared/lib/classNames/classNames";

@@ -11,22 +11,10 @@ import { NotFoundPage } from "@/2_pages/NotFoundPage";
 import { ProfilePage } from "@/2_pages/ProfilePage";
 import { SettingsPage } from "@/2_pages/SettingsPage";
 
-import { AppRoutes, AppRoutesProps } from "./routeType";
+import { getRouteAdminPanel, getRouteMessages } from "@/6_shared/api/getRoutes/getRoute";
+import { getRouteAbout, getRouteArticleCreate, getRouteArticleDetails, getRouteArticleEdit, getRouteArticles, getRouteForbidden, getRouteMain, getRouteProfile, getRouteSettings } from "@/6_shared/const/router";
 
-// Navigation
-export const getRouteMain = () => "/";
-export const getRouteAbout = () => "/about";
-export const getRouteProfile = (id: string) => `/profile/${id}`;
-export const getRouteSettings = () => "/settings";
-export const getRouteMessages = () => "/messages";
-// Articles
-export const getRouteArticles = () => "/articles";
-export const getRouteArticleDetails = (id: string) => `/articles/${id}`;
-export const getRouteArticleCreate = () => "/article/new";
-export const getRouteArticleEdit = (id: string) => `/article/${id}/edit`;
-// Admin
-export const getRouteAdminPanel = () => "/admin";
-export const getRouteForbidden = () => "/forbidden";
+import { AppRoutes, AppRoutesProps } from "./routeType";
 
 export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.MAIN]: {

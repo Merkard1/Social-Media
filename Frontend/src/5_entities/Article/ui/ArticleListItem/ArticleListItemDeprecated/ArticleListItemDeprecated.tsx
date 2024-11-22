@@ -1,9 +1,8 @@
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { getRouteArticleDetails } from "@/1_app/config/routeConfig/routeConfig";
-
 import EyeIcon from "@/6_shared/assets/icons/eye-20-20.svg";
+import { getRouteArticleDetails } from "@/6_shared/const/router";
 import { classNames } from "@/6_shared/lib/classNames/classNames";
 import { AppImage } from "@/6_shared/ui/AppImage/AppImage";
 import { AppLink } from "@/6_shared/ui/AppLink/AppLink";
@@ -14,10 +13,6 @@ import { Icon } from "@/6_shared/ui/Icon/Icon";
 import { Skeleton } from "@/6_shared/ui/Skeleton/Skeleton";
 import { Text } from "@/6_shared/ui/Text/Text";
 
-import {
-  ArticleView,
-  ArticleBlockType,
-} from "../../../model/consts/articleConsts";
 import { ArticleTextBlock } from "../../../model/types/article";
 import { ArticleTextBlockComponent } from "../../ArticleTextBlockComponent/ArticleTextBlockComponent";
 import { ArticleListItemProps } from "../ArticleListItem";
@@ -35,9 +30,9 @@ export const ArticleListItemDeprecated = memo((props: ArticleListItemProps) => {
     </>
   );
 
-  if (view === ArticleView.BIG) {
+  if (view === "BIG") {
     const textBlock = article.blocks.find(
-      (block) => block.type === ArticleBlockType.TEXT,
+      (block) => block.type === "TEXT",
     ) as ArticleTextBlock;
 
     return (
@@ -50,7 +45,7 @@ export const ArticleListItemDeprecated = memo((props: ArticleListItemProps) => {
       >
         <Card className={cls.card}>
           <div className={cls.header}>
-            <Avatar size={30} src={article.user.avatar} />
+            <Avatar size={30} src={article.user.profile?.avatar} />
             <Text
               text={article.user.username}
               className={cls.username}

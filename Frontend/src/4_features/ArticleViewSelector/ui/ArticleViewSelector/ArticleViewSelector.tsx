@@ -17,13 +17,13 @@ interface ArticleViewSelectorProps {
     onViewClick?: (view: ArticleView) => void;
 }
 
-const viewTypes = [
+const viewTypes: Array<{ view: ArticleView; icon: React.VFC<React.SVGProps<SVGSVGElement>> }> = [
   {
-    view: ArticleView.SMALL,
+    view: "SMALL",
     icon: TiledIcon,
   },
   {
-    view: ArticleView.BIG,
+    view: "BIG",
     icon: ListIcon,
   },
 ];

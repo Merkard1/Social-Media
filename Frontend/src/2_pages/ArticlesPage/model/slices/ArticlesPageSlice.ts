@@ -27,14 +27,14 @@ const articlesPageSlice = buildSlice({
     error: undefined,
     ids: [],
     entities: {},
-    view: ArticleView.SMALL,
+    view: "SMALL",
     page: 1,
     hasMore: true,
     _inited: false,
     limit: 8,
-    sort: ArticleSortField.CREATED,
+    sort: "createdAt",
     search: "",
-    type: ArticleType.ALL,
+    type: "ALL",
     order: "asc",
   }),
   reducers: {
@@ -61,7 +61,7 @@ const articlesPageSlice = buildSlice({
     initState: (state) => {
       const view = localStorage.getItem(LOCAL_STORAGE_ARTICLES_VIEW) as ArticleView;
       state.view = view;
-      state.limit = view === ArticleView.BIG ? 4 : 12;
+      state.limit = view === "BIG" ? 4 : 12;
       state._inited = true;
     },
   },

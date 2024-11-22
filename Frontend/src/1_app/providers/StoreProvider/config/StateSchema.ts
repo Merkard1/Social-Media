@@ -13,14 +13,15 @@ import { ArticleDetailsPageSchema } from "@/2_pages/ArticleDetailsPage/model/typ
 import { ArticlesPageSchema } from "@/2_pages/ArticlesPage";
 
 import { AddCommentFormSchema } from "@/4_features/addCommentForm";
-import { LoginSchema } from "@/4_features/AuthByUserName";
+import { LoginSchema } from "@/4_features/AuthByUsername";
 import { ProfileSchema } from "@/4_features/EditableProfileCard";
+import { RegistrationSchema } from "@/4_features/registration";
 import { ScrollRestoration } from "@/4_features/ScrollRestoration";
 
 import { ArticleDetailsSchema } from "@/5_entities/Article";
 import { UserSchema } from "@/5_entities/User";
 
-import { rtkApi } from "@/6_shared/api/rtkApi";
+import rtkApi from "@/6_shared/api/rtkApi";
 
 export interface StateSchema {
   user: UserSchema;
@@ -28,6 +29,7 @@ export interface StateSchema {
   [rtkApi.reducerPath]: ReturnType<typeof rtkApi.reducer>
 
   // Async Reducers
+  registrationForm?: RegistrationSchema;
   loginForm?: LoginSchema;
   profile?: ProfileSchema;
   articleDetails?: ArticleDetailsSchema;

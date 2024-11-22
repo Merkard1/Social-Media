@@ -1,6 +1,7 @@
 .Icon {
   color: var(--icon);
   transition: color 0.3s ease;
+  fill: var(--icon);
 
   &:hover {
     color: var(--accent);

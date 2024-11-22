@@ -20,6 +20,7 @@ module.exports = {
   },
   plugins: ["react", "@typescript-eslint", "i18next", "unused-imports"],
   rules: {
+    "jsx-a11y/tabindex-no-positive": "warn",
     "import/named": "error",
     "import/namespace": "error",
     "import/default": "error",
@@ -104,7 +105,7 @@ module.exports = {
           "data-testid", "to", "justify", "direction",
           "align", "size", "wrap", "data-testid",
           "role", "as", "gap", "target", "border", "value",
-          "feature", "color", "variant", "name", "alt"],
+          "feature", "color", "variant", "name", "alt", "aria-label"],
       },
     ],
     "max-len": "off",

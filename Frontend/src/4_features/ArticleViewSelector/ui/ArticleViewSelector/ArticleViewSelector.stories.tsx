@@ -1,7 +1,5 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { ArticleView } from "@/5_entities/Article";
-
 import { ArticleViewSelector } from "./ArticleViewSelector";
 
 export default {
@@ -14,7 +12,7 @@ export default {
     },
     view: {
       control: { type: "select" },
-      options: [ArticleView.SMALL, ArticleView.BIG],
+      options: ["SMALL", "BIG"],
       description: "Current view type",
     },
     onViewClick: {
@@ -30,10 +28,10 @@ const Template: ComponentStory<typeof ArticleViewSelector> = (args) => (
 
 export const SmallView = Template.bind({});
 SmallView.args = {
-  view: ArticleView.SMALL,
+  view: "SMALL",
 };
 
 export const BigView = Template.bind({});
 BigView.args = {
-  view: ArticleView.BIG,
+  view: "BIG",
 };

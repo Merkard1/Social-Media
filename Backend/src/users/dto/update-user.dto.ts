@@ -17,7 +17,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
   @IsString()
   @IsOptional()
-  login?: string;
+  email?: string;
 
   @IsArray()
   @IsIn(['USER', 'ADMIN', 'MANAGER'], { each: true })

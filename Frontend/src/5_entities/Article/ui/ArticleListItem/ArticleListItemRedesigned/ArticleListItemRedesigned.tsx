@@ -1,9 +1,8 @@
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
-import { getRouteArticleDetails } from "@/1_app/config/routeConfig/routeConfig";
-
 import EyeIcon from "@/6_shared/assets/icons/eye.svg";
+import { getRouteArticleDetails } from "@/6_shared/const/router";
 import { classNames } from "@/6_shared/lib/classNames/classNames";
 import { AppImage } from "@/6_shared/ui/AppImage/AppImage";
 import { AppLink } from "@/6_shared/ui/AppLink/AppLink";
@@ -15,10 +14,6 @@ import { Skeleton } from "@/6_shared/ui/Skeleton/Skeleton";
 import { HStack, VStack } from "@/6_shared/ui/Stack";
 import { Text } from "@/6_shared/ui/Text/Text";
 
-import {
-  ArticleBlockType,
-  ArticleView,
-} from "../../../model/consts/articleConsts";
 import { ArticleTextBlock } from "../../../model/types/article";
 import { ArticleListItemProps } from "../ArticleListItem";
 
@@ -30,7 +25,7 @@ export const ArticleListItemRedesigned = memo((props: ArticleListItemProps) => {
 
   const userInfo = article && article.user ? (
     <>
-      <Avatar size={32} src={article.user.avatar} className={cls.avatar} />
+      <Avatar size={32} src={article.user.profile?.avatar} className={cls.avatar} />
       <Text bold text={article.user.username} />
     </>
   ) : null;
@@ -42,9 +37,9 @@ export const ArticleListItemRedesigned = memo((props: ArticleListItemProps) => {
     </HStack>
   );
 
-  if (view === ArticleView.BIG) {
+  if (view === "BIG") {
     const textBlock = article?.blocks?.find(
-      (block) => block.type === ArticleBlockType.TEXT,
+      (block) => block.type === "TEXT",
     ) as ArticleTextBlock;
 
     // Big ArticlesList View

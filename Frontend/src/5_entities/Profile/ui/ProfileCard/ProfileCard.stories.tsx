@@ -24,7 +24,7 @@ export const Primary = Template.bind({});
 Primary.args = {
   data: {
     username: "admin",
-    name: "name",
+    first: "name",
     age: 20,
     lastname: "lastname",
     country: Country.US,
@@ -38,7 +38,7 @@ Secondary.args = {
   data: {
     avatar: img,
     username: "admin",
-    name: "name",
+    first: "name",
     age: 20,
     lastname: "lastname",
     country: Country.US,

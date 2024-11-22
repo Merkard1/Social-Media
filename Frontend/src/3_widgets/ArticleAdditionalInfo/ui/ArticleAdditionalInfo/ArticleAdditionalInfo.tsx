@@ -32,7 +32,7 @@ export const ArticleAdditionalInfo = memo(
         ])}
       >
         <HStack gap="8">
-          <Avatar src={author.avatar} size={32} />
+          <Avatar src={author.profile?.avatar} size={32} />
           <Text text={author.username} bold />
           <Text text={createdAt} />
         </HStack>

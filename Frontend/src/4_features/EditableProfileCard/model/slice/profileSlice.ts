@@ -34,6 +34,11 @@ export const profileSlice = buildSlice({
         ...action.payload,
       };
     },
+    initializeProfileForm: (state, action: PayloadAction<Profile>) => {
+      state.data = action.payload;
+      state.form = { ...action.payload };
+      state.readOnly = true;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -74,7 +79,6 @@ export const profileSlice = buildSlice({
   },
 });
 
-// Action creators are generated for each case reducer function
 export const {
   actions: profileActions,
   reducer: profileReducer,

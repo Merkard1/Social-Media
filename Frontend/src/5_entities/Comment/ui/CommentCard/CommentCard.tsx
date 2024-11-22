@@ -1,7 +1,6 @@
 import { memo } from "react";
 
-import { getRouteProfile } from "@/1_app/config/routeConfig/routeConfig";
-
+import { getRouteProfile } from "@/6_shared/const/router";
 import { classNames } from "@/6_shared/lib/classNames/classNames";
 import { AppLink } from "@/6_shared/ui/AppLink/AppLink";
 import { Avatar } from "@/6_shared/ui/Avatar/Avatar";
@@ -65,10 +64,10 @@ export const CommentCard = memo((props: CommentCardProps) => {
       >
         <AppLink to={getRouteProfile(comment.user.id)}>
           <HStack gap="8">
-            {comment.user.avatar ? (
+            {comment.user.profile?.avatar ? (
               <Avatar
                 size={30}
-                src={comment.user.avatar}
+                src={comment.user.profile?.avatar}
               />
             ) : null}
             <Text text={comment.user.username} bold />

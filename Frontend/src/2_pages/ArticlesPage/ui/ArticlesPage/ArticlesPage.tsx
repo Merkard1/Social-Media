@@ -53,7 +53,7 @@ const ArticlesPage = (props: ArticlesPageProps) => {
           data-testid="ArticlesPage"
           onScrollEnd={onLoadNextPart}
           className={classNames(
-            cls.ArticlesPageRedesigned,
+            cls.ArticlesPage,
             {},
             [className],
           )}

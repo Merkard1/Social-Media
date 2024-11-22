@@ -1,9 +1,10 @@
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { LoginModal } from "@/4_features/AuthByUserName";
+import { LoginModal } from "@/4_features/AuthByUsername";
 import { AvatarDropdown } from "@/4_features/avatarDropdown";
 import { NotificationButton } from "@/4_features/notificationButton";
+import { RegistrationModal } from "@/4_features/registration";
 
 import { useUserAuthData } from "@/5_entities/User";
 
@@ -19,22 +20,25 @@ interface NavbarProps {
 
 export const Navbar = ({ className }: NavbarProps) => {
   const { t } = useTranslation();
-  const [isAuthModal, setIsAuthModal] = useState(false);
+  const [activeModal, setActiveModal] = useState<"login" | "registration" | null>(null);
+
   const authData = useUserAuthData();
 
-  const onCloseModal = useCallback(() => {
-    setIsAuthModal(false);
+  const closeModal = useCallback(() => {
+    setActiveModal(null);
   }, []);
 
-  const onShowModal = useCallback(() => {
-    setIsAuthModal(true);
+  const openLoginModal = useCallback(() => {
+    setActiveModal("login");
   }, []);
 
-  const mainClass = cls.NavbarRedesigned;
+  const openRegistrationModal = useCallback(() => {
+    setActiveModal("registration");
+  }, []);
 
   if (authData) {
     return (
-      <header className={classNames(mainClass, {}, [className])}>
+      <header className={classNames(cls.Navbar, {}, [className])}>
         <HStack gap="16" className={cls.actions}>
           <NotificationButton />
           <AvatarDropdown />
@@ -44,16 +48,26 @@ export const Navbar = ({ className }: NavbarProps) => {
   }
 
   return (
-    <header className={classNames(mainClass, {}, [className])}>
+    <header className={classNames(cls.Navbar, {}, [className])}>
       <Button
         className={cls.links}
-        onClick={onShowModal}
+        onClick={openLoginModal}
       >
         {t("Login")}
       </Button>
-
-      {isAuthModal && (
-        <LoginModal isOpen={isAuthModal} onClose={onCloseModal} />
+      {activeModal === "login" && (
+        <LoginModal
+          isOpen={activeModal === "login"}
+          onClose={closeModal}
+          onRegistrationButtonClick={openRegistrationModal}
+        />
+      )}
+      {activeModal === "registration" && (
+        <RegistrationModal
+          isOpen={activeModal === "registration"}
+          onClose={closeModal}
+          onLoginButtonClick={openLoginModal}
+        />
       )}
     </header>
   );

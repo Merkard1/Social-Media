@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 
-import { LOCAL_STORAGE_LAST_DESIGN_KEY, LOCAL_STORAGE_USER } from "@/6_shared/const/localstorage";
+import { LOCAL_STORAGE_ACCESS_TOKEN, LOCAL_STORAGE_LAST_DESIGN_KEY, LOCAL_STORAGE_USER_ID } from "@/6_shared/const/localstorage";
 
 import { getUserDataByIdQuery } from "../../api/userApi";
 import { User } from "../types/user";
@@ -12,10 +12,11 @@ export const initAuthData = createAsyncThunk<User, void, ThunkConfig<string>>(
   async (_, thunkApi) => {
     const { rejectWithValue, dispatch } = thunkApi;
 
-    const userId = localStorage.getItem(LOCAL_STORAGE_USER);
+    const userId = localStorage.getItem(LOCAL_STORAGE_USER_ID);
+    const accessToken = localStorage.getItem(LOCAL_STORAGE_ACCESS_TOKEN);
 
-    if (!userId) {
-      return rejectWithValue("");
+    if (!userId || !accessToken) {
+      return rejectWithValue("No user ID or access token found in localStorage");
     }
 
     try {
@@ -30,8 +31,8 @@ export const initAuthData = createAsyncThunk<User, void, ThunkConfig<string>>(
 
       return response;
     } catch (e) {
-      console.log(e);
-      return rejectWithValue("");
+      console.error("Error initializing auth data:", e);
+      return rejectWithValue("Failed to initialize auth data");
     }
   },
 );

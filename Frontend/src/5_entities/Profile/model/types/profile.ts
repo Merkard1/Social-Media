@@ -3,12 +3,12 @@ import { Currency } from "@/5_entities/Currency";
 
 export interface Profile {
     id?: string;
-    name?: string;
+    first?: string;
     lastname?: string;
     age?: Number,
     currency?: Currency,
     country?: Country;
     city?: string,
-    username?: string;
     avatar?: string;
+    username?: string;
 }

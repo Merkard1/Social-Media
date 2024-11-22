@@ -4,6 +4,8 @@ import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 
 import { Profile } from "@/5_entities/Profile";
 
+import { getAPIProfile } from "@/6_shared/api/getRoutes/getAPI";
+
 export const fetchProfileData = createAsyncThunk<
     Profile,
     string,
@@ -14,10 +16,11 @@ export const fetchProfileData = createAsyncThunk<
         const { extra, rejectWithValue } = thunkApi;
 
         try {
-          const response = await extra.api.get<Profile>(`/profile/${profileId}`);
+          const response = await extra.api.get<Profile>(getAPIProfile(profileId));
+          console.log(response);
 
           if (!response.data) {
-            throw new Error();
+            throw new Error("No profile data returned from API");
           }
 
           return response.data;

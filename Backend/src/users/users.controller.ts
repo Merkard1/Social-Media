@@ -25,8 +25,11 @@ export class UsersController {
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);
-    const { password, ...result } = user;
-    return result;
+
+    // Remove sensitive fields
+    const { password, ...userWithoutPassword } = user;
+
+    return userWithoutPassword;
   }
 
   @Get('id/:id')

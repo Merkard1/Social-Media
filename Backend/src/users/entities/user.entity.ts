@@ -4,6 +4,7 @@ import {
   Column,
   OneToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { Profile } from '../../profiles/entities/profile.entity';
 import { Article } from '../../articles/entities/article.entity';
@@ -23,7 +24,7 @@ export class User {
   username: string;
 
   @Column({ unique: true })
-  login: string;
+  email: string;
 
   @Column()
   @Exclude()
@@ -43,7 +44,12 @@ export class User {
     isArticlesPageWasOpened: boolean;
   };
 
-  @OneToOne(() => Profile, (profile) => profile.user, { cascade: true })
+  @OneToOne(() => Profile, {
+    cascade: true,
+    eager: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
   profile: Profile;
 
   @OneToMany(() => Article, (article) => article.user)

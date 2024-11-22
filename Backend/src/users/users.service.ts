@@ -1,4 +1,3 @@
-// src/users/users.service.ts
 import {
   Injectable,
   BadRequestException,
@@ -11,11 +10,14 @@ import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Profile } from 'src/profiles/entities/profile.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
+    @InjectRepository(Profile)
+    private readonly profilesRepository: Repository<Profile>,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -26,20 +28,23 @@ export class UsersService {
     const existingUser = await this.usersRepository.findOne({
       where: [
         { username: createUserDto.username },
-        { login: createUserDto.login },
+        { email: createUserDto.email },
       ],
     });
     if (existingUser) {
-      throw new BadRequestException('Username or login already exists');
+      throw new BadRequestException('Username or email already exists');
     }
 
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
 
+    const profile = this.profilesRepository.create();
+
     const user = this.usersRepository.create({
       username: createUserDto.username,
-      login: createUserDto.login,
+      email: createUserDto.email,
       password: hashedPassword,
       roles: createUserDto.roles || ['USER'],
+      profile: profile,
     });
 
     return this.usersRepository.save(user);
