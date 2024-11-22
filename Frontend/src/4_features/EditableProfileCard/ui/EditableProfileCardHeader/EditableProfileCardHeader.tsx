@@ -58,7 +58,7 @@ export const EditableProfileCardHeader = memo(
                   onClick={onEdit}
                   data-testid="EditableProfileCardHeader.EditButton"
                 >
-                  {t("Редактировать")}
+                  {t("Edit")}
                 </Button>
               ) : (
                 <HStack gap="8">
@@ -67,14 +67,14 @@ export const EditableProfileCardHeader = memo(
                     data-testid="EditableProfileCardHeader.CancelButton"
                     color="error"
                   >
-                    {t("Отменить")}
+                    {t("Cancel")}
                   </Button>
                   <Button
                     onClick={onSave}
                     data-testid="EditableProfileCardHeader.SaveButton"
                     color="success"
                   >
-                    {t("Сохранить")}
+                    {t("Save")}
                   </Button>
                 </HStack>
               )}

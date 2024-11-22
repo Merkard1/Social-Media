@@ -12,12 +12,12 @@ interface ProfilePageProps {
 }
 
 const ProfilePage = ({ className }: ProfilePageProps) => {
-  const { id } = useParams<{ id: string }>();
+  const { username } = useParams<{ username: string }>();
 
   return (
     <Page data-testid="ProfilePage" className={classNames("", {}, [className])}>
       <VStack gap="16" max>
-        <EditableProfileCard id={id} />
+        <EditableProfileCard username={username} />
       </VStack>
     </Page>
   );

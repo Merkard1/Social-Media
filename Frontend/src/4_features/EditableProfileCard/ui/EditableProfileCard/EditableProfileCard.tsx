@@ -22,7 +22,7 @@ import { EditableProfileCardHeader } from "../EditableProfileCardHeader/Editable
 
 interface EditableProfileCardProps {
     className?: string;
-    id?: string;
+    username?: string;
 }
 
 const reducers: ReducersList = {
@@ -30,7 +30,7 @@ const reducers: ReducersList = {
 };
 
 export const EditableProfileCard = memo((props: EditableProfileCardProps) => {
-  const { className, id } = props;
+  const { className, username } = props;
   const { t } = useTranslation("profile");
 
   const dispatch = useAppDispatch();
@@ -43,14 +43,15 @@ export const EditableProfileCard = memo((props: EditableProfileCardProps) => {
   const validateErrorTranslates = {
     [ValidateProfileError.SERVER_ERROR]: t("Server Error"),
     [ValidateProfileError.INCORRECT_COUNTRY]: t("Incorrect country"),
+    [ValidateProfileError.INCORRECT_CURRENCY]: t("Incrorrect currency"),
     [ValidateProfileError.NO_DATA]: t("No Data"),
     [ValidateProfileError.INCORRECT_USER_DATA]: t("Incorrect user data"),
     [ValidateProfileError.INCORRECT_AGE]: t("Incrorrect age"),
   };
 
   useInitialEffect(() => {
-    if (id) {
-      dispatch(fetchProfileData(id));
+    if (username) {
+      dispatch(fetchProfileData(username));
     }
   });
 

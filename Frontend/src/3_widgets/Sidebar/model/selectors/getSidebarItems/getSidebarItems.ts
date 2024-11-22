@@ -31,7 +31,7 @@ export const useSidebarItems = () => {
   if (userData) {
     sidebarItemsList.push(
       {
-        path: getRouteProfile(userData.id),
+        path: getRouteProfile(userData.username),
         Icon: ProfileIcon,
         text: t("Profile"),
         authOnly: true,

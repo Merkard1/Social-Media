@@ -41,13 +41,13 @@ const options = {
 
 describe("features/EditableProfileCard", () => {
   test("Read only on", async () => {
-    componentRender(<EditableProfileCard id="1" />, options);
+    componentRender(<EditableProfileCard username="1" />, options);
     await userEvent.click(screen.getByTestId("EditableProfileCardHeader.EditButton"));
     expect(screen.getByTestId("EditableProfileCardHeader.CancelButton")).toBeInTheDocument();
   });
 
   test("Cancel button shouldn't update the state", async () => {
-    componentRender(<EditableProfileCard id="1" />, options);
+    componentRender(<EditableProfileCard username="1" />, options);
     await userEvent.click(screen.getByTestId("EditableProfileCardHeader.EditButton"));
 
     await userEvent.clear(screen.getByTestId("ProfileCard.name"));
@@ -66,7 +66,7 @@ describe("features/EditableProfileCard", () => {
   });
 
   test("Error test", async () => {
-    componentRender(<EditableProfileCard id="1" />, options);
+    componentRender(<EditableProfileCard username="1" />, options);
     await userEvent.click(screen.getByTestId("EditableProfileCardHeader.EditButton"));
 
     await userEvent.clear(screen.getByTestId("ProfileCard.name"));
@@ -78,7 +78,7 @@ describe("features/EditableProfileCard", () => {
 
   test("Put request should be sent", async () => {
     const mockPutReq = jest.spyOn($api, "put");
-    componentRender(<EditableProfileCard id="1" />, options);
+    componentRender(<EditableProfileCard username="1" />, options);
     await userEvent.click(screen.getByTestId("EditableProfileCardHeader.EditButton"));
 
     await userEvent.type(screen.getByTestId("ProfileCard.name"), "user");

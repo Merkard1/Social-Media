@@ -37,17 +37,17 @@ export const fetchArticlesList = createAsyncThunk<
         try {
           addQueryParams({ sort, order, search });
 
-          const response = await extra.api.get<Article[]>("/articles", {
-            params: {
-              _expand: "user",
-              _limit: limit,
-              _page: page,
-              _sort: sort,
-              _order: order,
-              type: type === "ALL" ? undefined : type,
-              q: search,
-            },
-          });
+          const params = {
+            _expand: "user",
+            _limit: limit,
+            _page: page,
+            _sort: sort,
+            _order: order,
+            type: type === "ALL" ? undefined : type,
+            q: search,
+          };
+
+          const response = await extra.api.get<Article[]>("/articles", { params });
 
           if (!response.data) {
             throw new Error();

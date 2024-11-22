@@ -1,14 +1,22 @@
 {
   "Age": "",
+  "Cancel": "",
   "Change avatar ?": "Change avatar ?",
+  "City": "",
+  "Edit": "",
   "Incorrect country": "",
   "Incorrect user data": "",
   "Incrorrect age": "",
+  "Incrorrect currency": "",
   "Lastname": "",
   "Name": "",
   "No Data": "",
   "Profile": "",
+  "Save": "",
   "Server Error": "",
+  "Specify currency": "",
+  "There was an error loading your profile": "",
+  "Try refreshing the page": "",
   "Upload new Avatar": "Upload new Avatar",
   "Username": "",
   "Your Age": "",
@@ -21,5 +29,6 @@
   "Произошла ошибка при загрузке профиля": "",
   "Профиль": "",
   "Редактировать": "",
-  "Сохранить": ""
+  "Сохранить": "",
+  "Укажите валюту": ""
 }

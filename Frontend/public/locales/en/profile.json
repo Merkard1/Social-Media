@@ -1,0 +1,20 @@
+{
+  "Edit": "Edit",
+  "Cancel": "Cancel",
+  "Save": "Save",
+  "Name": "Name",
+  "Lastname": "Lastname",
+  "Age": "Age",
+  "Specify currency": "Specify currency",
+  "Specify country": "Specify country",
+  "City": "City",
+  "Upload new Avatar": "Upload new Avatar",
+  "There was an error loading your profile": "There was an error loading your profile",
+  "Try refreshing the page": "Try refreshing the page",
+  "Server Error": "Server Error",
+  "Incorrect country": "Incorrect country",
+  "Incorrect currency": "Incorrect currency",
+  "No Data": "No Data",
+  "Incorrect user data": "Incorrect user data",
+  "Incrorrect age": "Incrorrect age"
+}

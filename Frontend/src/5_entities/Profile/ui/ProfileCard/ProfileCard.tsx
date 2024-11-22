@@ -67,8 +67,8 @@ const ProfileCard = memo((props : ProfileCardProps) => {
         <HStack max justify="center">
           <Text
             variant="error"
-            title={t("Произошла ошибка при загрузке профиля")}
-            text={t("Попробуйте обновить страницу")}
+            title={t("There was an error loading your profile")}
+            text={t("Try refreshing the page")}
             align="center"
           />
         </HStack>
@@ -88,7 +88,7 @@ const ProfileCard = memo((props : ProfileCardProps) => {
             <Input
               value={data?.first}
               label={`${t("Name")}:`}
-              onChange={(value: string) => onChangeFormField("name", value)}
+              onChange={(value: string) => onChangeFormField("first", value)}
               readOnly={readOnly}
             />
             <Input
@@ -102,7 +102,7 @@ const ProfileCard = memo((props : ProfileCardProps) => {
               label={`${t("Age")}:`}
               onChange={(value) => {
                 const numericValue = Number(value);
-                if (!Number.isNaN(numericValue) && numericValue >= 1) {
+                if (!Number.isNaN(numericValue) && numericValue >= 0) {
                   onChangeFormField("age", numericValue);
                 }
               }}
@@ -110,12 +110,6 @@ const ProfileCard = memo((props : ProfileCardProps) => {
             />
           </VStack>
           <VStack gap="16" max>
-            <Input
-              value={data?.username}
-              label={`${t("Username")}:`}
-              onChange={(value: string) => onChangeFormField("username", value)}
-              readOnly={readOnly}
-            />
             <CurrencySelect
               value={data?.currency}
               onChange={(value: string) => onChangeFormField("currency", value)}
@@ -125,6 +119,12 @@ const ProfileCard = memo((props : ProfileCardProps) => {
               value={data?.country}
               onChange={(value: string) => onChangeFormField("country", value)}
               readonly={readOnly}
+            />
+            <Input
+              value={data?.city}
+              label={`${t("City")}:`}
+              onChange={(value: string) => onChangeFormField("city", value)}
+              readOnly={readOnly}
             />
           </VStack>
         </HStack>

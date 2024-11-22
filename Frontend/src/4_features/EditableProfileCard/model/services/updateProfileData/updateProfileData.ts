@@ -3,6 +3,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 
 import { Profile } from "@/5_entities/Profile";
+import { getUserAuthData } from "@/5_entities/User";
+
+import { getAPIUserEndpoint } from "@/6_shared/api/getRoutes/getAPI";
 
 import { ValidateProfileError } from "../../consts/consts";
 import { getProfileForm } from "../../selectors/getProfileForm/getProfileForm";
@@ -18,6 +21,7 @@ export const updateProfileData = createAsyncThunk<
         const { extra, rejectWithValue, getState } = thunkApi;
 
         const formData = getProfileForm(getState());
+        const userData = getUserAuthData(getState());
 
         const errors = validateProfileData(formData);
 
@@ -25,9 +29,13 @@ export const updateProfileData = createAsyncThunk<
           return rejectWithValue(errors);
         }
 
+        if (!userData) {
+          return rejectWithValue([ValidateProfileError.NO_DATA]);
+        }
+
         try {
-          const response = await extra.api.put<Profile>(
-            `/profile/${formData?.id}`,
+          const response = await extra.api.patch<Profile>(
+            getAPIUserEndpoint({ type: "username", value: userData?.username }),
             formData,
           );
 

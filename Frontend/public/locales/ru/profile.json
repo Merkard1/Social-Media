@@ -1,0 +1,20 @@
+{
+  "Edit": "Редактировать",
+  "Cancel": "Отменить",
+  "Save": "Сохранить",
+  "Name": "Имя",
+  "Lastname": "Фамилия",
+  "Age": "Возраст",
+  "Specify currency": "Укажите валюту",
+  "Specify country": "Укажите страну",
+  "City": "Город",
+  "Upload new Avatar": "Загрузить новый аватар",
+  "There was an error loading your profile": "Произошла ошибка при загрузке вашего профиля",
+  "Try refreshing the page": "Попробуйте обновить страницу",
+  "Server Error": "Ошибка сервера",
+  "Incorrect country": "Неверная страна",
+  "Incorrect currency": "Неверная валюта",
+  "No Data": "Нет данных",
+  "Incorrect user data": "Неверные данные пользователя",
+  "Incrorrect age": "Неправильный возраст"
+}
