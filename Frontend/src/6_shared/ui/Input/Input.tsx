@@ -16,7 +16,7 @@ import cls from "./Input.module.scss";
 
 type HTMLInputProps = Omit<
     InputHTMLAttributes<HTMLInputElement>,
-    "value" | "onChange" | "readOnly" | "size"
+    "value" | "onChange" | "readOnly" | "size" | "max"
 >;
 
 type InputSize = "s" | "m" | "l";
@@ -31,6 +31,7 @@ interface InputProps extends HTMLInputProps {
     addonLeft?: ReactNode;
     addonRight?: ReactNode;
     size?: InputSize;
+    max?: boolean;
 }
 
 export const Input = memo((props: InputProps) => {
@@ -45,6 +46,7 @@ export const Input = memo((props: InputProps) => {
     addonLeft,
     addonRight,
     label,
+    max,
     size = "m",
 
     ...otherProps
@@ -76,6 +78,7 @@ export const Input = memo((props: InputProps) => {
     [cls.focused]: isFocused,
     [cls.withAddonLeft]: Boolean(addonLeft),
     [cls.withAddonRight]: Boolean(addonRight),
+    [cls.max]: max,
   };
 
   const input = (

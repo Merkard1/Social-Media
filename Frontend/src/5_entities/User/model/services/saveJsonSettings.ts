@@ -21,6 +21,7 @@ export const saveJsonSettings = createAsyncThunk<
   }
 
   try {
+    console.log(userData);
     const response = await dispatch(
       setJsonSettingsMutation({
         userId: userData.id,

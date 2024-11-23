@@ -40,7 +40,7 @@ const CurrencySelect = memo(
     };
 
     return (
-      <ListBox {...props} />
+      <ListBox {...props} direction="bottom left" />
     );
   },
 );

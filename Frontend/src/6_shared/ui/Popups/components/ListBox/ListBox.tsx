@@ -13,7 +13,7 @@ import popupCls from "../../styles/popup.module.scss";
 
 import cls from "./ListBox.module.scss";
 
-export interface ListBoxItem<T extends string> {
+export interface ListBoxItem<T> {
     value: string;
     content: ReactNode;
     disabled?: boolean;
@@ -62,7 +62,6 @@ export function ListBox<T extends string>(props: ListBoxProps<T>) {
         <HListBox.Button
           as={Button}
           variant="filled"
-          // disabled={readonly}
           addonRight={<Icon Svg={ArrowIcon} />}
         >
           {selectedItem?.content ?? defaultValue}

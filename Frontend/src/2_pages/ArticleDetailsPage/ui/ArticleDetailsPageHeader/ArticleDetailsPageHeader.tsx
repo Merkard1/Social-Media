@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useArticleDetailsData } from "@/5_entities/Article/model/selectors/articleDetails";
 
-import { getRouteArticleEdit, getRouteArticles } from "@/6_shared/const/router";
+import { getRouteArticles } from "@/6_shared/const/router";
 import { Button } from "@/6_shared/ui/Button/Button";
 import { HStack } from "@/6_shared/ui/Stack";
 
@@ -27,7 +27,7 @@ const ArticleDetailsPageHeader = ({ className } : ArticleDetailsPageHeaderProps)
 
   const onEdit = useCallback(() => {
     if (article) {
-      navigate(getRouteArticleEdit(article.id));
+      navigate(getRouteArticles());
     }
   }, [navigate, article]);
 

@@ -10,7 +10,7 @@ import { Modal } from "@/6_shared/ui/Modal/Modal";
 import { Text } from "@/6_shared/ui/Text/Text";
 
 export const ArticlePageGreeting = memo(() => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("articles");
   const [isOpen, setIsOpen] = useState(false);
   const { isArticlesPageWasOpened } = useJsonSettings();
   const dispatch = useAppDispatch();
@@ -27,7 +27,7 @@ export const ArticlePageGreeting = memo(() => {
   const text = (
     <Text
       title={t("Welcome")}
-      text={t("Здесь вы можете искать и просматривать статьи на различные темы")}
+      text={t("Here you can search and view articles on various topics.")}
     />
   );
 

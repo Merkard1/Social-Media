@@ -1,7 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { ThemeDecorator } from "@/6_shared/config/storybook/ThemeDecorator/ThemeDecorator";
-import { Theme } from "@/6_shared/const/theme";
 
 import { Drawer } from "./Drawer";
 
@@ -62,4 +61,4 @@ DarkTheme.args = {
     </div>
   ),
 };
-DarkTheme.decorators = [ThemeDecorator(Theme.DARK)];
+DarkTheme.decorators = [ThemeDecorator("app_dark_theme")];

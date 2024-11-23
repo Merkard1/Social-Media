@@ -29,7 +29,7 @@ export function TestProvider(props: TestProviderProps) {
     route = "/",
     initialState,
     asyncReducers,
-    theme = Theme.LIGHT,
+    theme = "app_light_theme",
   } = options;
 
   return (

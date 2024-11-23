@@ -1,3 +1,15 @@
 .ArticlesFilters {
   width: 264px;
 }
+
+@media (max-width: 1100px) {
+  .ArticlesFilters {
+    .input {
+      width: 100%;
+    }
+
+    .tabs{}
+
+    .sort{}
+  }
+}

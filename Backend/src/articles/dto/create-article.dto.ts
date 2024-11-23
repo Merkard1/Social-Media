@@ -9,7 +9,11 @@ import {
 import { Type } from 'class-transformer';
 import { BlockType } from '../entities/article.entity';
 
-class BlockDto {
+export class BlockDto {
+  @IsOptional()
+  @IsString()
+  id?: string; // Make id optional or required based on frontend
+
   @IsString()
   @IsIn(['TEXT', 'IMAGE', 'CODE'])
   type: BlockType;

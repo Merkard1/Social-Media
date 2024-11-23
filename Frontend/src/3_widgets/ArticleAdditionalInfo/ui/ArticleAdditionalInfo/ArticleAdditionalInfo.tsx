@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { User } from "@/5_entities/User";
 
 import { classNames } from "@/6_shared/lib/classNames/classNames";
+import { formatDateToCustom } from "@/6_shared/lib/dateFormat/dateFormat";
 import { Avatar } from "@/6_shared/ui/Avatar/Avatar";
 import { Button } from "@/6_shared/ui/Button/Button";
 import { HStack, VStack } from "@/6_shared/ui/Stack";
@@ -34,7 +35,7 @@ export const ArticleAdditionalInfo = memo(
         <HStack gap="8">
           <Avatar src={author.profile?.avatar} size={32} />
           <Text text={author.username} bold />
-          <Text text={createdAt} />
+          <Text text={formatDateToCustom(createdAt)} />
         </HStack>
         <Button onClick={onEdit}>{t("Edit")}</Button>
         <Text text={t("{{count}} просмотров", { count: views })} />

@@ -1,6 +1,8 @@
 .item {
   display: flex;
+  width: 100%;
   align-items: center;
+  padding-left: 16px;
 }
 
 .link {
@@ -14,21 +16,6 @@
 }
 
 .collapsed {
-  .link {
-    width: 0;
-    opacity: 0;
-    transition: 0.2s opacity;
-  }
-}
-
-.itemRedesigned {
-  display: flex;
-  width: 100%;
-  padding: 0 16px;
-  align-items: center;
-}
-
-.collapsedRedesigned {
   padding: 0 8px;
 
   .link {
@@ -36,6 +23,10 @@
     margin: 0;
     opacity: 0;
     min-width: 0;
+  }
+
+  .item {
+    padding-left: 0;
   }
 }
 
@@ -55,5 +46,16 @@
     height: 100%;
     background: var(--accent);
     content: "";
+  }
+}
+
+@media (max-width: 576px), (max-width: var(--width-s)) {
+  .item {
+    padding: 0 16px;
+    justify-content: center;
+  }
+
+  span {
+    display: none;
   }
 }

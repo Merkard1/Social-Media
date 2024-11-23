@@ -12,8 +12,6 @@ interface ThemeSwitcherProps {
   className?: string;
 }
 
-// TODO When get notification
-
 export const ThemeSwitcher = memo(({ className }: ThemeSwitcherProps) => {
   const { toggleTheme } = useTheme();
   const dispatch = useAppDispatch();

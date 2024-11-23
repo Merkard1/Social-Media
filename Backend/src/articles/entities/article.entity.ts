@@ -13,7 +13,7 @@ import { ArticleRating } from '../../article-ratings/entities/article-rating.ent
 
 export type BlockType = 'TEXT' | 'IMAGE' | 'CODE';
 
-export interface Block {
+export class Block {
   id: string;
   type: BlockType;
   title?: string;

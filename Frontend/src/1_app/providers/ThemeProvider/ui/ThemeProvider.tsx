@@ -17,7 +17,7 @@ const ThemeProvider = (props: ThemeProviderProps) => {
   const [isThemeInited, setThemeInited] = useState(false);
 
   const [theme, setTheme] = useState<Theme>(
-    initialTheme || fallbackTheme || Theme.LIGHT,
+    initialTheme || fallbackTheme || "app_light_theme",
   );
 
   useEffect(() => {

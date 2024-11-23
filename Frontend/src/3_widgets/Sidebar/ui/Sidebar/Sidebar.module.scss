@@ -59,3 +59,31 @@
     transform: rotate(-90deg);
   }
 }
+
+@media (max-width: 576px), (max-width: var(--width-s)) {
+  .Sidebar {
+    display: contents;
+
+    .items {
+      display: flex;
+      width: 95%;
+      margin: 0;
+      background: var(--bg);
+      border-radius: 16px;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .collapseBtn {
+      display: none;
+    }
+
+    .appLogo {
+      display: none;
+    }
+
+    .switchers {
+      display: none;
+    }
+  }
+}

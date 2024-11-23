@@ -5,7 +5,6 @@ import { FeaturesFlagsDecorator } from "../../src/6_shared/config/storybook/Feat
 import { RouterDecorator } from "../../src/6_shared/config/storybook/RouterDecorator/RouterDecorator";
 import { StyleDecorator } from "../../src/6_shared/config/storybook/StyleDecorator/StyleDecorator";
 import { ThemeDecorator } from "../../src/6_shared/config/storybook/ThemeDecorator/ThemeDecorator";
-import { Theme } from "../../src/6_shared/const/theme";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -19,13 +18,13 @@ export const parameters = {
   themes: {
     default: "light",
     list: [
-      { name: "light", class: Theme.LIGHT, color: "#ffffff" },
-      { name: "dark", class: Theme.DARK, color: "#000000" },
+      { name: "light", class: "app_light_theme", color: "#ffffff" },
+      { name: "dark", class: "app_dark_theme", color: "#000000" },
     ],
   },
 };
 
 addDecorator(StyleDecorator);
-addDecorator(ThemeDecorator(Theme.LIGHT));
+addDecorator(ThemeDecorator("app_light_theme"));
 addDecorator(RouterDecorator);
 addDecorator(FeaturesFlagsDecorator({}));

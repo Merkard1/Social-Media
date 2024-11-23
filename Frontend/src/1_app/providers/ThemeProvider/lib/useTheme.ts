@@ -15,15 +15,15 @@ export function useTheme(): UseThemeResult {
   const toggleTheme = (saveAction?: (theme: Theme) => void) => {
     let newTheme: Theme;
     switch (theme) {
-    case Theme.DARK:
-      newTheme = Theme.LIGHT;
+    case "app_dark_theme":
+      newTheme = "app_light_theme";
       break;
-    case Theme.LIGHT:
-      newTheme = Theme.DARK;
+    case "app_light_theme":
+      newTheme = "app_dark_theme";
       break;
     default:
 
-      newTheme = Theme.LIGHT;
+      newTheme = "app_light_theme";
     }
     setTheme?.(newTheme);
 
@@ -31,7 +31,7 @@ export function useTheme(): UseThemeResult {
   };
 
   return {
-    theme: theme || Theme.LIGHT,
+    theme: theme || "app_light_theme",
     toggleTheme,
   };
 }

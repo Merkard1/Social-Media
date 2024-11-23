@@ -49,6 +49,8 @@ export const ArticlesFilters = memo((props: ArticlesFiltersProps) => {
     >
       <VStack gap="32">
         <Input
+          max
+          className={cls.input}
           onChange={onChangeSearch}
           value={search}
           size="s"
@@ -61,6 +63,7 @@ export const ArticlesFilters = memo((props: ArticlesFiltersProps) => {
           className={cls.tabs}
         />
         <ArticleSortSelector
+          className={cls.sort}
           order={order}
           sort={sort}
           onChangeOrder={onChangeOrder}

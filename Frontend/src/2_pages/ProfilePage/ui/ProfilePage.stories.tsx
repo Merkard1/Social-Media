@@ -5,7 +5,6 @@ import { Currency } from "@/5_entities/Currency";
 
 import { StoreDecorator } from "@/6_shared/config/storybook/StoreDecorator/StoreDecorator";
 import { ThemeDecorator } from "@/6_shared/config/storybook/ThemeDecorator/ThemeDecorator";
-import { Theme } from "@/6_shared/const/theme";
 
 import ProfilePage from "./ProfilePage";
 
@@ -41,7 +40,7 @@ Normal.decorators = [StoreDecorator({
 
 export const Dark = Template.bind({});
 Dark.args = {};
-Dark.decorators = [ThemeDecorator(Theme.DARK), StoreDecorator({
+Dark.decorators = [ThemeDecorator("app_dark_theme"), StoreDecorator({
   profile: {
     form: {
       username: "username",
