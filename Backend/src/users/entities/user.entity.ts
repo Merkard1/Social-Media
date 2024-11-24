@@ -38,10 +38,10 @@ export class User {
 
   @Column('jsonb', { nullable: true })
   jsonSettings: {
-    theme: 'app_light_theme' | 'app_dark_theme';
-    isFirstVisit: boolean;
-    settingsPageHasBeenOpen: boolean;
-    isArticlesPageWasOpened: boolean;
+    theme?: 'app_light_theme' | 'app_dark_theme';
+    isFirstVisit?: boolean;
+    settingsPageHasBeenOpen?: boolean;
+    isArticlesPageWasOpened?: boolean;
   };
 
   @OneToOne(() => Profile, {

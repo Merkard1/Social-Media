@@ -27,12 +27,18 @@
   height: fit-content;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
+  .MainLayout {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
   .left {
     display: none;
   }
 
   .right {
-    display: none;
+    position: unset;
+    padding: 16px;
   }
 }

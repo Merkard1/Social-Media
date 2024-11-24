@@ -12,12 +12,10 @@ import { JsonSettingsDto } from './json-settings.dto';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsString()
-  @IsOptional()
-  username?: string;
+  username: string;
 
   @IsString()
-  @IsOptional()
-  email?: string;
+  email: string;
 
   @IsArray()
   @IsIn(['USER', 'ADMIN', 'MANAGER'], { each: true })
@@ -28,8 +26,8 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsString()
   features?: Record<string, any>;
 
+  @IsOptional()
   @ValidateNested()
   @Type(() => JsonSettingsDto)
-  @IsOptional()
   jsonSettings?: JsonSettingsDto;
 }

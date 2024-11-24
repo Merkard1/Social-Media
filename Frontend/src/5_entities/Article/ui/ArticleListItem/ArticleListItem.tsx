@@ -5,6 +5,7 @@ import EyeIcon from "@/6_shared/assets/icons/eye.svg";
 import { getRouteArticleDetails } from "@/6_shared/const/router";
 import { classNames } from "@/6_shared/lib/classNames/classNames";
 import { formatDateToCustom } from "@/6_shared/lib/dateFormat/dateFormat";
+import useMediaQuery from "@/6_shared/lib/hooks/useMedia/useMedia";
 import { AppImage } from "@/6_shared/ui/AppImage/AppImage";
 import { AppLink } from "@/6_shared/ui/AppLink/AppLink";
 import { Avatar } from "@/6_shared/ui/Avatar/Avatar";
@@ -29,6 +30,7 @@ interface ArticleListItemProps {
 
 export const ArticleListItem = memo((props: ArticleListItemProps) => {
   const { className, article, view, target } = props;
+  const isBelowLargeScreen = useMediaQuery("(max-width: 1200px)");
   const { t } = useTranslation();
   const { title, createdAt, img, id, subtitle, blocks } = article;
 
@@ -121,7 +123,7 @@ export const ArticleListItem = memo((props: ArticleListItemProps) => {
           <VStack gap="4" className={cls.footer} max>
             <HStack justify="between" max>
               <Text
-                text={article.createdAt}
+                text={formatDateToCustom(article.createdAt)}
                 className={cls.date}
               />
               {views}

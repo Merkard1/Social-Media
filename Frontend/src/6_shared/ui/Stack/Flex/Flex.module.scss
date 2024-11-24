@@ -34,13 +34,6 @@
   flex-direction: row;
 }
 
-// @media (max-width: 1200px) {
-//   .directionRow {
-//     flex-direction: column;
-//     // TODO for small screens
-//   }
-// }
-
 .directionColumn {
   flex-direction: column;
 }
@@ -75,4 +68,14 @@
 
 .nowrap {
   flex-wrap: nowrap;
+}
+
+@media (max-width: 1200px) {
+  .colomnToRow {
+    flex-direction: row;
+  }
+
+  .rowToColumn {
+    flex-direction: column;
+  }
 }

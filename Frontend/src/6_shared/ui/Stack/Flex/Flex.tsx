@@ -50,6 +50,8 @@ export interface FlexProps extends DivProps {
     wrap?: FlexWrap;
     gap?: FlexGap;
     max?: boolean;
+    rowToColumn?: boolean;
+    colomnToRow?: boolean
 }
 
 export const Flex = (props: FlexProps) => {
@@ -62,6 +64,8 @@ export const Flex = (props: FlexProps) => {
     wrap = "nowrap",
     gap,
     max,
+    rowToColumn,
+    colomnToRow,
     ...otherProps
   } = props;
 
@@ -76,6 +80,8 @@ export const Flex = (props: FlexProps) => {
 
   const mods: Mods = {
     [cls.max]: max,
+    [cls.colomnToRow]: colomnToRow,
+    [cls.rowToColumn]: rowToColumn,
   };
 
   return (

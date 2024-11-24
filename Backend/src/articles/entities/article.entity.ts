@@ -42,6 +42,9 @@ export class Article {
   @Column({ type: 'jsonb' })
   blocks: Block[];
 
+  @Column({ default: 0 })
+  views: number;
+
   @CreateDateColumn()
   createdAt: Date;
 

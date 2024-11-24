@@ -36,6 +36,7 @@ export const Tabs = <T extends string>(props: TabsProps<T>) => {
       gap="8"
       align="start"
       className={classNames(cls.Tabs, {}, [className])}
+      colomnToRow
     >
       {tabs.map((tab) => {
         const isSelected = tab.value === value;

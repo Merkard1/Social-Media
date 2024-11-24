@@ -11,6 +11,14 @@ import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Profile } from 'src/profiles/entities/profile.entity';
+import { JsonSettingsDto } from './dto/json-settings.dto';
+
+const defaultJsonSettings: JsonSettingsDto = {
+  theme: 'app_light_theme',
+  isFirstVisit: false,
+  settingsPageHasBeenOpen: false,
+  isArticlesPageWasOpened: false,
+};
 
 @Injectable()
 export class UsersService {
@@ -45,6 +53,7 @@ export class UsersService {
       password: hashedPassword,
       roles: createUserDto.roles || ['USER'],
       profile: profile,
+      jsonSettings: defaultJsonSettings,
     });
 
     return this.usersRepository.save(user);
@@ -60,6 +69,7 @@ export class UsersService {
   async findById(id: string): Promise<User> {
     const user = await this.usersRepository.findOne({
       where: { id },
+      relations: ['articles', 'profile'],
     });
     if (!user) {
       throw new NotFoundException('User not found');
@@ -98,7 +108,10 @@ export class UsersService {
     }
 
     if (updateUserDto.features) {
-      user.features = { ...user.features, ...updateUserDto.features };
+      user.features = {
+        ...user.features,
+        ...updateUserDto.features,
+      };
     }
 
     return this.usersRepository.save(user);

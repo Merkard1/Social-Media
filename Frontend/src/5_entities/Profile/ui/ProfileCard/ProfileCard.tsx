@@ -83,7 +83,7 @@ const ProfileCard = memo((props : ProfileCardProps) => {
             <Avatar size={128} src={data?.avatar} />
           </HStack>
         )}
-        <HStack gap="24" max>
+        <HStack gap="24" max rowToColumn>
           <VStack gap="16" max>
             <Input
               value={data?.first}

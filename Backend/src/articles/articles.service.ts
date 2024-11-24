@@ -85,7 +85,7 @@ export class ArticlesService {
   }
 
   async findOneById(id: string): Promise<Article> {
-    this.logger.log(`Fetching article by ID: ${id}`);
+    this.incrementViews(id);
     const article = await this.articlesRepository.findOne({
       where: { id },
       relations: ['user'],
@@ -129,7 +129,6 @@ export class ArticlesService {
     this.logger.log(`Removing article with ID: ${id} by user: ${user.id}`);
     const article = await this.findOneById(id);
 
-    // Ensure the user has permission to delete
     if (article.user.id !== user.id && !user.roles.includes('ADMIN')) {
       this.logger.warn(
         `User ${user.id} is not authorized to delete article ${id}`,
@@ -141,5 +140,15 @@ export class ArticlesService {
 
     await this.articlesRepository.delete(id);
     this.logger.log(`Article with ID: ${id} deleted successfully`);
+  }
+
+  async incrementViews(id: string): Promise<Article> {
+    const article = await this.articlesRepository.findOne({ where: { id } });
+    if (!article) {
+      throw new NotFoundException('Article not found');
+    }
+
+    article.views += 1;
+    return this.articlesRepository.save(article);
   }
 }

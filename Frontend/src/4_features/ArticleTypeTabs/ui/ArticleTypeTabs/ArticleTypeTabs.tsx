@@ -20,7 +20,7 @@ export const ArticleTypeTabs = memo((props: ArticleTypeTabsProps) => {
     () => [
       {
         value: "ALL",
-        content: t("All articles"),
+        content: t("All"),
       },
       {
         value: "IT",

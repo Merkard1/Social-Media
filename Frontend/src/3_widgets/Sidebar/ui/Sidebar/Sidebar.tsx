@@ -5,6 +5,8 @@ import { ThemeSwitcher } from "@/4_features/ThemeSwitcher";
 
 import ArrowIcon from "@/6_shared/assets/icons/arrow-bottom.svg";
 import { classNames } from "@/6_shared/lib/classNames/classNames";
+import { useInitialEffect } from "@/6_shared/lib/hooks/useInitialEffect/useInitialEffect";
+import useMediaQuery from "@/6_shared/lib/hooks/useMedia/useMedia";
 import { AppLogo } from "@/6_shared/ui/AppLogo/AppLogo";
 import { Icon } from "@/6_shared/ui/Icon/Icon";
 import { VStack } from "@/6_shared/ui/Stack";
@@ -19,8 +21,17 @@ interface SidebarProps {
 }
 
 export const Sidebar = memo(({ className }: SidebarProps) => {
-  const [collapsed, setCollapsed] = useState(false);
+  const isBelowLargeScreen = useMediaQuery("(max-width: 1200px)");
+  const [collapsed, setCollapsed] = useState(true);
   const sidebarItemsList = useSidebarItems();
+
+  useInitialEffect(() => {
+    if (isBelowLargeScreen) {
+      setCollapsed(true);
+    } else {
+      setCollapsed(false);
+    }
+  });
 
   const onToggle = () => {
     setCollapsed((prev) => !prev);
