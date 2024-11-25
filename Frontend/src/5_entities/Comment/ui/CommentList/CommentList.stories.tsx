@@ -17,7 +17,7 @@ Normal.args = {
   comments: [
     {
       id: "1",
-      text: "hello world",
+      content: "hello world",
       user: {
         id: "1",
         username: "usename1",
@@ -30,7 +30,7 @@ Normal.args = {
     },
     {
       id: "2",
-      text: "Comment 2",
+      content: "Comment 2",
       user: {
         id: "2",
         username: "username2",

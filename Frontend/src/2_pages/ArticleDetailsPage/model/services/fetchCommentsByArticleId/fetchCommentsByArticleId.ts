@@ -4,6 +4,8 @@ import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 
 import { Comment } from "@/5_entities/Comment";
 
+import { getAPIUserEndpoint } from "@/6_shared/api/getRoutes/getAPI";
+
 export const fetchCommentsByArticleId = createAsyncThunk<
     Comment[],
     string | undefined,
@@ -18,12 +20,11 @@ export const fetchCommentsByArticleId = createAsyncThunk<
         }
 
         try {
-          const response = await extra.api.get<Comment[]>("/comments", {
-            params: {
-              articleId,
-              _expand: "user",
+          const response = await extra.api.get<Comment[]>(
+            getAPIUserEndpoint({ type: "article/comments", values: [articleId] }),
+            {
             },
-          });
+          );
 
           if (!response.data) {
             throw new Error();

@@ -1,17 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+  Unique,
+} from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Article } from '../../articles/entities/article.entity';
 
-@Entity()
+@Entity('ratings')
+@Unique(['user', 'article'])
 export class ArticleRating {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  rating: number;
-
-  @Column({ nullable: true })
-  feedback?: string;
+  @Column({ type: 'int' })
+  value: number;
 
   @ManyToOne(() => User, (user) => user.username, { onDelete: 'CASCADE' })
   user: User;
@@ -20,4 +25,7 @@ export class ArticleRating {
     onDelete: 'CASCADE',
   })
   article: Article;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }

@@ -1,4 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  CreateDateColumn,
+} from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Article } from '../../articles/entities/article.entity';
 
@@ -8,11 +14,14 @@ export class Comment {
   id: string;
 
   @Column()
-  text: string;
+  content: string;
 
-  @ManyToOne(() => User, (user) => user.comments)
+  @ManyToOne(() => User, (user) => user.comments, { eager: false })
   user: User;
 
-  @ManyToOne(() => Article, (article) => article.comments)
+  @ManyToOne(() => Article, (article) => article.comments, { eager: false })
   article: Article;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }

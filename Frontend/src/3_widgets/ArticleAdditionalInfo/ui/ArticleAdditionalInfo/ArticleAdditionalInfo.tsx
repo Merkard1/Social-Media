@@ -37,8 +37,10 @@ export const ArticleAdditionalInfo = memo(
           <Text text={author.username} bold />
           <Text text={formatDateToCustom(createdAt)} />
         </HStack>
-        <Button onClick={onEdit}>{t("Edit")}</Button>
-        <Text text={t("{{count}} просмотров", { count: views })} />
+        <HStack gap="16" max justify="between">
+          <Text text={t("{{count}} просмотров", { count: views })} />
+          <Button onClick={onEdit}>{t("Edit")}</Button>
+        </HStack>
       </VStack>
     );
   },

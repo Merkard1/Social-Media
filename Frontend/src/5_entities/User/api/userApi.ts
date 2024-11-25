@@ -13,7 +13,7 @@ const userApi = rtkApi.injectEndpoints({
   endpoints: (build) => ({
     setJsonSettings: build.mutation<User, SetJsonSettingsArg>({
       query: ({ userId, jsonSettings }) => ({
-        url: getAPIUserEndpoint({ type: "users/id", value: userId }),
+        url: getAPIUserEndpoint({ type: "users/id", values: [userId] }),
         method: "PATCH",
         body: {
           jsonSettings,
@@ -22,7 +22,7 @@ const userApi = rtkApi.injectEndpoints({
     }),
     getUserDataById: build.query<User, string>({
       query: (userId) => ({
-        url: getAPIUserEndpoint({ type: "id", value: userId }),
+        url: getAPIUserEndpoint({ type: "users/id", values: [userId] }),
         method: "GET",
       }),
     }),

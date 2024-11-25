@@ -1,20 +1,33 @@
 import {
+  Injectable,
   CanActivate,
   ExecutionContext,
   ForbiddenException,
-  Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { CommentsService } from '../comments.service';
 
 @Injectable()
 export class CommentOwnerGuard implements CanActivate {
-  constructor(private commentsService: CommentsService) {}
+  constructor(
+    private readonly commentsService: CommentsService,
+    private readonly reflector: Reflector,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const user = request.user; // Authenticated user
-    const commentId = request.params.id; // Comment ID from the route
+    const user = request.user;
+
+    if (!user) {
+      throw new ForbiddenException('User not authenticated');
+    }
+
+    const commentId = request.params.commentId;
+
+    if (!commentId) {
+      throw new NotFoundException('Comment ID not provided in the request');
+    }
 
     const comment = await this.commentsService.findById(commentId);
 
@@ -22,19 +35,12 @@ export class CommentOwnerGuard implements CanActivate {
       throw new NotFoundException('Comment not found');
     }
 
-    // Debugging information
-    console.log('Authenticated User:', user);
-    console.log('Comment Owner ID:', comment.user.id);
-    console.log('Requester ID:', user.id);
-    console.log('User Roles:', user.roles);
-
-    // Ensure the authenticated user matches the comment owner or is an admin
-    if (comment.user.id === user.id || user.roles.includes('ADMIN')) {
-      return true;
+    if (comment.user.id !== user.id) {
+      throw new ForbiddenException(
+        'You are not authorized to perform this action',
+      );
     }
 
-    throw new ForbiddenException(
-      'You do not have permission to perform this action',
-    );
+    return true;
   }
 }

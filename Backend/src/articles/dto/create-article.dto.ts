@@ -12,7 +12,7 @@ import { BlockType } from '../entities/article.entity';
 export class BlockDto {
   @IsOptional()
   @IsString()
-  id?: string; // Make id optional or required based on frontend
+  id?: string;
 
   @IsString()
   @IsIn(['TEXT', 'IMAGE', 'CODE'])

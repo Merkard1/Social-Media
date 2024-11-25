@@ -2,42 +2,46 @@ import {
   Controller,
   Post,
   Body,
-  Param,
   UseGuards,
   Request,
+  Param,
   Get,
 } from '@nestjs/common';
-import { ArticleRatingService } from './article-ratings.service';
 import { AuthGuard } from '@nestjs/passport';
-
-@Controller('article-ratings')
-export class ArticleRatingController {
-  constructor(private readonly articleRatingService: ArticleRatingService) {}
+import { CreateArticleRatingDto } from './dto/create-article-rating.dto';
+import { RatingsService } from './article-ratings.service';
+@Controller('ratings')
+export class RatingsController {
+  constructor(private readonly ratingsService: RatingsService) {}
 
   @UseGuards(AuthGuard('jwt'))
-  @Post(':articleId')
+  @Post('article-rating/:articleId')
   async rateArticle(
     @Param('articleId') articleId: string,
-    @Body('rating') rating: number,
-    @Body('feedback') feedback: string,
+    @Body() rateArticleDto: CreateArticleRatingDto,
     @Request() req,
   ) {
-    const user = req.user;
-    return await this.articleRatingService.rateArticle(
+    const userId = req.user.userId || req.user.id;
+    const { value } = rateArticleDto;
+    const averageRating = await this.ratingsService.rateArticle(
+      userId,
       articleId,
-      user,
-      rating,
-      feedback,
+      value,
     );
+    return { averageRating };
   }
 
-  @Get(':articleId/average')
-  async getAverageRating(@Param('articleId') articleId: string) {
-    return await this.articleRatingService.getAverageRating(articleId);
-  }
-
-  @Get(':articleId/feedback')
-  async getFeedbackForArticle(@Param('articleId') articleId: string) {
-    return await this.articleRatingService.getFeedbackForArticle(articleId);
+  @UseGuards(AuthGuard('jwt'))
+  @Get('article-rating/has-rated/:articleId')
+  async hasUserRatedArticle(
+    @Param('articleId') articleId: string,
+    @Request() req,
+  ) {
+    const userId = req.user.userId || req.user.id;
+    const hasRated = await this.ratingsService.hasUserRatedArticle(
+      userId,
+      articleId,
+    );
+    return { hasRated };
   }
 }

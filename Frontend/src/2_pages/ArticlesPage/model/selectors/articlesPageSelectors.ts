@@ -4,7 +4,7 @@ import { buildSelector } from "@/6_shared/lib/store/buildSelector";
 
 export const [useArticlesPageIsLoading, getArticlesPageIsLoading] = buildSelector((state: StateSchema) => state.articlesPage?.isLoading || false);
 export const [useArticlesPageError, getArticlesPageError] = buildSelector((state: StateSchema) => state.articlesPage?.error);
-export const [useArticlesPageView, getArticlesPageView] = buildSelector((state: StateSchema) => state.articlesPage?.view || "SMALL");
+export const [useArticlesPageView, getArticlesPageView] = buildSelector((state: StateSchema) => state.articlesPage?.view || "BIG");
 export const [useArticlesPageNum, getArticlesPageNum] = buildSelector((state: StateSchema) => state.articlesPage?.page || 1);
 export const [useArticlesPageLimit, getArticlesPageLimit] = buildSelector((state: StateSchema) => state.articlesPage?.limit || 9);
 export const [useArticlesPageHasMore, getArticlesPageHasMore] = buildSelector((state: StateSchema) => state.articlesPage?.hasMore);

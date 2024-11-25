@@ -6,6 +6,8 @@ import { getArticleDetailsData } from "@/5_entities/Article/model/selectors/arti
 import { Comment } from "@/5_entities/Comment";
 import { getUserAuthData } from "@/5_entities/User";
 
+import { getAPIUserEndpoint } from "@/6_shared/api/getRoutes/getAPI";
+
 import {
   fetchCommentsByArticleId,
 } from "../../services/fetchCommentsByArticleId/fetchCommentsByArticleId";
@@ -29,9 +31,7 @@ export const addCommentForArticle = createAsyncThunk<
         }
 
         try {
-          const response = await extra.api.post<Comment>("/comments", {
-            articleId: article.id,
-            userId: userData.id,
+          const response = await extra.api.post<Comment>(getAPIUserEndpoint({ type: "comments", values: [article.id] }), {
             text,
           });
 

@@ -1,44 +1,34 @@
-import {
-  Injectable,
-  NotFoundException,
-  ForbiddenException,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { Article } from './entities/article.entity';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { User } from '../users/entities/user.entity';
-import { v4 as uuidv4 } from 'uuid';
-import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class ArticlesService {
-  private readonly logger = new Logger(ArticlesService.name);
-
   constructor(
     @InjectRepository(Article)
-    private articlesRepository: Repository<Article>,
+    private readonly articlesRepository: Repository<Article>,
+    @InjectRepository(User)
+    private readonly usersRepository: Repository<User>,
   ) {}
 
   async create(
     createArticleDto: CreateArticleDto,
-    user: User,
+    userId: string,
   ): Promise<Article> {
-    try {
-      const article = this.articlesRepository.create({
-        ...createArticleDto,
-        user,
-      });
-
-      const savedArticle = await this.articlesRepository.save(article);
-      this.logger.log(`Article created with ID: ${savedArticle.id}`);
-      return savedArticle;
-    } catch (error) {
-      this.logger.error('Error creating article', error.stack);
-      throw new InternalServerErrorException('Failed to create article');
+    const user = await this.usersRepository.findOne({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
+
+    const article = this.articlesRepository.create({
+      ...createArticleDto,
+      user,
+    });
+    return this.articlesRepository.save(article);
   }
 
   async findAll(query: any): Promise<Article[]> {
@@ -51,14 +41,25 @@ export class ArticlesService {
       q,
     } = query;
 
-    const queryBuilder = this.articlesRepository
+    const skip = (_page - 1) * _limit;
+    const take = Number(_limit);
+
+    // Define valid sort fields
+    const validSortFields = ['views', 'createdAt', 'title'];
+    const sortField = validSortFields.includes(_sort) ? _sort : 'createdAt';
+    const sortOrder = _order.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
+
+    // Create QueryBuilder instance
+    const queryBuilder: SelectQueryBuilder<Article> = this.articlesRepository
       .createQueryBuilder('article')
       .leftJoinAndSelect('article.user', 'user');
 
-    if (type && type !== 'ALL') {
+    // Filter by type if provided and not 'ALL'
+    if (type && type.toUpperCase() !== 'ALL') {
       queryBuilder.andWhere('article.type @> :type', { type: `{${type}}` });
     }
 
+    // Search in title or subtitle if 'q' is provided
     if (q) {
       queryBuilder.andWhere(
         '(article.title ILIKE :q OR article.subtitle ILIKE :q)',
@@ -66,89 +67,42 @@ export class ArticlesService {
       );
     }
 
-    queryBuilder
-      .orderBy(`article.${_sort}`, _order.toUpperCase() as 'ASC' | 'DESC')
-      .skip((_page - 1) * _limit)
-      .take(_limit);
+    // Apply sorting
+    queryBuilder.orderBy(`article.${sortField}`, sortOrder as 'ASC' | 'DESC');
 
-    this.logger.log(`Fetching articles with query: ${JSON.stringify(query)}`);
+    // Apply pagination
+    queryBuilder.skip(skip).take(take);
 
-    return queryBuilder.getMany();
-  }
+    // Execute query
+    const articles = await queryBuilder.getMany();
 
-  async findByUsername(username: string): Promise<Article[]> {
-    this.logger.log(`Fetching articles for user: ${username}`);
-    return this.articlesRepository.find({
-      where: { user: { username } },
-      relations: ['user'],
-    });
+    return articles;
   }
 
   async findOneById(id: string): Promise<Article> {
-    this.incrementViews(id);
     const article = await this.articlesRepository.findOne({
       where: { id },
-      relations: ['user'],
+      relations: ['user', 'comments', 'ratings'],
     });
     if (!article) {
-      this.logger.warn(`Article not found with ID: ${id}`);
       throw new NotFoundException('Article not found');
     }
+    article.views = article.views + 1;
+
+    await this.articlesRepository.save(article);
+
     return article;
   }
 
   async update(
-    id: string,
+    articleId: string,
     updateArticleDto: UpdateArticleDto,
-    user: User,
   ): Promise<Article> {
-    this.logger.log(`Updating article with ID: ${id} by user: ${user.id}`);
-    const article = await this.findOneById(id);
-
-    if (article.user.id !== user.id && !user.roles.includes('ADMIN')) {
-      this.logger.warn(
-        `User ${user.id} is not authorized to update article ${id}`,
-      );
-      throw new ForbiddenException(
-        'You are not authorized to update this article',
-      );
-    }
-
-    if (updateArticleDto.blocks) {
-      updateArticleDto.blocks = updateArticleDto.blocks.map((block) => ({
-        ...block,
-        id: block.id || uuidv4(),
-      }));
-    }
-
-    Object.assign(article, updateArticleDto);
-    return this.articlesRepository.save(article);
+    await this.articlesRepository.update(articleId, updateArticleDto);
+    return this.articlesRepository.findOne({ where: { id: articleId } });
   }
 
-  async remove(id: string, user: User): Promise<void> {
-    this.logger.log(`Removing article with ID: ${id} by user: ${user.id}`);
-    const article = await this.findOneById(id);
-
-    if (article.user.id !== user.id && !user.roles.includes('ADMIN')) {
-      this.logger.warn(
-        `User ${user.id} is not authorized to delete article ${id}`,
-      );
-      throw new ForbiddenException(
-        'You are not authorized to delete this article',
-      );
-    }
-
-    await this.articlesRepository.delete(id);
-    this.logger.log(`Article with ID: ${id} deleted successfully`);
-  }
-
-  async incrementViews(id: string): Promise<Article> {
-    const article = await this.articlesRepository.findOne({ where: { id } });
-    if (!article) {
-      throw new NotFoundException('Article not found');
-    }
-
-    article.views += 1;
-    return this.articlesRepository.save(article);
+  async remove(articleId: string): Promise<void> {
+    await this.articlesRepository.delete(articleId);
   }
 }

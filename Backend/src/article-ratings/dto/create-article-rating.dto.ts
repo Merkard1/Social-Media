@@ -1,11 +1,8 @@
-import { IsInt, IsOptional, IsNotEmpty, IsString } from 'class-validator';
+import { IsInt, Max, Min } from 'class-validator';
 
 export class CreateArticleRatingDto {
   @IsInt()
-  @IsNotEmpty()
-  rate: number;
-
-  @IsString()
-  @IsOptional()
-  feedback?: string;
+  @Min(1)
+  @Max(5)
+  value: number;
 }

@@ -6,6 +6,7 @@ import {
   OneToMany,
   CreateDateColumn,
   JoinColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Comment } from '../../comments/entities/comment.entity';
@@ -45,8 +46,11 @@ export class Article {
   @Column({ default: 0 })
   views: number;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @Column({ type: 'float', default: 0 })
+  averageRating: number;
+
+  @Column({ default: 0 })
+  numberOfRatings: number;
 
   @ManyToOne(() => User, (user) => user.articles, { eager: true })
   @JoinColumn({ name: 'userId' })
@@ -57,4 +61,10 @@ export class Article {
 
   @OneToMany(() => ArticleRating, (rating) => rating.article)
   ratings: ArticleRating[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

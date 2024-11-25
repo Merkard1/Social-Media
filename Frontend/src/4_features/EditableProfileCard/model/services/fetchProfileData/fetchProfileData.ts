@@ -16,7 +16,10 @@ export const fetchProfileData = createAsyncThunk<
         const { extra, rejectWithValue } = thunkApi;
 
         try {
-          const response = await extra.api.get<Profile>(getAPIUserEndpoint({ type: "username", value: username }));
+          const response = await extra.api.get<Profile>(getAPIUserEndpoint({ type: "profiles", values: [username] }));
+          const responses = await extra.api.get<Profile>(
+            getAPIUserEndpoint({ type: "profiles", values: [username] }),
+          );
 
           if (!response.data) {
             throw new Error("No profile data returned from API");

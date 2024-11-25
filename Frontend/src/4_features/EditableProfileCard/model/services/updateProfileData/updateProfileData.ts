@@ -35,7 +35,7 @@ export const updateProfileData = createAsyncThunk<
 
         try {
           const response = await extra.api.patch<Profile>(
-            getAPIUserEndpoint({ type: "username", value: userData?.username }),
+            getAPIUserEndpoint({ type: "profiles", values: [userData?.username] }),
             formData,
           );
 

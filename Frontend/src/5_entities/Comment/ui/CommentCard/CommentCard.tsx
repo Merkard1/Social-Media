@@ -73,7 +73,7 @@ export const CommentCard = memo((props: CommentCardProps) => {
             <Text text={comment.user.username} bold />
           </HStack>
         </AppLink>
-        <Text text={comment.text} />
+        <Text text={comment.content} />
       </VStack>
     </Card>
   );

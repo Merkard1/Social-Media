@@ -13,6 +13,7 @@ export const fetchArticleRecommendations = createAsyncThunk<
       async (props, thunkApi) => {
         const { extra, rejectWithValue } = thunkApi;
 
+        // TODO add recommandations
         try {
           const response = await extra.api.get<Article[]>("/articles", {
             params: {

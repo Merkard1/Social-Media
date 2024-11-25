@@ -1,4 +1,3 @@
-// src/articles/guards/article-owner.guard.ts
 import {
   Injectable,
   CanActivate,

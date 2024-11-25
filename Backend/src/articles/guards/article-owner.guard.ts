@@ -30,11 +30,9 @@ export class ArticleOwnerGuard implements CanActivate {
         'You are not authorized to perform this action',
       );
     } catch (error) {
-      // If the error is NotFoundException, let it propagate
       if (error.status === 404) {
         throw error;
       }
-      // For any other errors, throw ForbiddenException
       throw new ForbiddenException(
         'You are not authorized to perform this action',
       );
