@@ -4,6 +4,7 @@ import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 
 import { Article } from "@/5_entities/Article";
 
+import { getAPIUserEndpoint } from "@/6_shared/api/getRoutes/getAPI";
 import { addQueryParams } from "@/6_shared/lib/url/addQueryParams/addQueryParams";
 
 import {
@@ -25,7 +26,7 @@ export const fetchArticlesList = createAsyncThunk<
     >(
       "articlesPage/fetchArticlesList",
       async (_, thunkApi) => {
-        const { extra, rejectWithValue, getState } = thunkApi;
+        const { extra, rejectWithValue, getState, dispatch } = thunkApi;
 
         const page = getArticlesPageNum(getState());
         const limit = getArticlesPageLimit(getState());
@@ -47,7 +48,7 @@ export const fetchArticlesList = createAsyncThunk<
             q: search,
           };
 
-          const response = await extra.api.get<Article[]>("/articles", { params });
+          const response = await extra.api.get<Article[]>(getAPIUserEndpoint({ type: "articles" }), { params });
 
           if (!response.data) {
             throw new Error();

@@ -1,6 +1,7 @@
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 import { getUserAuthData } from "@/5_entities/User";
 
@@ -23,7 +24,7 @@ interface EditableProfileCardHeaderProps {
 export const EditableProfileCardHeader = memo(
   (props: EditableProfileCardHeaderProps) => {
     const { className } = props;
-
+    const { username } = useParams<{ username: string }>();
     const { t } = useTranslation("profile");
     const authData = useSelector(getUserAuthData);
     const profileData = useSelector(getProfileData);
@@ -40,8 +41,10 @@ export const EditableProfileCardHeader = memo(
     }, [dispatch]);
 
     const onSave = useCallback(() => {
-      dispatch(updateProfileData());
-    }, [dispatch]);
+      if (username) {
+        dispatch(updateProfileData(username));
+      }
+    }, [dispatch, username]);
 
     return (
       <Card padding="24" max border="partial">

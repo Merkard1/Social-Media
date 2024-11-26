@@ -4,14 +4,26 @@ type UserIdentifier = {
 };
 
 const endpointMap: Record<string, string> = {
-  "users/id": "/users/id/{value1}",
+  // Auth
+  auth: "auth/login",
+  // Users
   users: "/users",
+  "users/id": "/users/id/{value1}",
+  // Profile
   profiles: "/profiles/{value1}",
-  articles: "/articles/{value1}",
+  // Articles
+  articles: "/articles",
+  articlesByID: "/articles/{value1}",
+  // Comments
   comments: "/comments/{value1}",
   "article/comments": "/articles/{value1}/comments",
   "article/comments/id": "/articles/{value1}/comments/{value2}",
+  // Rating
   "article/rating": "/articles/{value1}/rating",
+  rating: "/rating/{value1}",
+  "rating/average": "/rating/average/{value1}",
+  "rating/has-rated": "/rating/has-rated/{value1}",
+  // Notifications TODO
 };
 
 export const getAPIUserEndpoint = (identifier: UserIdentifier): string => {

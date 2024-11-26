@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 
-import { setJsonSettingsMutation } from "../../api/userApi";
+import { setJsonSettings } from "../../api/userApi";
 import { getUserAuthData } from "../selectors/getUserAuthData/getUserAuthData";
 import { getJsonSettings } from "../selectors/jsonSettings/jsonSettings";
 import { JsonSettings } from "../types/jsonSettings";
@@ -20,15 +20,15 @@ export const saveJsonSettings = createAsyncThunk<
     return rejectWithValue("");
   }
 
+  const mergedSettings = {
+    ...currentSettings,
+    ...newJsonSettings };
+
   try {
-    console.log(userData);
     const response = await dispatch(
-      setJsonSettingsMutation({
+      setJsonSettings({
         userId: userData.id,
-        jsonSettings: {
-          ...currentSettings,
-          ...newJsonSettings,
-        },
+        jsonSettings: mergedSettings,
       }),
     ).unwrap();
 
@@ -42,4 +42,3 @@ export const saveJsonSettings = createAsyncThunk<
     return rejectWithValue("");
   }
 });
-// TODO FIX

@@ -52,7 +52,10 @@ export class Article {
   @Column({ default: 0 })
   numberOfRatings: number;
 
-  @ManyToOne(() => User, (user) => user.articles, { eager: true })
+  @ManyToOne(() => User, (user) => user.articles, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'userId' })
   user: User;
 

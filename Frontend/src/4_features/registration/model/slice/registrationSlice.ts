@@ -41,7 +41,6 @@ const registrationSlice = buildSlice({
       .addCase(registration.fulfilled, (state) => {
         state.error = undefined;
         state.isLoading = false;
-        // console.log(action.payload.accessToken);
         console.log(action);
       })
       .addCase(registration.rejected, (state, action) => {

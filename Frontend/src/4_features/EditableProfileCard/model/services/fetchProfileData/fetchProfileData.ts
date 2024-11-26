@@ -2,9 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 
-import { Profile } from "@/5_entities/Profile";
-
-import { getAPIUserEndpoint } from "@/6_shared/api/getRoutes/getAPI";
+import { getProfile, Profile } from "@/5_entities/Profile";
 
 export const fetchProfileData = createAsyncThunk<
     Profile,
@@ -13,19 +11,16 @@ export const fetchProfileData = createAsyncThunk<
     >(
       "profile/fetchProfileData",
       async (username, thunkApi) => {
-        const { extra, rejectWithValue } = thunkApi;
+        const { rejectWithValue, dispatch } = thunkApi;
 
         try {
-          const response = await extra.api.get<Profile>(getAPIUserEndpoint({ type: "profiles", values: [username] }));
-          const responses = await extra.api.get<Profile>(
-            getAPIUserEndpoint({ type: "profiles", values: [username] }),
-          );
+          const response = await dispatch(getProfile({ username })).unwrap();
 
-          if (!response.data) {
+          if (!response) {
             throw new Error("No profile data returned from API");
           }
 
-          return response.data;
+          return response;
         } catch (e) {
           console.log(e);
           return rejectWithValue("error");

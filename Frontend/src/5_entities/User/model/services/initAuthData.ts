@@ -4,7 +4,7 @@ import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 
 import { LOCAL_STORAGE_ACCESS_TOKEN, LOCAL_STORAGE_LAST_DESIGN_KEY, LOCAL_STORAGE_USER_ID } from "@/6_shared/const/localstorage";
 
-import { getUserDataByIdQuery } from "../../api/userApi";
+import { getUserDataById } from "../../api/userApi";
 import { User } from "../types/user";
 
 export const initAuthData = createAsyncThunk<User, void, ThunkConfig<string>>(
@@ -21,7 +21,7 @@ export const initAuthData = createAsyncThunk<User, void, ThunkConfig<string>>(
 
     try {
       const response = await dispatch(
-        getUserDataByIdQuery(userId),
+        getUserDataById(userId),
       ).unwrap();
 
       localStorage.setItem(

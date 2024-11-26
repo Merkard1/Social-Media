@@ -13,7 +13,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true, // Makes ConfigModule available globally
+      isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -28,9 +28,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         ),
         database: configService.get<string>('DATABASE_NAME', 'nestdb'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: true, // Set to false in production
+        synchronize: true,
         migrations: [__dirname + '/migrations/*{.ts,.js}'],
-        logging: true, // Optional: Enable query logging
+        logging: true,
       }),
       inject: [ConfigService],
     }),

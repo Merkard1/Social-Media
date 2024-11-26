@@ -15,7 +15,7 @@ export class RatingsController {
   constructor(private readonly ratingsService: RatingsService) {}
 
   @UseGuards(AuthGuard('jwt'))
-  @Post('article-rating/:articleId')
+  @Post(':articleId')
   async rateArticle(
     @Param('articleId') articleId: string,
     @Body() rateArticleDto: CreateArticleRatingDto,
@@ -32,7 +32,7 @@ export class RatingsController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('article-rating/has-rated/:articleId')
+  @Get('has-rated/:articleId')
   async hasUserRatedArticle(
     @Param('articleId') articleId: string,
     @Request() req,
@@ -43,5 +43,11 @@ export class RatingsController {
       articleId,
     );
     return { hasRated };
+  }
+
+  @Get('average/:articleId')
+  async getAverageRating(@Param('articleId') articleId: string) {
+    const averageRating = await this.ratingsService.getAverageRating(articleId);
+    return { averageRating };
   }
 }

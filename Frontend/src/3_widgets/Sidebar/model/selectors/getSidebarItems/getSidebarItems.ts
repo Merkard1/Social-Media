@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import { getUserAuthData } from "@/5_entities/User";
 
-import { getRouteAbout, getRouteArticles, getRouteMain, getRouteMessages, getRouteProfile } from "@/6_shared/api/getRoutes/getRoute";
+import { getRouteAbout, getRouteArticles, getRouteMain, getRouteMessages, getRouteProfile } from "@/6_shared/api/getRoute";
 import ArticleIcon from "@/6_shared/assets/icons/article.svg";
 import ProfileIcon from "@/6_shared/assets/icons/avatar.svg";
 import MainIcon from "@/6_shared/assets/icons/home.svg";

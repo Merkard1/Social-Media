@@ -9,3 +9,4 @@ export { saveJsonSettings } from "./model/services/saveJsonSettings";
 
 export { initAuthData } from "./model/services/initAuthData";
 export { getUserInited } from "./model/selectors/getUserInited/getUserInited";
+export { registerUser, getUserByUsername, setJsonSettings, getUserDataById, deleteUser } from "./api/userApi";

@@ -9,7 +9,7 @@ import {
   userActions,
 } from "@/5_entities/User";
 
-import { getRouteAdminPanel } from "@/6_shared/api/getRoutes/getRoute";
+import { getRouteAdminPanel } from "@/6_shared/api/getRoute";
 import { getRouteProfile, getRouteSettings } from "@/6_shared/const/router";
 import { classNames } from "@/6_shared/lib/classNames/classNames";
 import { Avatar } from "@/6_shared/ui/Avatar/Avatar";

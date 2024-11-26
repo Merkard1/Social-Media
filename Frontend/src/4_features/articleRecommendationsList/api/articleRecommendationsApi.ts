@@ -11,16 +11,7 @@ const recomendationsApi = rtkApi.injectEndpoints({
         },
       }),
     }),
-    // TODO mb for admin add recomendation creation or AI
-    // createArticlesRecommendation: build.query({
-    //   query: (limit) => ({
-    //     url: "/articles",
-    //     params: {
-    //       _limit: limit,
-    //     },
-    //     method: "POST",
-    //   }),
-    // }),
+    // TODO mb  add recomendation creation or AI
   }),
 });
 

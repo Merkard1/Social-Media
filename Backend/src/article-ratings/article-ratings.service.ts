@@ -1,22 +1,24 @@
 import {
   Injectable,
-  BadRequestException,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { ArticleRating } from './entities/article-rating.entity';
 import { Article } from '../articles/entities/article.entity';
 import { User } from '../users/entities/user.entity';
+import { ArticleRating } from './entities/article-rating.entity';
 
 @Injectable()
 export class RatingsService {
   constructor(
     @InjectRepository(ArticleRating)
     private readonly ratingsRepository: Repository<ArticleRating>,
+
     @InjectRepository(Article)
     private readonly articlesRepository: Repository<Article>,
+
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
   ) {}
@@ -30,15 +32,14 @@ export class RatingsService {
       throw new BadRequestException('Rating value must be between 1 and 5');
     }
 
-    const user = await this.usersRepository.findOne({ where: { id: userId } });
+    const [user, article] = await Promise.all([
+      this.usersRepository.findOne({ where: { id: userId } }),
+      this.articlesRepository.findOne({ where: { id: articleId } }),
+    ]);
+
     if (!user) {
       throw new NotFoundException('User not found');
     }
-
-    const article = await this.articlesRepository.findOne({
-      where: { id: articleId },
-      relations: ['ratings'],
-    });
     if (!article) {
       throw new NotFoundException('Article not found');
     }
@@ -49,23 +50,26 @@ export class RatingsService {
 
     if (rating) {
       rating.value = value;
-      await this.ratingsRepository.save(rating);
     } else {
-      rating = this.ratingsRepository.create({ user, article, value });
-      await this.ratingsRepository.save(rating);
+      rating = this.ratingsRepository.create({
+        user,
+        article,
+        value,
+      });
       article.numberOfRatings += 1;
     }
-    const totalRatings = article.numberOfRatings;
 
-    const sumRatingsResult = await this.ratingsRepository
+    await this.ratingsRepository.save(rating);
+
+    const { avg } = await this.ratingsRepository
       .createQueryBuilder('rating')
+      .select('AVG(rating.value)', 'avg')
       .where('rating.articleId = :articleId', { articleId })
-      .select('SUM(rating.value)', 'sum')
       .getRawOne();
 
-    const sumRatings = parseInt(sumRatingsResult.sum, 10);
+    const avgNumber = parseFloat(avg);
+    article.averageRating = parseFloat(avgNumber.toFixed(2));
 
-    article.averageRating = parseFloat((sumRatings / totalRatings).toFixed(2));
     await this.articlesRepository.save(article);
 
     return article.averageRating;
@@ -78,6 +82,18 @@ export class RatingsService {
     const rating = await this.ratingsRepository.findOne({
       where: { user: { id: userId }, article: { id: articleId } },
     });
+
     return !!rating;
+  }
+
+  async getAverageRating(articleId: string): Promise<number> {
+    const article = await this.articlesRepository.findOne({
+      where: { id: articleId },
+    });
+    if (!article) {
+      throw new NotFoundException('Article not found');
+    }
+
+    return article.averageRating;
   }
 }

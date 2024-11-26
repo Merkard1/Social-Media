@@ -26,7 +26,6 @@ export class UsersController {
   async create(@Body() createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);
 
-    // Remove sensitive fields
     const { password, ...userWithoutPassword } = user;
 
     return userWithoutPassword;
@@ -56,11 +55,13 @@ export class UsersController {
 
   @UseGuards(AuthGuard('jwt'))
   @Patch()
-  async update(@Request() req, @Body() updateUserDto: UpdateUserDto) {
-    const userId = req.user.userId;
-    const user = await this.usersService.update(userId, updateUserDto);
-    const { password, ...result } = user;
-    return result;
+  async update(@Body() updateUserDto: UpdateUserDto, @Request() req) {
+    const userId = req.user.userId || req.user.id;
+    const updatedUser = await this.usersService.update(userId, updateUserDto);
+    if (!updatedUser) {
+      throw new NotFoundException('User not found');
+    }
+    return updatedUser;
   }
 
   @UseGuards(AuthGuard('jwt'))

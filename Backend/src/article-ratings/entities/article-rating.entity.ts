@@ -15,13 +15,17 @@ export class ArticleRating {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'int' })
+  @Column('int')
   value: number;
 
-  @ManyToOne(() => User, (user) => user.username, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.ratings, {
+    eager: true,
+    onDelete: 'CASCADE',
+  })
   user: User;
 
   @ManyToOne(() => Article, (article) => article.ratings, {
+    eager: true,
     onDelete: 'CASCADE',
   })
   article: Article;

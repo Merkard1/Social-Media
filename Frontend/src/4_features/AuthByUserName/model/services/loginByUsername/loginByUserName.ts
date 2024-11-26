@@ -5,6 +5,7 @@ import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 
 import { User, userActions } from "@/5_entities/User";
 
+import { getAPIUserEndpoint } from "@/6_shared/api/getRoutes/getAPI";
 import { LOCAL_STORAGE_ACCESS_TOKEN, LOCAL_STORAGE_USER_ID } from "@/6_shared/const/localstorage";
 
 interface LoginByUserName {
@@ -22,7 +23,7 @@ const loginByUsername = createAsyncThunk<
     const { extra, dispatch, rejectWithValue } = thunkAPI;
 
     try {
-      const response = await extra.api.post("auth/login", authData);
+      const response = await extra.api.post(getAPIUserEndpoint({ type: "auth/login" }), authData);
 
       if (!response.data) {
         throw new Error("No response data");

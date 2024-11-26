@@ -11,14 +11,6 @@ import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Profile } from 'src/profiles/entities/profile.entity';
-import { JsonSettingsDto } from './dto/json-settings.dto';
-
-const defaultJsonSettings: JsonSettingsDto = {
-  theme: 'app_light_theme',
-  isFirstVisit: false,
-  settingsPageHasBeenOpen: false,
-  isArticlesPageWasOpened: false,
-};
 
 @Injectable()
 export class UsersService {
@@ -53,7 +45,12 @@ export class UsersService {
       password: hashedPassword,
       roles: createUserDto.roles || ['USER'],
       profile: profile,
-      jsonSettings: defaultJsonSettings,
+      jsonSettings: {
+        theme: 'app_light_theme',
+        isFirstVisit: false,
+        settingsPageHasBeenOpen: false,
+        isArticlesPageWasOpened: false,
+      },
     });
 
     return this.usersRepository.save(user);
@@ -90,14 +87,16 @@ export class UsersService {
     return user;
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.findById(id);
+  async update(userId: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.usersRepository.findOne({ where: { id: userId } });
     if (!user) {
-      throw new NotFoundException('User not found');
+      return null;
     }
 
     if (updateUserDto.password) {
-      user.password = await bcrypt.hash(updateUserDto.password, 10);
+      const saltRounds = 10;
+      user.password = await bcrypt.hash(updateUserDto.password, saltRounds);
+      delete updateUserDto.password;
     }
 
     if (updateUserDto.jsonSettings) {
@@ -105,23 +104,12 @@ export class UsersService {
         ...user.jsonSettings,
         ...updateUserDto.jsonSettings,
       };
+      delete updateUserDto.jsonSettings;
     }
 
-    if (updateUserDto.features) {
-      user.features = {
-        ...user.features,
-        ...updateUserDto.features,
-      };
-    }
+    Object.assign(user, updateUserDto);
 
     return this.usersRepository.save(user);
-  }
-
-  async remove(id: string): Promise<void> {
-    const result = await this.usersRepository.delete(id);
-    if (result.affected === 0) {
-      throw new NotFoundException('User not found');
-    }
   }
 
   async validateUser(username: string, password: string): Promise<User | null> {
@@ -130,5 +118,12 @@ export class UsersService {
       return user;
     }
     return null;
+  }
+
+  async remove(id: string): Promise<void> {
+    const result = await this.usersRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException('User not found');
+    }
   }
 }

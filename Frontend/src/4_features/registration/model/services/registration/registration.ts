@@ -3,7 +3,7 @@ import axios from "axios";
 
 import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 
-import { User, userActions } from "@/5_entities/User";
+import { registerUser, User, userActions } from "@/5_entities/User";
 
 interface RegistrationData {
   username: string;
@@ -22,19 +22,19 @@ const registration = createAsyncThunk<
     const { extra, dispatch, rejectWithValue } = thunkAPI;
 
     try {
-      const response = await extra.api.post("/users", authData);
+      const response = await dispatch(registerUser(authData)).unwrap();
 
-      if (!response.data) {
+      if (!response) {
         throw new Error("No response data");
       }
 
-      dispatch(userActions.setAuthData(response.data));
+      dispatch(userActions.setAuthData(response));
 
       if (extra.navigate) {
         extra.navigate("/about");
       }
 
-      return response.data;
+      return response;
     } catch (error) {
       let errorMessage = "An unknown error occurred";
 

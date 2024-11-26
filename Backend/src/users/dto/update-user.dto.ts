@@ -7,7 +7,6 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { Type } from 'class-transformer';
 import { JsonSettingsDto } from './json-settings.dto';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
@@ -28,6 +27,5 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => JsonSettingsDto)
   jsonSettings?: JsonSettingsDto;
 }
