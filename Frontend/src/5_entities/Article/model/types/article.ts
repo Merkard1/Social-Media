@@ -33,7 +33,10 @@ export interface Article {
   subtitle: string;
   img: string;
   views: number;
-  createdAt: string;
+  numberOfRatings: number;
+  averageRating: number;
   type: ArticleType[];
   blocks: ArticleBlock[];
+  createdAt: string;
+  updatedAt: string;
 }

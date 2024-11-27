@@ -21,5 +21,5 @@ export interface UserSchema {
   _inited: boolean;
   isLoading: boolean;
   error?: string;
-  access_token: string;
+  access_token?: string;
 }

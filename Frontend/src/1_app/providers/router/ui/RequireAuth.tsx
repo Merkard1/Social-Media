@@ -3,7 +3,7 @@ import { Navigate, useLocation } from "react-router-dom";
 
 import { useUserAuthData, UserRole, useUserRoles } from "@/5_entities/User";
 
-import { getRouteForbidden, getRouteMain } from "@/6_shared/api/getRoute";
+import { getRouteForbidden, getRouteMain } from "@/6_shared/api/getNavigate";
 
 interface RequireAuthProps {
   children: JSX.Element,

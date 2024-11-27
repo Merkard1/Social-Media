@@ -1,4 +1,7 @@
+import { skipToken } from "@reduxjs/toolkit/query";
 import { memo } from "react";
+
+import { useGetProfileQuery } from "@/5_entities/Profile";
 
 import { getRouteProfile } from "@/6_shared/const/router";
 import { classNames } from "@/6_shared/lib/classNames/classNames";
@@ -21,6 +24,11 @@ interface CommentCardProps {
 
 export const CommentCard = memo((props: CommentCardProps) => {
   const { className, comment, isLoading } = props;
+
+  const username = comment?.user?.username || "";
+  const { data: profile, isLoading: isProfileLoading } = useGetProfileQuery(
+    username ? { username } : skipToken,
+  );
 
   const Skeleton = SkeletonRedesigned;
 
@@ -62,12 +70,12 @@ export const CommentCard = memo((props: CommentCardProps) => {
           className,
         ])}
       >
-        <AppLink to={getRouteProfile(comment.user.id)}>
+        <AppLink to={getRouteProfile(comment.user.username)}>
           <HStack gap="8">
-            {comment.user.profile?.avatar ? (
+            {profile?.avatar ? (
               <Avatar
                 size={30}
-                src={comment.user.profile?.avatar}
+                src={profile.avatar}
               />
             ) : null}
             <Text text={comment.user.username} bold />

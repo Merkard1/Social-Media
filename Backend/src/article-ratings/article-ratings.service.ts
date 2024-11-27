@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { Article } from '../articles/entities/article.entity';
 import { User } from '../users/entities/user.entity';
 import { ArticleRating } from './entities/article-rating.entity';
+import { HasUserRatedResponseDto } from './dto/has-user-rated-response.dto';
 
 @Injectable()
 export class RatingsService {
@@ -22,6 +23,42 @@ export class RatingsService {
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
   ) {}
+
+  async getUserRating(
+    userId: string,
+    articleId: string,
+  ): Promise<HasUserRatedResponseDto> {
+    const article = await this.articlesRepository.findOne({
+      where: { id: articleId },
+    });
+
+    if (!article) {
+      throw new NotFoundException('Article not found');
+    }
+
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const rating = await this.ratingsRepository.findOne({
+      where: { user: { id: userId }, article: { id: articleId } },
+    });
+
+    if (rating) {
+      return {
+        hasRated: true,
+        articleRating: rating.value,
+      };
+    } else {
+      return {
+        hasRated: false,
+      };
+    }
+  }
 
   async rateArticle(
     userId: string,
@@ -73,17 +110,6 @@ export class RatingsService {
     await this.articlesRepository.save(article);
 
     return article.averageRating;
-  }
-
-  async hasUserRatedArticle(
-    userId: string,
-    articleId: string,
-  ): Promise<boolean> {
-    const rating = await this.ratingsRepository.findOne({
-      where: { user: { id: userId }, article: { id: articleId } },
-    });
-
-    return !!rating;
   }
 
   async getAverageRating(articleId: string): Promise<number> {

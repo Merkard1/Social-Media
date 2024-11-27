@@ -87,9 +87,7 @@ export class CommentsController {
       content: comment.content,
       createdAt: comment.createdAt,
       user: {
-        id: comment.user.id,
         username: comment.user.username,
-        profile: comment.user.profile,
       },
     };
   }

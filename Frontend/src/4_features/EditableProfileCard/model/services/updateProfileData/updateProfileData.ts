@@ -27,12 +27,14 @@ export const updateProfileData = createAsyncThunk<
           return rejectWithValue(errors);
         }
 
-        if (!userData) {
+        if (!userData || !formData) {
           return rejectWithValue([ValidateProfileError.NO_DATA]);
         }
 
         try {
-          const response = await dispatch(changeProfile({ username })).unwrap();
+          const response = await dispatch(
+            changeProfile({ username, formData }),
+          ).unwrap();
 
           if (!response) {
             throw new Error();

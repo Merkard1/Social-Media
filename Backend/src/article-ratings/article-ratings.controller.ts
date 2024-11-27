@@ -10,6 +10,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { CreateArticleRatingDto } from './dto/create-article-rating.dto';
 import { RatingsService } from './article-ratings.service';
+import { HasUserRatedResponseDto } from './dto/has-user-rated-response.dto';
 @Controller('ratings')
 export class RatingsController {
   constructor(private readonly ratingsService: RatingsService) {}
@@ -32,17 +33,16 @@ export class RatingsController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get('has-rated/:articleId')
-  async hasUserRatedArticle(
+  @Get(':articleId/has-rated')
+  async hasUserRated(
     @Param('articleId') articleId: string,
     @Request() req,
-  ) {
+  ): Promise<HasUserRatedResponseDto> {
     const userId = req.user.userId || req.user.id;
-    const hasRated = await this.ratingsService.hasUserRatedArticle(
-      userId,
-      articleId,
-    );
-    return { hasRated };
+
+    const response = await this.ratingsService.getUserRating(userId, articleId);
+
+    return response;
   }
 
   @Get('average/:articleId')

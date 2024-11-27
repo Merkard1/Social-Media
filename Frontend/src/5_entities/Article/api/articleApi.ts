@@ -1,51 +1,84 @@
-import { getAPIUserEndpoint } from "@/6_shared/api/getRoutes/getAPI";
 import rtkApi from "@/6_shared/api/rtkApi";
 
 import { Article } from "../model/types/article";
 
-interface ArticleInformation {
-  id: string;
+interface GetArticlesByUserParams {
   username: string;
-  params: any;
+  params?: any;
 }
 
-const profileApi = rtkApi.injectEndpoints({
+interface GetArticleByIdParams {
+  id: string;
+}
+
+interface ChangeArticleParams {
+  id: string;
+  articleData: Partial<Article>;
+}
+
+interface DeleteArticleParams {
+  id: string;
+}
+
+interface GetAllArticlesParams {
+  params?: any;
+}
+
+const articleApi = rtkApi.injectEndpoints({
   endpoints: (build) => ({
-    getAllArticles: build.mutation<Article, ArticleInformation>({
-      query: () => ({
-        url: getAPIUserEndpoint({ type: "articles" }),
+
+    getAllArticles: build.query<Article[], GetAllArticlesParams >({
+      query: ({ params }) => ({
+        url: "/articles/",
         method: "GET",
+        params,
       }),
+      providesTags: (result) =>
+        (result
+          ? [
+            ...result.map(({ id }) => ({ type: "Article" as const, id })),
+            { type: "Article", id: "LIST" },
+          ]
+          : [{ type: "Article", id: "LIST" }]),
     }),
-    getAllArticlesForUser: build.mutation<Article, ArticleInformation>({
-      query: ({ username }) => ({
-        url: getAPIUserEndpoint({ type: "articles/user", values: [username] }),
-        method: "GET",
-      }),
-    }),
-    getArticleById: build.mutation<Article, ArticleInformation>({
+
+    getArticleById: build.query<Article, GetArticleByIdParams>({
       query: ({ id }) => ({
-        url: getAPIUserEndpoint({ type: "articles", values: [id] }),
+        url: `/articles/${id}`,
         method: "GET",
       }),
+      providesTags: (result, error, { id }) => [{ type: "Article", id }],
     }),
-    changeArticle: build.mutation<Article, ArticleInformation>({
-      query: ({ id }) => ({
-        url: getAPIUserEndpoint({ type: "articles", values: [id] }),
+
+    changeArticle: build.mutation<Article, ChangeArticleParams>({
+      query: ({ id, articleData }) => ({
+
+        url: `/articles/${id}`,
         method: "PATCH",
+        body: articleData,
       }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Article", id }],
     }),
-    deleteArticle: build.mutation<Article, ArticleInformation>({
+
+    deleteArticle: build.mutation<{ success: boolean }, DeleteArticleParams>({
       query: ({ id }) => ({
-        url: getAPIUserEndpoint({ type: "articles", values: [id] }),
+
+        url: `/articles/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Article", id }],
     }),
   }),
 });
 
-export const getAllArticles = profileApi.endpoints.getAllArticles.initiate;
-export const getAllArticlesForUser = profileApi.endpoints.getAllArticlesForUser.initiate;
-export const getArticleById = profileApi.endpoints.getArticleById.initiate;
-export const changeArticle = profileApi.endpoints.changeArticle.initiate;
-export const deleteArticle = profileApi.endpoints.deleteArticle.initiate;
+export const {
+  useGetAllArticlesQuery,
+  useGetArticleByIdQuery,
+  useChangeArticleMutation,
+  useDeleteArticleMutation,
+} = articleApi;
+
+export const getAllArticles = articleApi.endpoints.getAllArticles.initiate;
+export const getArticleById = articleApi.endpoints.getArticleById.initiate;
+export const changeArticle = articleApi.endpoints.changeArticle.initiate;
+export const deleteArticle = articleApi.endpoints.deleteArticle.initiate;

@@ -5,6 +5,8 @@ import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 
 import { registerUser, User, userActions } from "@/5_entities/User";
 
+import { getRouteAbout } from "@/6_shared/const/router";
+
 interface RegistrationData {
   username: string;
   email: string;
@@ -18,28 +20,26 @@ const registration = createAsyncThunk<
   ThunkConfig<{ message: string }>
 >(
   "registration/register",
-  async (authData, thunkAPI) => {
-    const { extra, dispatch, rejectWithValue } = thunkAPI;
-
+  async (authData, { extra, dispatch, rejectWithValue }) => {
     try {
-      const response = await dispatch(registerUser(authData)).unwrap();
+      const user: User = await dispatch(registerUser(authData)).unwrap();
 
-      if (!response) {
-        throw new Error("No response data");
+      if (!user) {
+        throw new Error("Registration failed: No response data received");
       }
 
-      dispatch(userActions.setAuthData(response));
+      dispatch(userActions.setAuthData({ user }));
 
       if (extra.navigate) {
-        extra.navigate("/about");
+        extra.navigate(getRouteAbout());
       }
 
-      return response;
+      return user;
     } catch (error) {
       let errorMessage = "An unknown error occurred";
 
       if (axios.isAxiosError(error)) {
-        errorMessage = error.response?.data.message || "Server responded with an error";
+        errorMessage = error.response?.data?.message || "Server responded with an error";
       } else if (error instanceof Error) {
         errorMessage = error.message;
       }

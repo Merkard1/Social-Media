@@ -3,19 +3,23 @@ import axios from "axios";
 
 import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 
+import { loginByUsername } from "@/5_entities/Auth";
 import { User, userActions } from "@/5_entities/User";
 
-import { getAPIUserEndpoint } from "@/6_shared/api/getRoutes/getAPI";
-import { LOCAL_STORAGE_ACCESS_TOKEN, LOCAL_STORAGE_USER_ID } from "@/6_shared/const/localstorage";
+import {
+  LOCAL_STORAGE_ACCESS_TOKEN,
+  LOCAL_STORAGE_USER_ID,
+} from "@/6_shared/const/localstorage";
+import { getRouteAbout } from "@/6_shared/const/router";
 
-interface LoginByUserName {
+interface LoginByUsernamePayload {
   username: string;
   password: string;
 }
 
-const loginByUsername = createAsyncThunk<
+const login = createAsyncThunk<
   User,
-  LoginByUserName,
+  LoginByUsernamePayload,
   ThunkConfig<{ message: string }>
 >(
   "login/loginByUsername",
@@ -23,32 +27,29 @@ const loginByUsername = createAsyncThunk<
     const { extra, dispatch, rejectWithValue } = thunkAPI;
 
     try {
-      const response = await extra.api.post(getAPIUserEndpoint({ type: "auth/login" }), authData);
+      const response = await dispatch(loginByUsername(authData)).unwrap();
 
-      if (!response.data) {
-        throw new Error("No response data");
+      if (!response || !response.user || !response.accessToken) {
+        throw new Error("Invalid response data");
       }
 
-      const { accessToken, user } = response.data;
+      const { user } = response;
 
-      localStorage.setItem(LOCAL_STORAGE_ACCESS_TOKEN, accessToken);
-      localStorage.setItem(LOCAL_STORAGE_USER_ID, response.data.user.id);
+      localStorage.setItem(LOCAL_STORAGE_ACCESS_TOKEN, response.accessToken);
+      localStorage.setItem(LOCAL_STORAGE_USER_ID, response.user.id);
 
-      dispatch(userActions.setAuthData({
-        ...user,
-        token: accessToken,
-      }));
+      dispatch(userActions.setAuthData({ user }));
 
       if (extra.navigate) {
-        extra.navigate("/about");
+        extra.navigate(getRouteAbout());
       }
 
-      return response.data;
+      return user;
     } catch (error) {
       let errorMessage = "An unknown error occurred";
 
       if (axios.isAxiosError(error)) {
-        errorMessage = error.response?.data.message || "Server responded with an error";
+        errorMessage = error.response?.data?.message || "Server responded with an error";
       } else if (error instanceof Error) {
         errorMessage = error.message;
       }
@@ -58,4 +59,4 @@ const loginByUsername = createAsyncThunk<
   },
 );
 
-export default loginByUsername;
+export default login;

@@ -16,12 +16,18 @@ export class Comment {
   @Column()
   content: string;
 
-  @ManyToOne(() => User, (user) => user.comments, { eager: false })
-  user: User;
-
-  @ManyToOne(() => Article, (article) => article.comments, { eager: false })
-  article: Article;
-
   @CreateDateColumn()
   createdAt: Date;
+
+  @ManyToOne(() => User, (user) => user.comments, {
+    eager: false,
+    onDelete: 'CASCADE',
+  })
+  user: User;
+
+  @ManyToOne(() => Article, (article) => article.comments, {
+    eager: false,
+    onDelete: 'CASCADE',
+  })
+  article: Article;
 }

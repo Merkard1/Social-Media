@@ -2,37 +2,29 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 
-import { Comment } from "@/5_entities/Comment";
-
-import { getAPIUserEndpoint } from "@/6_shared/api/getRoutes/getAPI";
+import { getAllCommentsForArticle } from "@/5_entities/Comment";
+import { Comment } from "@/5_entities/Comment/model/types/comment";
 
 export const fetchCommentsByArticleId = createAsyncThunk<
-    Comment[],
-    string | undefined,
-    ThunkConfig<string>
-    >(
-      "articleDetails/fetchCommentsByArticleId",
-      async (articleId, thunkApi) => {
-        const { extra, rejectWithValue } = thunkApi;
+  Comment[],
+  string,
+  ThunkConfig<string>
+>(
+  "articleDetails/fetchCommentsByArticleId",
+  async (articleId, thunkApi) => {
+    const { dispatch, rejectWithValue } = thunkApi;
 
-        if (!articleId) {
-          return rejectWithValue("error");
-        }
+    if (!articleId) {
+      return rejectWithValue("Article ID is required");
+    }
 
-        try {
-          const response = await extra.api.get<Comment[]>(
-            getAPIUserEndpoint({ type: "article/comments", values: [articleId] }),
-            {
-            },
-          );
+    try {
+      const result = await dispatch(getAllCommentsForArticle({ articleId })).unwrap();
 
-          if (!response.data) {
-            throw new Error();
-          }
-
-          return response.data;
-        } catch (e) {
-          return rejectWithValue("error");
-        }
-      },
-    );
+      return result;
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+      return rejectWithValue("Failed to fetch comments");
+    }
+  },
+);

@@ -27,7 +27,7 @@ export function useArticleFilters() {
   const dispatch = useAppDispatch();
 
   const fetchData = useCallback(() => {
-    dispatch(fetchArticlesList({ replace: true }));
+    dispatch(fetchArticlesList({ replace: true, username: "admin" }));
   }, [dispatch]);
 
   const debouncedFetchData = useDebounce(fetchData, 500);

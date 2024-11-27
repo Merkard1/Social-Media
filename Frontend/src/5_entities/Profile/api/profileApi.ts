@@ -1,31 +1,46 @@
-import { getAPIUserEndpoint } from "@/6_shared/api/getRoutes/getAPI";
 import rtkApi from "@/6_shared/api/rtkApi";
 
 import { Profile } from "../model/types/profile";
 
-interface ProfileInformation {
+interface GetProfileParams {
   username: string;
+}
+
+interface ChangeProfileParams {
+  username: string;
+  formData: Partial<Profile>;
 }
 
 const profileApi = rtkApi.injectEndpoints({
   endpoints: (build) => ({
-    getProfile: build.mutation<Profile, ProfileInformation>({
+
+    getProfile: build.query<Profile, GetProfileParams>({
       query: ({ username }) => ({
-        url: getAPIUserEndpoint({ type: "profiles", values: [username] }),
+        url: `/profiles/${username}`,
         method: "GET",
       }),
+      providesTags: (result, error, { username }) => [
+        { type: "Profile", id: username },
+      ],
     }),
-    changeProfile: build.mutation<Profile, ProfileInformation>({
-      query: ({ username }) => ({
-        url: getAPIUserEndpoint({ type: "profiles", values: [username] }),
-        method: "PATCH",
-        body: {
 
-        },
+    changeProfile: build.mutation<Profile, ChangeProfileParams>({
+      query: ({ username, formData }) => ({
+        url: `/profiles/${username}`,
+        method: "PATCH",
+        body: formData,
       }),
+      invalidatesTags: (result, error, { username }) => [
+        { type: "Profile", id: username },
+      ],
     }),
   }),
 });
 
+export const {
+  useGetProfileQuery,
+  useChangeProfileMutation,
+} = profileApi;
+
 export const getProfile = profileApi.endpoints.getProfile.initiate;
-export const changeProfile = profileApi.endpoints.getProfile.initiate;
+export const changeProfile = profileApi.endpoints.changeProfile.initiate;

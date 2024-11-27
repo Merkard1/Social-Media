@@ -14,7 +14,7 @@ export enum AppRoutes {
 export const getRouteMain = () => "/";
 export const getRouteSettings = () => "/settings";
 export const getRouteAbout = () => "/about";
-export const getRouteProfile = (id: string) => `/profile/${id}`;
+export const getRouteProfile = (username: string) => `/profile/${username}`;
 export const getRouteArticles = () => "/articles";
 export const getRouteArticleDetails = (id: string) => `/articles/${id}`;
 export const getRouteAdmin = () => "/admin";

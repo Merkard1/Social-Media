@@ -1,39 +1,47 @@
-import { getAPIUserEndpoint } from "@/6_shared/api/getRoutes/getAPI";
 import rtkApi from "@/6_shared/api/rtkApi";
 
-import { Rating } from "../model/types/types";
+import {
+  Rating,
+  RatingInformation,
+  HasUserRatedResponse,
+  AverageRatingResponse,
+} from "../model/types/types";
 
-interface RatingInformation {
-  articleId: string
-  value: number
-}
-
-const userApi = rtkApi.injectEndpoints({
+const ratingApi = rtkApi.injectEndpoints({
   endpoints: (build) => ({
     rateArticle: build.mutation<Rating, RatingInformation>({
       query: ({ articleId, value }) => ({
-        url: getAPIUserEndpoint({ type: "ratings", values: [articleId] }),
+        url: `/ratings/${articleId}`,
         method: "POST",
-        body: {
-          value,
-        },
+        body: { value },
       }),
+      invalidatesTags: (result, error, { articleId }) => [
+        { type: "Article", id: articleId },
+        { type: "User", id: "CURRENT_USER" },
+      ],
     }),
-    getAverageArticleRating: build.mutation<Rating, RatingInformation>({
-      query: ({ articleId }) => ({
-        url: getAPIUserEndpoint({ type: "ratings", values: [articleId] }),
-        method: "GET",
-      }),
+
+    getAverageArticleRating: build.query<AverageRatingResponse, string>({
+      query: (articleId) => `/ratings/average/${articleId}`,
+      providesTags: (result, error, articleId) => [
+        { type: "Article", id: articleId },
+      ],
     }),
-    hasUserRated: build.mutation<Rating, RatingInformation>({
-      query: ({ articleId }) => ({
-        url: getAPIUserEndpoint({ type: "ratings/has-rated", values: [articleId] }),
-        method: "GET",
-      }),
+
+    hasUserRated: build.query<HasUserRatedResponse, string>({
+      query: (articleId) => `/ratings/${articleId}/has-rated`,
+      providesTags: () => [{ type: "User", id: "CURRENT_USER" }],
     }),
   }),
+  overrideExisting: false,
 });
 
-export const rateArticle = userApi.endpoints.rateArticle.initiate;
-export const getAverageArticleRating = userApi.endpoints.getAverageArticleRating.initiate;
-export const hasUserRated = userApi.endpoints.hasUserRated.initiate;
+export const {
+  useRateArticleMutation,
+  useGetAverageArticleRatingQuery,
+  useHasUserRatedQuery,
+} = ratingApi;
+
+export const rateArticle = ratingApi.endpoints.rateArticle.initiate;
+export const getAverageArticleRating = ratingApi.endpoints.getAverageArticleRating.initiate;
+export const hasUserRated = ratingApi.endpoints.hasUserRated.initiate;

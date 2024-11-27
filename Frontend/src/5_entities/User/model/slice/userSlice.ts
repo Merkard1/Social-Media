@@ -20,11 +20,14 @@ export const userSlice = buildSlice({
   name: "user",
   initialState,
   reducers: {
-    setAuthData: (state, action: PayloadAction<User>) => {
-      state.authData = {
-        ...state.authData,
-        ...action.payload,
-      };
+    setAuthData: (state, action: PayloadAction<{ user: User; access_token?: string }>) => {
+      state.authData = action.payload.user;
+      if (action.payload.access_token) {
+        state.access_token = action.payload.access_token;
+      }
+    },
+    setAccessToken: (state, action: PayloadAction<string>) => {
+      state.access_token = action.payload;
     },
     logout: (state) => {
       state.authData = undefined;

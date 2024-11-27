@@ -6,7 +6,7 @@ import { ArticleAdditionalInfo } from "@/3_widgets/ArticleAdditionalInfo";
 
 import { getArticleDetailsData } from "@/5_entities/Article";
 
-import { getRouteArticleEdit } from "@/6_shared/api/getRoute";
+import { getRouteArticleEdit } from "@/6_shared/api/getNavigate";
 import { Card } from "@/6_shared/ui/Card/Card";
 
 import cls from "./AdditionalInfoContainer.module.scss";

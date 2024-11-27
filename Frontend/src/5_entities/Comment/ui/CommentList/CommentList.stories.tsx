@@ -16,29 +16,19 @@ export const Normal = Template.bind({});
 Normal.args = {
   comments: [
     {
-      id: "1",
-      content: "hello world",
+      id: "2",
+      content: "Comment 2",
+      createdAt: "123",
       user: {
-        id: "1",
-        username: "usename1",
-        email: "usename1@email.com",
-        roles: [],
-        features: null,
-        jsonSettings: null,
-        profile: null,
+        username: "username2",
       },
     },
     {
       id: "2",
       content: "Comment 2",
+      createdAt: "123",
       user: {
-        id: "2",
         username: "username2",
-        email: "usename2@email.com",
-        roles: [],
-        features: null,
-        jsonSettings: null,
-        profile: null,
       },
     },
   ],

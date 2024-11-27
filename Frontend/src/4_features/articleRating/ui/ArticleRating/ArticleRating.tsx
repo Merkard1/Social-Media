@@ -1,16 +1,16 @@
+// src/features/article/ui/ArticleRating/ArticleRating.tsx
+
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-import { RatingCard } from "@/5_entities/Rating";
+import { RatingCard, useGetAverageArticleRatingQuery, useHasUserRatedQuery, useRateArticleMutation } from "@/5_entities/Rating";
 import { useUserAuthData } from "@/5_entities/User";
 
 import { Skeleton } from "@/6_shared/ui/Skeleton/Skeleton";
 
-import { useGetArticleRating, useRateArticle } from "../../api/articleRatingApi";
-
 export interface ArticleRatingProps {
-    className?: string;
-    articleId: string;
+  className?: string;
+  articleId: string;
 }
 
 const ArticleRating = memo((props: ArticleRatingProps) => {
@@ -18,24 +18,32 @@ const ArticleRating = memo((props: ArticleRatingProps) => {
   const { t } = useTranslation();
   const userData = useUserAuthData();
 
-  const { data, isLoading } = useGetArticleRating({
-    articleId,
-    userId: userData?.id ?? "",
-  });
-  const [rateArticleMutation] = useRateArticle();
+  // Check if the user has rated the article
+  const { data: hasUserRatedData,
+    isLoading: isHasUserRatedLoading,
+    error: hasUserRatedError } = useHasUserRatedQuery(articleId);
 
-  const handleRateArticle = useCallback((starsCount: number, feedback?: string) => {
+  // Get the average rating of the article
+  const { data: averageRatingData,
+    isLoading: isAverageRatingLoading,
+    error: averageRatingError } = useGetAverageArticleRatingQuery(articleId);
+
+  const [rateArticleMutation, {
+    isLoading: isRateArticleLoading,
+    error: rateArticleError }] = useRateArticleMutation();
+
+  const handleRateArticle = useCallback(async (starsCount: number, feedback?: string) => {
     try {
-      rateArticleMutation({
-        userId: userData?.id ?? "",
+      await rateArticleMutation({
         articleId,
-        rate: starsCount,
-        feedback,
-      });
+        value: starsCount,
+      }).unwrap(); // Using unwrap to handle fulfilled/rejected promises
+      // Optionally, you can handle feedback if your backend supports it
     } catch (e) {
-      console.log(e);
+      console.error("Failed to rate the article:", e);
+      // Optionally, display an error message to the user
     }
-  }, [articleId, rateArticleMutation, userData?.id]);
+  }, [articleId, rateArticleMutation]);
 
   const onAccept = useCallback((starsCount: number, feedback?: string) => {
     handleRateArticle(starsCount, feedback);
@@ -45,21 +53,28 @@ const ArticleRating = memo((props: ArticleRatingProps) => {
     handleRateArticle(starsCount);
   }, [handleRateArticle]);
 
-  if (isLoading) {
+  if (isHasUserRatedLoading || isAverageRatingLoading) {
     return <Skeleton width="100%" height={120} />;
   }
 
-  const rating = data?.[0];
+  if (hasUserRatedError || averageRatingError) {
+    return <div>{t("An error occurred while fetching ratings.")}</div>;
+  }
+
+  const hasRated = hasUserRatedData?.hasRated;
+  const userRating = hasUserRatedData?.articleRating;
+  const averageRating = averageRatingData?.averageRating;
 
   return (
     <RatingCard
       onCancel={onCancel}
       onAccept={onAccept}
-      rate={rating?.rate}
+      rate={hasRated ? userRating : 0}
       className={className}
       title={t("Rating")}
       feedbackTitle={t("Leave feedback please to improve website quality")}
-      hasFeedback
+      hasFeedback={hasRated} // Show feedback only if user has rated
+      averageRating={averageRating} // Pass average rating to display
     />
   );
 });

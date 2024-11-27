@@ -9,7 +9,7 @@ import { NotFoundPage } from "@/2_pages/NotFoundPage";
 import { ProfilePage } from "@/2_pages/ProfilePage";
 import { SettingsPage } from "@/2_pages/SettingsPage";
 
-import { getRouteAdminPanel, getRouteMessages } from "@/6_shared/api/getRoute";
+import { getRouteAdminPanel, getRouteMessages } from "@/6_shared/api/getNavigate";
 import { getRouteAbout, getRouteArticleDetails, getRouteArticles, getRouteForbidden, getRouteMain, getRouteProfile, getRouteSettings } from "@/6_shared/const/router";
 
 import { AppRoutes, AppRoutesProps } from "./routeType";

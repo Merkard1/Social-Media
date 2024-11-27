@@ -37,7 +37,7 @@ export const ArticleDetailsComments = memo((props: ArticleDetailsCommentsProps) 
   }, [dispatch]);
 
   useInitialEffect(() => {
-    dispatch(fetchCommentsByArticleId(id));
+    dispatch(fetchCommentsByArticleId(id!));
   });
 
   return (

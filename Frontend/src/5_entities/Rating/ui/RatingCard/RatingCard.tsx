@@ -16,6 +16,7 @@ interface RatingCardProps {
     title?: string;
     feedbackTitle?: string;
     hasFeedback?: boolean;
+    averageRating?: number;
     onCancel?: (starsCount: number) => void;
     onAccept?: (starsCount: number, feedback?: string) => void;
     rate?: number;
@@ -28,6 +29,7 @@ export const RatingCard = memo((props: RatingCardProps) => {
     feedbackTitle,
     hasFeedback,
     onCancel,
+    averageRating,
     title,
     rate = 0,
   } = props;
@@ -91,6 +93,7 @@ export const RatingCard = memo((props: RatingCardProps) => {
                 data-testid="RatingCard.Close"
                 onClick={cancelHandle}
               >
+                {averageRating}
                 {t("Закрыть")}
               </Button>
               <Button

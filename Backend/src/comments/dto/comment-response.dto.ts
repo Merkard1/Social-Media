@@ -3,8 +3,6 @@ export class CommentResponseDto {
   content: string;
   createdAt: Date;
   user: {
-    id: string;
     username: string;
-    profile: any;
   };
 }
