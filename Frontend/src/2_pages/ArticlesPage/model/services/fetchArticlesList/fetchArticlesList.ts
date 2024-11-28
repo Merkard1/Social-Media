@@ -37,7 +37,7 @@ export const fetchArticlesList = createAsyncThunk<
     const type = getArticlesPageType(getState());
 
     try {
-      addQueryParams({ sort, order, search });
+      addQueryParams({ sort, order, type, search });
 
       const params = {
         _expand: "user",
@@ -45,13 +45,13 @@ export const fetchArticlesList = createAsyncThunk<
         _page: page,
         _sort: sort,
         _order: order,
-        type: type === "ALL" ? undefined : type,
+        _type: type,
         q: search,
       };
 
-      const response = await dispatch(
-        getAllArticles({ params }),
-      ).unwrap();
+      console.log(params);
+
+      const response = await dispatch(getAllArticles({ params })).unwrap();
 
       if (!response) {
         throw new Error();

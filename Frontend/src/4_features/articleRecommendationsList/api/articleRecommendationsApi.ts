@@ -11,8 +11,9 @@ const recomendationsApi = rtkApi.injectEndpoints({
         },
       }),
     }),
-    // TODO mb  add recomendation creation or AI
   }),
 });
 
 export const useArticlesRecommendationList = recomendationsApi.useGetArticlesRecommendationListQuery;
+
+// TODO remove

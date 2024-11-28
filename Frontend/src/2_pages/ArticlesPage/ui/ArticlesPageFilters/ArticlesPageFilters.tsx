@@ -7,7 +7,7 @@ import { ArticleSortSelector } from "@/4_features/ArticleSortSelector";
 import { ArticleTypeTabs } from "@/4_features/ArticleTypeTabs";
 import { ArticleViewSelector } from "@/4_features/ArticleViewSelector";
 
-import { ArticleSortField, ArticleView } from "@/5_entities/Article";
+import { ArticleSortField, ArticleType, ArticleView } from "@/5_entities/Article";
 
 import { classNames } from "@/6_shared/lib/classNames/classNames";
 import { useAppDispatch } from "@/6_shared/lib/hooks/useAppDispatch/useAppDispatch";
@@ -81,9 +81,9 @@ const ArticlesPageFilters = ({ className } : ArticlesPageFiltersProps) => {
     [setSort, setToFirstPage, fetchData],
   );
 
-  // To Fix
+  //
   const onChangeType = useCallback(
-    (tab: any) => {
+    (tab: ArticleType) => {
       setType(tab);
       setToFirstPage();
       fetchData();

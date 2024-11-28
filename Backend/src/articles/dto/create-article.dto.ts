@@ -7,7 +7,7 @@ import {
   IsIn,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { BlockType } from '../entities/article.entity';
+import { ArticleType, BlockType } from '../entities/article.entity';
 
 export class BlockDto {
   @IsOptional()
@@ -51,7 +51,7 @@ export class CreateArticleDto {
 
   @IsArray()
   @IsString({ each: true })
-  type: string[];
+  type: ArticleType[];
 
   @IsArray()
   @ValidateNested({ each: true })

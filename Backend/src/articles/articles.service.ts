@@ -37,29 +37,26 @@ export class ArticlesService {
       _page = 1,
       _sort = 'createdAt',
       _order = 'DESC',
-      type,
+      _type = 'ALL',
       q,
     } = query;
 
     const skip = (_page - 1) * _limit;
     const take = Number(_limit);
 
-    // Define valid sort fields
     const validSortFields = ['views', 'createdAt', 'title'];
     const sortField = validSortFields.includes(_sort) ? _sort : 'createdAt';
     const sortOrder = _order.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
 
-    // Create QueryBuilder instance
     const queryBuilder: SelectQueryBuilder<Article> = this.articlesRepository
       .createQueryBuilder('article')
       .leftJoinAndSelect('article.user', 'user');
 
-    // Filter by type if provided and not 'ALL'
-    if (type && type.toUpperCase() !== 'ALL') {
-      queryBuilder.andWhere('article.type @> :type', { type: `{${type}}` });
+    // Updated to handle array type
+    if (_type && _type.toUpperCase() !== 'ALL') {
+      queryBuilder.andWhere(':type = ANY (article.type)', { type: _type });
     }
 
-    // Search in title or subtitle if 'q' is provided
     if (q) {
       queryBuilder.andWhere(
         '(article.title ILIKE :q OR article.subtitle ILIKE :q)',
@@ -67,13 +64,9 @@ export class ArticlesService {
       );
     }
 
-    // Apply sorting
     queryBuilder.orderBy(`article.${sortField}`, sortOrder as 'ASC' | 'DESC');
-
-    // Apply pagination
     queryBuilder.skip(skip).take(take);
 
-    // Execute query
     const articles = await queryBuilder.getMany();
 
     return articles;

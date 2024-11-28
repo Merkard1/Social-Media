@@ -46,7 +46,7 @@ export class UsersService {
       roles: createUserDto.roles || ['USER'],
       profile: profile,
       jsonSettings: {
-        theme: 'app_light_theme',
+        theme: 'app_dark_theme',
         isFirstVisit: false,
         settingsPageHasBeenOpen: false,
         isArticlesPageWasOpened: false,

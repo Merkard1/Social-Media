@@ -13,6 +13,7 @@ import { Comment } from '../../comments/entities/comment.entity';
 import { ArticleRating } from '../../article-ratings/entities/article-rating.entity';
 
 export type BlockType = 'TEXT' | 'IMAGE' | 'CODE';
+export type ArticleType = 'IT' | 'ECONOMICS' | 'SCIENCE';
 
 export class Block {
   id: string;
@@ -37,8 +38,8 @@ export class Article {
   @Column()
   img: string;
 
-  @Column('simple-array')
-  type: string[];
+  @Column('text', { array: true })
+  type: ArticleType[];
 
   @Column({ type: 'jsonb' })
   blocks: Block[];
