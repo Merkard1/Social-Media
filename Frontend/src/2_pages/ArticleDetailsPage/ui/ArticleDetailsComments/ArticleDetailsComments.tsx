@@ -1,15 +1,13 @@
 import { memo, useCallback, Suspense } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 
 import { AddCommentForm } from "@/4_features/addCommentForm";
 
 import {
   CommentList,
-  getAllCommentsForArticle,
   addCommentForArticle,
   fetchCommentsByArticleId,
-  getArticleCommentsIsLoading } from "@/5_entities/Comment";
+  useGetAllCommentsForArticleQuery } from "@/5_entities/Comment";
 
 import { classNames } from "@/6_shared/lib/classNames/classNames";
 import { useAppDispatch } from "@/6_shared/lib/hooks/useAppDispatch/useAppDispatch";
@@ -20,15 +18,21 @@ import { Text } from "@/6_shared/ui/Text/Text";
 
 interface ArticleDetailsCommentsProps {
     className?: string;
-    id?: string;
+    id: string;
 }
 
 export const ArticleDetailsComments = memo((props: ArticleDetailsCommentsProps) => {
   const { className, id } = props;
   const { t } = useTranslation("article-details");
-  const comments = useSelector(getAllCommentsForArticle);
-  const commentsIsLoading = useSelector(getArticleCommentsIsLoading);
+  // const comments = useSelector(getAllCommentsForArticle);
+  // const commentsIsLoading = useSelector(getArticleCommentsIsLoading);
   const dispatch = useAppDispatch();
+
+  const {
+    data: comments = [],
+    isLoading: commentsIsLoading,
+    error: commentsError,
+  } = useGetAllCommentsForArticleQuery(id);
 
   const onSendComment = useCallback((text: string) => {
     dispatch(addCommentForArticle(text));
@@ -53,7 +57,7 @@ export const ArticleDetailsComments = memo((props: ArticleDetailsCommentsProps) 
       </Suspense>
       <CommentList
         isLoading={commentsIsLoading}
-        comments={comments as any}
+        comments={comments}
       />
     </VStack>
   );
