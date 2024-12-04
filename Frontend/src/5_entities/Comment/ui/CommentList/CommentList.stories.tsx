@@ -22,6 +22,7 @@ Normal.args = {
       user: {
         username: "username2",
       },
+      updatedAt: "",
     },
     {
       id: "2",
@@ -30,6 +31,7 @@ Normal.args = {
       user: {
         username: "username2",
       },
+      updatedAt: "",
     },
   ],
 };

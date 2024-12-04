@@ -1,3 +1,5 @@
+import { Comment } from "@/5_entities/Comment";
+import { Rating } from "@/5_entities/Rating";
 import { User } from "@/5_entities/User";
 
 import { ArticleBlockType, ArticleType } from "../consts/articleConsts";
@@ -8,17 +10,20 @@ export interface ArticleBlockBase {
 }
 
 export interface ArticleCodeBlock extends ArticleBlockBase {
+  id: string;
   type: "CODE";
   code: string;
 }
 
-export interface ArticleImageBlock extends ArticleBlockBase {
+export interface ArticleImageBlock extends ArticleBlockBase{
+  id: string;
   type: "IMAGE";
   src: string;
-  title: string;
+  title?: string;
 }
 
-export interface ArticleTextBlock extends ArticleBlockBase {
+export interface ArticleTextBlock extends ArticleBlockBase{
+  id: string;
   type: "TEXT";
   paragraphs: string[];
   title?: string;
@@ -26,17 +31,36 @@ export interface ArticleTextBlock extends ArticleBlockBase {
 
 export type ArticleBlock = ArticleCodeBlock | ArticleImageBlock | ArticleTextBlock;
 
-export interface Article {
+export interface ArticleDetailsResponse {
   id: string;
   title: string;
-  user: User;
   subtitle: string;
   img: string;
-  views: number;
-  numberOfRatings: number;
-  averageRating: number;
+
   type: ArticleType[];
   blocks: ArticleBlock[];
+
+  views: number;
+  averageRating: number;
+  numberOfRatings: number;
+
   createdAt: string;
   updatedAt: string;
+
+  user: User;
+  comments: Comment;
+  ratings: Rating;
 }
+
+export type ArticleUpdateInput = Omit<
+  ArticleDetailsResponse,
+  | "id"
+  | "views"
+  | "averageRating"
+  | "numberOfRatings"
+  | "createdAt"
+  | "updatedAt"
+  | "user"
+  | "comments"
+  | "ratings"
+>;

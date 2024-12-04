@@ -1,7 +1,7 @@
-import { Article } from "./article";
+import { ArticleDetailsResponse } from "./article";
 
 export interface ArticleDetailsSchema {
     isLoading: boolean;
     error?: string;
-    data?: Article;
+    data: ArticleDetailsResponse | null;
 }

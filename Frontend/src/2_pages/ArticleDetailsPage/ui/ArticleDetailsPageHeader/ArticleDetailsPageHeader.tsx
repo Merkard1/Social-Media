@@ -3,13 +3,11 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { useArticleDetailsData } from "@/5_entities/Article/model/selectors/articleDetails";
+import { getArticleReadOnly, useArticlesDetailsData } from "@/5_entities/Article";
 
 import { getRouteArticles } from "@/6_shared/const/router";
 import { Button } from "@/6_shared/ui/Button/Button";
 import { HStack } from "@/6_shared/ui/Stack";
-
-import { getCanEditArticle } from "../../model/selectors/article";
 
 interface ArticleDetailsPageHeaderProps {
  className?: string
@@ -18,8 +16,9 @@ interface ArticleDetailsPageHeaderProps {
 const ArticleDetailsPageHeader = ({ className } : ArticleDetailsPageHeaderProps) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const canEdit = useSelector(getCanEditArticle);
-  const article = useArticleDetailsData();
+  // TODO mb error
+  const canEdit = useSelector(getArticleReadOnly);
+  const article = useArticlesDetailsData();
 
   const onBackToList = useCallback(() => {
     navigate(getRouteArticles());

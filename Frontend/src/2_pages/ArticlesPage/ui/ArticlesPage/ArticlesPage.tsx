@@ -5,6 +5,13 @@ import { Page } from "@/3_widgets/Page";
 
 import { ArticlePageGreeting } from "@/4_features/articlePageGreeting";
 
+import {
+  fetchNextArticlesPage,
+  initArticlesPage,
+  articlesPageActions,
+  articleReducer,
+} from "@/5_entities/Article";
+
 import { StickyContentLayout } from "@/6_shared/layouts";
 import { classNames } from "@/6_shared/lib/classNames/classNames";
 import {
@@ -13,10 +20,8 @@ import {
 } from "@/6_shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import { useAppDispatch } from "@/6_shared/lib/hooks/useAppDispatch/useAppDispatch";
 import { useInitialEffect } from "@/6_shared/lib/hooks/useInitialEffect/useInitialEffect";
+import useMediaQuery from "@/6_shared/lib/hooks/useMedia/useMedia";
 
-import { fetchNextArticlesPage } from "../../model/services/fetchNextArticlesPage/fetchNextArticlesPage";
-import { initArticlesPage } from "../../model/services/initArticlesPage/initArticlesPage";
-import { articlesPageReducer } from "../../model/slices/ArticlesPageSlice";
 import { ArticleInfiniteList } from "../ArticleInfiniteList/ArticleInfiniteList";
 import { FiltersContainer } from "../FiltersContainer/FiltersContainer";
 import { ViewSelectorContainer } from "../ViewSelectorContainer/ViewSelectorContainer";
@@ -28,13 +33,14 @@ interface ArticlesPageProps {
 }
 
 const reducers: ReducersList = {
-  articlesPage: articlesPageReducer,
+  article: articleReducer,
 };
 
 const ArticlesPage = (props: ArticlesPageProps) => {
   const { className } = props;
   const dispatch = useAppDispatch();
   const [searchParams] = useSearchParams();
+  const isBelowLargeScreen = useMediaQuery("(max-width: 1200px)");
 
   const onLoadNextPart = useCallback(() => {
     dispatch(fetchNextArticlesPage());
@@ -42,6 +48,10 @@ const ArticlesPage = (props: ArticlesPageProps) => {
 
   useInitialEffect(() => {
     dispatch(initArticlesPage(searchParams));
+
+    if (isBelowLargeScreen) {
+      dispatch(articlesPageActions.setView("BIG"));
+    }
   });
 
   const content = (

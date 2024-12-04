@@ -1,13 +1,21 @@
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-import { fetchArticlesList } from "@/2_pages/ArticlesPage/model/services/fetchArticlesList/fetchArticlesList";
-
 import { ArticleSortSelector } from "@/4_features/ArticleSortSelector";
 import { ArticleTypeTabs } from "@/4_features/ArticleTypeTabs";
 import { ArticleViewSelector } from "@/4_features/ArticleViewSelector";
 
-import { ArticleSortField, ArticleType, ArticleView } from "@/5_entities/Article";
+import {
+  ArticleSortField,
+  ArticleType,
+  ArticleView,
+  fetchArticlesList,
+  useArticlesPageOrder,
+  useArticlesPageSearch,
+  useArticlesPageSort,
+  useArticlesPageType,
+  useArticlesPageView,
+  useArticlesPage } from "@/5_entities/Article";
 
 import { classNames } from "@/6_shared/lib/classNames/classNames";
 import { useAppDispatch } from "@/6_shared/lib/hooks/useAppDispatch/useAppDispatch";
@@ -15,14 +23,6 @@ import { useDebounce } from "@/6_shared/lib/hooks/useDebounce/useDebounce";
 import { SortOrder } from "@/6_shared/types/sort";
 import { Card } from "@/6_shared/ui/Card/Card";
 import { Input } from "@/6_shared/ui/Input/Input";
-
-import {
-  useArticlesPageOrder,
-  useArticlesPageSearch,
-  useArticlesPageSort,
-  useArticlesPageType,
-  useArticlesPageView } from "../../model/selectors/articlesPageSelectors";
-import { useArticlesPage } from "../../model/slices/ArticlesPageSlice";
 
 import cls from "./ArticlesPageFilters.module.scss";
 

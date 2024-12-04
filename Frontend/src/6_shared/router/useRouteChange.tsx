@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { matchPath, useLocation } from "react-router-dom";
 
-import { AppRoutes } from "@/1_app/config/routeConfig/routeType";
-
-import { AppRouteByPathPattern } from "../const/router";
+import { AppRouteByPathPattern, AppRoutes } from "../const/router";
 
 export function useRouteChange() {
   const location = useLocation();

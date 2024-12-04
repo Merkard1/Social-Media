@@ -3,14 +3,14 @@ import { PayloadAction } from "@reduxjs/toolkit";
 
 import { buildSlice } from "@/6_shared/lib/store/buildSlice";
 
-import { fetchArticleById } from "../services/fetchArticleById/fetchArticleById";
-import { Article } from "../types/article";
+import { fetchArticleData } from "../services/articleServices/fetchArticleData/fetchArticleData";
+import { ArticleDetailsResponse } from "../types/article";
 import { ArticleDetailsSchema } from "../types/articleDetailsSchema";
 
 const initialState: ArticleDetailsSchema = {
   isLoading: false,
   error: undefined,
-  data: undefined,
+  data: null,
 };
 
 export const articleDetailsSlice = buildSlice({
@@ -19,18 +19,19 @@ export const articleDetailsSlice = buildSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchArticleById.pending, (state) => {
+    // Getting article data
+      .addCase(fetchArticleData.pending, (state) => {
         state.error = undefined;
         state.isLoading = true;
       })
-      .addCase(fetchArticleById.fulfilled, (
+      .addCase(fetchArticleData.fulfilled, (
         state,
-        action: PayloadAction<Article>,
+        action: PayloadAction<ArticleDetailsResponse>,
       ) => {
         state.isLoading = false;
-        state.data = action.payload;
+        state.data = JSON.parse(JSON.stringify(action.payload));
       })
-      .addCase(fetchArticleById.rejected, (state, action) => {
+      .addCase(fetchArticleData.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
@@ -38,6 +39,5 @@ export const articleDetailsSlice = buildSlice({
 });
 
 export const {
-  actions: articleDetailsActions,
   reducer: articleDetailsReducer,
-  useActions: useArticleDetails } = articleDetailsSlice;
+} = articleDetailsSlice;

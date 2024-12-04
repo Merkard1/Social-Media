@@ -9,16 +9,13 @@ import {
 import { AxiosInstance } from "axios";
 import { NavigateOptions, To } from "react-router-dom";
 
-import { ArticleDetailsPageSchema } from "@/2_pages/ArticleDetailsPage/model/types";
-import { ArticlesPageSchema } from "@/2_pages/ArticlesPage";
-
-import { AddCommentFormSchema } from "@/4_features/addCommentForm";
 import { LoginSchema } from "@/4_features/AuthByUsername";
 import { ProfileSchema } from "@/4_features/EditableProfileCard";
 import { RegistrationSchema } from "@/4_features/registration";
 import { ScrollRestoration } from "@/4_features/ScrollRestoration";
 
-import { ArticleDetailsSchema } from "@/5_entities/Article";
+import { ArticleSchema } from "@/5_entities/Article";
+import { CommentSchema } from "@/5_entities/Comment";
 import { UserSchema } from "@/5_entities/User";
 
 import rtkApi from "@/6_shared/api/rtkApi";
@@ -29,14 +26,12 @@ export interface StateSchema {
   [rtkApi.reducerPath]: ReturnType<typeof rtkApi.reducer>
 
   // Async Reducers
+  profile?: ProfileSchema;
+  article?: ArticleSchema;
+  comment?: CommentSchema;
+
   registrationForm?: RegistrationSchema;
   loginForm?: LoginSchema;
-  profile?: ProfileSchema;
-  articleDetails?: ArticleDetailsSchema;
-  addCommentForm?: AddCommentFormSchema;
-  articlesPage?: ArticlesPageSchema;
-  articleDetailsPage?: ArticleDetailsPageSchema;
-
 }
 
 export type StateSchemaKey = keyof StateSchema;

@@ -21,7 +21,7 @@ export const Code = memo((props: CodeProps) => {
 
   return (
     <pre
-      className={classNames(cls.CodeRedesigned, {}, [className])}
+      className={classNames(cls.Code, {}, [className])}
     >
       <Icon
         clickable

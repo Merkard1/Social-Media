@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 
-import { Article } from "../../model/types/article";
+import { ArticleDetailsResponse } from "../../model/types/article";
 
 import { ArticleList } from "./ArticleList";
 
@@ -14,7 +14,7 @@ export default {
 
 const Template: ComponentStory<typeof ArticleList> = (args) => <ArticleList {...args} />;
 
-const article = {} as Article;
+const article = {} as ArticleDetailsResponse;
 
 export const LoadingBig = Template.bind({});
 LoadingBig.args = {

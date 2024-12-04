@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 
-import { Article } from "../../model/types/article";
+import { ArticleDetailsResponse } from "../../model/types/article";
 
 import { ArticleListItem } from "./ArticleListItem";
 
@@ -15,7 +15,7 @@ export default {
 const Template: ComponentStory<typeof ArticleListItem> = (args) => <ArticleListItem {...args} />;
 
 // TODO mock article
-const article = {} as Article;
+const article = {} as ArticleDetailsResponse;
 
 export const Big = Template.bind({});
 Big.args = {

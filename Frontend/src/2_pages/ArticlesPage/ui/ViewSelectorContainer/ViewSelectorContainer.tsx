@@ -2,7 +2,7 @@ import { memo } from "react";
 
 import { ArticleViewSelector } from "@/4_features/ArticleViewSelector";
 
-import { useArticleFilters } from "../../lib/hooks/useArticleFilters";
+import { useArticleFilters } from "@/5_entities/Article";
 
 interface ViewSelectorContainerProps {
     className?: string;

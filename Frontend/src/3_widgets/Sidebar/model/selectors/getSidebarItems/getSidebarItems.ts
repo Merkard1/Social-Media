@@ -3,12 +3,12 @@ import { useSelector } from "react-redux";
 
 import { getUserAuthData } from "@/5_entities/User";
 
-import { getRouteAbout, getRouteArticles, getRouteMain, getRouteMessages, getRouteProfile } from "@/6_shared/api/getNavigate";
 import ArticleIcon from "@/6_shared/assets/icons/article.svg";
 import ProfileIcon from "@/6_shared/assets/icons/avatar.svg";
 import MainIcon from "@/6_shared/assets/icons/home.svg";
 import AboutIcon from "@/6_shared/assets/icons/Info.svg";
 import MessagesIcon from "@/6_shared/assets/icons/messages.svg";
+import { getRouteAbout, getRouteArticles, getRouteMain, getRouteMessages, getRouteProfile } from "@/6_shared/const/router";
 
 import { SidebarItemType } from "../../types/sidebar";
 

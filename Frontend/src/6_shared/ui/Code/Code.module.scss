@@ -1,14 +1,6 @@
 .Code {
   position: relative;
   padding: 20px;
-  border: 1px solid var(--primary-color);
-  background: var(--code-bg);
-  overflow: auto;
-}
-
-.CodeRedesigned {
-  position: relative;
-  padding: 20px;
   border: 1px solid var(--accent);
   color: var(--text);
   background: var(--light-bg);
@@ -18,8 +10,14 @@
 
 .copyBtn {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 24px;
+  right: 24px;
+}
+
+code {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
 }
 
 .copyIcon path {

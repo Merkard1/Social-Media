@@ -9,8 +9,7 @@ import {
   userActions,
 } from "@/5_entities/User";
 
-import { getRouteAdminPanel } from "@/6_shared/api/getNavigate";
-import { getRouteProfile, getRouteSettings } from "@/6_shared/const/router";
+import { getRouteAdmin, getRouteArticleCreate, getRouteProfile, getRouteSettings } from "@/6_shared/const/router";
 import { classNames } from "@/6_shared/lib/classNames/classNames";
 import { Avatar } from "@/6_shared/ui/Avatar/Avatar";
 import { Dropdown } from "@/6_shared/ui/Popups";
@@ -42,13 +41,17 @@ export const AvatarDropdown = memo((props: AvatarDropdownProps) => {
       ? [
         {
           content: t("Admin"),
-          href: getRouteAdminPanel(),
+          href: getRouteAdmin(),
         },
       ]
       : []),
     {
       content: t("Profile"),
       href: getRouteProfile(authData.username),
+    },
+    {
+      content: `${t("Create Article")}?`,
+      href: getRouteArticleCreate(),
     },
     {
       content: t("Settings"),

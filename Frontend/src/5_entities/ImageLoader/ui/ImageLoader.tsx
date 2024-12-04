@@ -1,19 +1,25 @@
-import clsx from "clsx";
 import React, { memo, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { classNames } from "@/6_shared/lib/classNames/classNames";
+
 import cls from "./ImageLoader.module.scss";
 
+type variant = "square" | "round";
+
 interface ImageLoaderProps {
-  onImageUpload: (file: File) => void;
+  // TODO
+  onImageUpload: any;
   label?: string;
   className?: string;
+  variant?: variant;
 }
 
 export const ImageLoader: React.FC<ImageLoaderProps> = ({
   onImageUpload,
-  label = "Drag & Drop an image or click to upload",
+  label = "Drag & Drop a file or click to upload",
   className,
+  variant = "square",
 }) => {
   const { t } = useTranslation();
   const [preview, setPreview] = useState<string | null>(null);
@@ -52,7 +58,7 @@ export const ImageLoader: React.FC<ImageLoaderProps> = ({
 
   return (
     <div
-      className={clsx(cls.ImageLoader, className)}
+      className={classNames(cls.ImageLoader, {}, [cls[variant]])}
       onDrop={onDrop}
       onDragOver={preventDefault}
       onDragEnter={preventDefault}

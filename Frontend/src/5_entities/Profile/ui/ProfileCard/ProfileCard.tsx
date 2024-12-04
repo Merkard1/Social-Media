@@ -83,6 +83,14 @@ const ProfileCard = memo((props : ProfileCardProps) => {
             <Avatar size={128} src={data?.avatar} />
           </HStack>
         )}
+        {!readOnly && !data?.avatar
+        && (
+          <HStack justify="center" max>
+            <VStack>
+              <ImageLoader variant="round" label={t("Upload new Avatar")} onImageUpload={() => {}} />
+            </VStack>
+          </HStack>
+        )}
         <HStack gap="24" max rowToColumn>
           <VStack gap="16" max>
             <Input
@@ -128,12 +136,7 @@ const ProfileCard = memo((props : ProfileCardProps) => {
             />
           </VStack>
         </HStack>
-        {!readOnly
-        && (
-          <HStack justify="center" max>
-            <ImageLoader label={t("Upload new Avatar")} onImageUpload={() => {}} />
-          </HStack>
-        )}
+
       </VStack>
     </Card>
   );

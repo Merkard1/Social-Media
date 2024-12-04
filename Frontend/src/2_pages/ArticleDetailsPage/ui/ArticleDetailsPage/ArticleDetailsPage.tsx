@@ -7,6 +7,8 @@ import { Page } from "@/3_widgets/Page";
 import { ArticleRating } from "@/4_features/articleRating";
 import { ArticleRecommendationsList } from "@/4_features/articleRecommendationsList";
 
+import { articleReducer } from "@/5_entities/Article";
+
 import { StickyContentLayout } from "@/6_shared/layouts";
 import { classNames } from "@/6_shared/lib/classNames/classNames";
 import {
@@ -15,7 +17,6 @@ import {
 } from "@/6_shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import { VStack } from "@/6_shared/ui/Stack";
 
-import { articleDetailsPageReducer } from "../../model/slices";
 import { AdditionalInfoContainer } from "../AdditionalInfoContainer/AdditionalInfoContainer";
 import { ArticleDetailsComments } from "../ArticleDetailsComments/ArticleDetailsComments";
 import { DetailsContainer } from "../DetailsContainer/DetailsContainer";
@@ -27,7 +28,7 @@ interface ArticleDetailsPageProps {
 }
 
 const reducers: ReducersList = {
-  articleDetailsPage: articleDetailsPageReducer,
+  article: articleReducer,
 };
 
 const ArticleDetailsPage = (props: ArticleDetailsPageProps) => {
@@ -43,13 +44,7 @@ const ArticleDetailsPage = (props: ArticleDetailsPageProps) => {
     <DynamicModuleLoader reducers={reducers} removeAfterUnmount>
       <StickyContentLayout
         content={
-          <Page
-            className={classNames(
-              cls.ArticleDetailsPage,
-              {},
-              [className],
-            )}
-          >
+          <Page className={classNames(cls.ArticleDetailsPage, {}, [className])}>
             <VStack gap="16" max>
               <DetailsContainer />
               <ArticleRating articleId={id} />

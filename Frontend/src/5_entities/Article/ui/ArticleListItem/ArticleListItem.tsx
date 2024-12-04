@@ -17,13 +17,13 @@ import { HStack, VStack } from "@/6_shared/ui/Stack";
 import { Text } from "@/6_shared/ui/Text/Text";
 
 import { ArticleView } from "../../model/consts/articleConsts";
-import { Article, ArticleTextBlock } from "../../model/types/article";
+import { ArticleBlock, ArticleDetailsResponse, ArticleTextBlock } from "../../model/types/article";
 
 import cls from "./ArticleListItem.module.scss";
 
 interface ArticleListItemProps {
   className?: string;
-  article: Article;
+  article: ArticleDetailsResponse;
   view: ArticleView;
   target?: HTMLAttributeAnchorTarget;
 }
@@ -38,10 +38,10 @@ export const ArticleListItem = memo((props: ArticleListItemProps) => {
     <>
       <Avatar
         size={32}
-        src={article.user.profile?.avatar}
+        src={article?.user.profile?.avatar}
         className={cls.avatar}
       />
-      <Text bold text={article.user.username} />
+      <Text bold text={article?.user.username} />
     </>
   );
   const views = (
@@ -53,7 +53,7 @@ export const ArticleListItem = memo((props: ArticleListItemProps) => {
 
   if (view === "BIG") {
     const textBlock = blocks.find(
-      (block) => block.type === "TEXT",
+      (block: ArticleBlock) => block.type === "TEXT",
     ) as ArticleTextBlock;
 
     return (

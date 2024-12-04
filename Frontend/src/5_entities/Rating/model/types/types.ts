@@ -1,7 +1,5 @@
 export interface Rating {
-    articleId: string;
     averageRating: number;
-    totalRatings: number;
   }
 
 export interface RatingInformation {

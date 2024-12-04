@@ -2,6 +2,11 @@ import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
+import { commentReducer,
+  getAddCommentContent,
+  getAddCommentFormError,
+  commentFormActions } from "@/5_entities/Comment";
+
 import { classNames } from "@/6_shared/lib/classNames/classNames";
 import {
   DynamicModuleLoader,
@@ -13,15 +18,6 @@ import { Card } from "@/6_shared/ui/Card/Card";
 import { Input } from "@/6_shared/ui/Input/Input";
 import { HStack } from "@/6_shared/ui/Stack";
 
-import {
-  getAddCommentFormError,
-  getAddCommentFormText,
-} from "../../model/selectors/addCommentFormSelectors";
-import {
-  addCommentFormActions,
-  addCommentFormReducer,
-} from "../../model/slices/addCommentFormSlice";
-
 import cls from "./AddCommentForm.module.scss";
 
 export interface AddCommentFormProps {
@@ -30,27 +26,27 @@ export interface AddCommentFormProps {
 }
 
 const reducers: ReducersList = {
-  addCommentForm: addCommentFormReducer,
+  comment: commentReducer,
 };
 
 const AddCommentForm = memo((props: AddCommentFormProps) => {
   const { className, onSendComment } = props;
   const { t } = useTranslation("article-details");
-  const text = useSelector(getAddCommentFormText);
+  const content = useSelector(getAddCommentContent);
   const error = useSelector(getAddCommentFormError);
   const dispatch = useAppDispatch();
 
   const onCommentTextChange = useCallback(
     (value: string) => {
-      dispatch(addCommentFormActions.setText(value));
+      dispatch(commentFormActions.setContent(value));
     },
     [dispatch],
   );
 
   const onSendHandler = useCallback(() => {
-    onSendComment(text || "");
+    onSendComment(content || "");
     onCommentTextChange("");
-  }, [onCommentTextChange, onSendComment, text]);
+  }, [onCommentTextChange, onSendComment, content]);
 
   return (
     <DynamicModuleLoader reducers={reducers}>
@@ -69,7 +65,7 @@ const AddCommentForm = memo((props: AddCommentFormProps) => {
           <Input
             className={cls.input}
             placeholder={t("Enter your comment")}
-            value={text}
+            value={content}
             data-testid="AddCommentForm.Input"
             onChange={onCommentTextChange}
           />

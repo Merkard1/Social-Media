@@ -4,21 +4,22 @@ import { useNavigate } from "react-router-dom";
 
 import { ArticleAdditionalInfo } from "@/3_widgets/ArticleAdditionalInfo";
 
-import { getArticleDetailsData } from "@/5_entities/Article";
+import { getArticlesDetailsData } from "@/5_entities/Article";
 
-import { getRouteArticleEdit } from "@/6_shared/api/getNavigate";
+import { getRouteArticleEdit } from "@/6_shared/const/router";
 import { Card } from "@/6_shared/ui/Card/Card";
 
 import cls from "./AdditionalInfoContainer.module.scss";
 
 export const AdditionalInfoContainer = memo(() => {
-  const article = useSelector(getArticleDetailsData);
+  const article = useSelector(getArticlesDetailsData);
 
   const navigate = useNavigate();
 
   const onEditArticle = useCallback(() => {
     if (article) {
       navigate(getRouteArticleEdit(article.id));
+      console.log(article.user.id);
     }
   }, [article, navigate]);
 

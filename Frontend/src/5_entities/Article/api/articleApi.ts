@@ -1,11 +1,7 @@
 import rtkApi from "@/6_shared/api/rtkApi";
 
-import { Article } from "../model/types/article";
-
-interface GetArticlesByUserParams {
-  username: string;
-  params?: any;
-}
+import { ArticleDetailsResponse } from "../model/types/article";
+import { ArticleUpsert } from "../model/types/articleUpsertSchema";
 
 interface GetArticleByIdParams {
   id: string;
@@ -13,7 +9,7 @@ interface GetArticleByIdParams {
 
 interface ChangeArticleParams {
   id: string;
-  articleData: Partial<Article>;
+  articleData: Partial<ArticleDetailsResponse>;
 }
 
 interface DeleteArticleParams {
@@ -27,7 +23,7 @@ interface GetAllArticlesParams {
 const articleApi = rtkApi.injectEndpoints({
   endpoints: (build) => ({
 
-    getAllArticles: build.query<Article[], GetAllArticlesParams >({
+    getAllArticles: build.query<ArticleDetailsResponse[], GetAllArticlesParams >({
       query: ({ params }) => ({
         url: "/articles/",
         method: "GET",
@@ -42,7 +38,7 @@ const articleApi = rtkApi.injectEndpoints({
           : [{ type: "Article", id: "LIST" }]),
     }),
 
-    getArticleById: build.query<Article, GetArticleByIdParams>({
+    getArticleById: build.query<ArticleDetailsResponse, GetArticleByIdParams>({
       query: ({ id }) => ({
         url: `/articles/${id}`,
         method: "GET",
@@ -50,9 +46,17 @@ const articleApi = rtkApi.injectEndpoints({
       providesTags: (result, error, { id }) => [{ type: "Article", id }],
     }),
 
-    changeArticle: build.mutation<Article, ChangeArticleParams>({
-      query: ({ id, articleData }) => ({
+    createArticle: build.mutation<ArticleDetailsResponse, ArticleUpsert>({
+      query: (articleData) => ({
+        url: "/articles",
+        method: "POST",
+        body: articleData,
+      }),
+      invalidatesTags: (result, error) => [{ type: "Article" }],
+    }),
 
+    changeArticle: build.mutation<ArticleDetailsResponse, ChangeArticleParams>({
+      query: ({ id, articleData }) => ({
         url: `/articles/${id}`,
         method: "PATCH",
         body: articleData,
@@ -74,11 +78,13 @@ const articleApi = rtkApi.injectEndpoints({
 export const {
   useGetAllArticlesQuery,
   useGetArticleByIdQuery,
+  useCreateArticleMutation,
   useChangeArticleMutation,
   useDeleteArticleMutation,
 } = articleApi;
 
 export const getAllArticles = articleApi.endpoints.getAllArticles.initiate;
 export const getArticleById = articleApi.endpoints.getArticleById.initiate;
+export const createArticle = articleApi.endpoints.createArticle.initiate;
 export const changeArticle = articleApi.endpoints.changeArticle.initiate;
 export const deleteArticle = articleApi.endpoints.deleteArticle.initiate;
