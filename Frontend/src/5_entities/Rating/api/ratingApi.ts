@@ -22,7 +22,7 @@ const ratingApi = rtkApi.injectEndpoints({
     }),
 
     getAverageArticleRating: build.query<AverageRatingResponse, string>({
-      query: (articleId) => `/ratings/average/${articleId}`,
+      query: (articleId) => `/ratings/${articleId}/average`,
       providesTags: (result, error, articleId) => [
         { type: "Article", id: articleId },
       ],

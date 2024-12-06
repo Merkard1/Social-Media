@@ -1,7 +1,7 @@
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-import { articleUpsertActions, useArticleForm } from "@/5_entities/Article";
+import { articleUpsertActions, useArticleUpsertForm } from "@/5_entities/Article";
 import { ArticleBlock } from "@/5_entities/Article/model/types/article";
 import { renderArticleBlock } from "@/5_entities/Article/ui/renderArticleBlock/renderArticleBlock";
 
@@ -17,7 +17,7 @@ export const EditableArticleBlocks = memo((props: EditableArticleBlocksProps) =>
   const { readOnly = false } = props;
   const { t } = useTranslation("article");
   const dispatch = useAppDispatch();
-  const formData = useArticleForm();
+  const formData = useArticleUpsertForm();
 
   const onChangeBlockField = useCallback(
     (blockId: string, updatedBlock: Partial<ArticleBlock>) => {
@@ -33,12 +33,11 @@ export const EditableArticleBlocks = memo((props: EditableArticleBlocksProps) =>
     [dispatch],
   );
 
-  if (!formData) { return null; }
+  if (!formData?.blocks.length) return null;
 
   return (
     <Card padding="16" max>
       <VStack gap="16" max>
-        {/* TODO */}
         {formData.blocks.map((block: any) =>
           renderArticleBlock({
             block,

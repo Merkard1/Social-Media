@@ -45,8 +45,7 @@ export class ArticlesController {
   }
 
   // Update an article
-  @UseGuards(AuthGuard('jwt'))
-  @UseGuards(ArticleOwnerGuard)
+  @UseGuards(AuthGuard('jwt'), ArticleOwnerGuard)
   @Patch(':id')
   async update(
     @Param('id') id: string,
@@ -56,8 +55,7 @@ export class ArticlesController {
   }
 
   // Delete an article
-  @UseGuards(AuthGuard('jwt'))
-  @UseGuards(ArticleOwnerGuard)
+  @UseGuards(AuthGuard('jwt'), ArticleOwnerGuard)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string) {

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import {
-  getArticleReadOnly,
+  getArticleUpsertReadOnly,
   updateArticleData,
   saveArticleData,
   articleUpsertActions,
@@ -37,7 +37,7 @@ export const EditableArticleCardHeader = memo(
     } = useGetArticleByIdQuery({ id: id || "" }, { skip: !id });
 
     const authData = useSelector(getUserAuthData);
-    const readonly = useSelector(getArticleReadOnly);
+    const readonly = useSelector(getArticleUpsertReadOnly);
     const canEdit = !id || authData?.id === articleData?.user?.id;
 
     const onEdit = useCallback(() => {
@@ -49,28 +49,21 @@ export const EditableArticleCardHeader = memo(
     }, [dispatch]);
 
     const onSave = useCallback(async () => {
-      if (id) {
-        try {
-          const result = await dispatch(updateArticleData(id)).unwrap();
-          if (result && result.id) {
-            navigate(getRouteArticleDetails(result.id));
-          }
-        } catch (error) {
-          console.error("Failed to update article:", error);
-        }
-      }
-    }, [dispatch, id, navigate]);
-
-    const handleSave = useCallback(async () => {
       try {
-        const result = await dispatch(saveArticleData()).unwrap();
+        let result;
+        if (id) {
+          result = await dispatch(updateArticleData(id)).unwrap();
+        } else {
+          result = await dispatch(saveArticleData()).unwrap();
+        }
+
         if (result && result.id) {
           navigate(getRouteArticleDetails(result.id));
         }
       } catch (error) {
-        console.error("Failed to save article:", error);
+        console.error(id ? "Failed to update article:" : "Failed to save article:", error);
       }
-    }, [dispatch, navigate]);
+    }, [dispatch, id, navigate]);
 
     if (isLoading) {
       return (
@@ -82,14 +75,14 @@ export const EditableArticleCardHeader = memo(
 
     if (error) {
       return (
-        <Card padding="24" max border="partial">
+        <Card padding="16" max border="partial">
           <Text variant="error" title={t("Error loading article")} />
         </Card>
       );
     }
 
     return (
-      <Card padding="24" max border="partial">
+      <Card padding="16" max border="partial">
         <HStack max justify="between">
           <Text title={t(title)} />
           {canEdit && (
@@ -103,15 +96,17 @@ export const EditableArticleCardHeader = memo(
                 </Button>
               ) : (
                 <HStack gap="16">
+                  {id && (
+                    <Button
+                      onClick={onCancelEdit}
+                      data-testid="EditableProfileCardHeader.CancelButton"
+                      color="error"
+                    >
+                      {t("Cancel")}
+                    </Button>
+                  )}
                   <Button
-                    onClick={onCancelEdit}
-                    data-testid="EditableProfileCardHeader.CancelButton"
-                    color="error"
-                  >
-                    {t("Cancel")}
-                  </Button>
-                  <Button
-                    onClick={id ? onSave : handleSave}
+                    onClick={onSave}
                     data-testid="EditableProfileCardHeader.SaveButton"
                     color="success"
                   >

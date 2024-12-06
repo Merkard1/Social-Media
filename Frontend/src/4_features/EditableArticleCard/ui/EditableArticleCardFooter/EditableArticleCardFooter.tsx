@@ -36,7 +36,7 @@ export const EditableArticleCardFooter = memo(
     }, [dispatch, selectedBlockType]);
 
     return (
-      <Card max padding="24">
+      <Card max padding="16">
         <HStack max justify="end" gap="24">
           <ListBox
             items={itemsType}

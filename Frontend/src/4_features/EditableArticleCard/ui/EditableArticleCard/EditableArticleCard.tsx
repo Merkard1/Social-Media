@@ -1,21 +1,24 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import { articleReducer, fetchArticleData } from "@/5_entities/Article";
-import { useArticleReadOnly } from "@/5_entities/Article/model/selectors/articleUpsertSelectors/articlesUpsertSelectors";
-import { articleUpsertActions } from "@/5_entities/Article/model/slice/articleUpsertSlice";
+import {
+  articleReducer,
+  fetchArticleData,
+  articleUpsertActions,
+  useArticleUpsertReadOnly,
+} from "@/5_entities/Article";
 
 import {
   DynamicModuleLoader,
   ReducersList,
 } from "@/6_shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import { useAppDispatch } from "@/6_shared/lib/hooks/useAppDispatch/useAppDispatch";
-import { useInitialEffect } from "@/6_shared/lib/hooks/useInitialEffect/useInitialEffect";
 import { VStack } from "@/6_shared/ui/Stack";
 
 import { EditableArticleBlocks } from "../EditableArticleBlocks/EditableArticleBlocks";
 import { EditableArticleCardFooter } from "../EditableArticleCardFooter/EditableArticleCardFooter";
 import { EditableArticleCardHeader } from "../EditableArticleCardHeader/EditableArticleCardHeader";
+import { EditableArticleTitle } from "../EditableArticleTitle/EditableArticleTitle";
 
 interface ArticlePageProps {
   id?: string;
@@ -30,20 +33,28 @@ export const EditableArticleCard = memo((props: ArticlePageProps) => {
   const { t } = useTranslation("article");
 
   const dispatch = useAppDispatch();
-  const readOnly = useArticleReadOnly();
+  const readOnly = useArticleUpsertReadOnly();
 
-  useInitialEffect(() => {
+  useEffect(() => {
     if (id) {
-      dispatch(fetchArticleData(id));
+      dispatch(fetchArticleData(id)).then((response) => {
+        if (fetchArticleData.fulfilled.match(response)) {
+          const article = response.payload;
+          dispatch(articleUpsertActions.initializeArticleForm(article));
+        } else {
+          console.error("Failed to fetch article data");
+        }
+      });
     } else {
       dispatch(articleUpsertActions.createNewArticle());
     }
-  });
+  }, [id, dispatch]);
 
   return (
     <DynamicModuleLoader reducers={reducers}>
       <VStack gap="16" max>
         <EditableArticleCardHeader id={id || ""} />
+        <EditableArticleTitle readOnly={readOnly} />
         <EditableArticleBlocks readOnly={readOnly} />
         {!readOnly && <EditableArticleCardFooter />}
       </VStack>

@@ -8,12 +8,9 @@ import { EditableArticleCard } from "@/4_features/EditableArticleCard";
 import { VStack } from "@/6_shared/ui/Stack";
 
 interface ArticlePageProps {
- className?: string
 }
 
 const ArticlePage = (props : ArticlePageProps) => {
-  const { className } = props;
-
   const { id } = useParams<{ id: string }>();
 
   return (

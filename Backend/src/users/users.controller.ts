@@ -25,9 +25,7 @@ export class UsersController {
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);
-
     const { password, ...userWithoutPassword } = user;
-
     return userWithoutPassword;
   }
 
@@ -43,7 +41,7 @@ export class UsersController {
     return result;
   }
 
-  @Get(':username')
+  @Get('username/:username')
   async findOne(@Param('username') username: string) {
     const user = await this.usersService.findOneByUsername(username);
     if (user) {

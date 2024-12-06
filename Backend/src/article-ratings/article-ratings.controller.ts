@@ -45,7 +45,7 @@ export class RatingsController {
     return response;
   }
 
-  @Get('average/:articleId')
+  @Get(':articleId/average')
   async getAverageRating(@Param('articleId') articleId: string) {
     const averageRating = await this.ratingsService.getAverageRating(articleId);
     return { averageRating };

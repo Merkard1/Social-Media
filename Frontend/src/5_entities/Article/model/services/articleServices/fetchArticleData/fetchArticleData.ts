@@ -13,14 +13,11 @@ export const fetchArticleData = createAsyncThunk<
       "article/fetchProfileData",
       async (id, thunkApi) => {
         const { rejectWithValue, dispatch } = thunkApi;
-
         try {
           const response = await dispatch(getArticleById({ id })).unwrap();
-
           if (!response) {
             throw new Error("No article data returned from API");
           }
-
           return response;
         } catch (e) {
           console.log(e);

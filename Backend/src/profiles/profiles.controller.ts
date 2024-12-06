@@ -29,7 +29,7 @@ export class ProfilesController {
     @Request() req,
     @Body() createProfileDto: CreateProfileDto,
   ) {
-    const userId = req.user.sub; // Ensure 'sub' contains userId
+    const userId = req.user.sub;
 
     const existingProfile = await this.profilesService.findByUserId(userId);
     if (existingProfile) {

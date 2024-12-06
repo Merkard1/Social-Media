@@ -3,6 +3,7 @@ import {
   CanActivate,
   ExecutionContext,
   ForbiddenException,
+  NotFoundException,
 } from '@nestjs/common';
 import { ArticlesService } from '../articles.service';
 import { Reflector } from '@nestjs/core';
@@ -19,23 +20,28 @@ export class ArticleOwnerGuard implements CanActivate {
     const user = request.user;
     const articleId = request.params.id;
 
-    try {
-      const article = await this.articlesService.findOneById(articleId);
+    console.log(request);
 
-      if (article.user.id === user.id || user.roles.includes('ADMIN')) {
-        return true;
-      }
+    const userId = user.id;
 
-      throw new ForbiddenException(
-        'You are not authorized to perform this action',
-      );
-    } catch (error) {
-      if (error.status === 404) {
-        throw error;
-      }
-      throw new ForbiddenException(
-        'You are not authorized to perform this action',
-      );
+    const article = await this.articlesService.findOneById(articleId);
+    if (!article) {
+      throw new NotFoundException('Article not found');
     }
+
+    if (!article.user || !article.user.id) {
+      throw new ForbiddenException('This article does not have a valid owner.');
+    }
+
+    const isOwner = article.user.id === userId;
+    const isAdmin = user.roles && user.roles.includes('ADMIN');
+
+    if (isOwner || isAdmin) {
+      return true;
+    }
+
+    throw new ForbiddenException(
+      'You are not authorized to perform this action',
+    );
   }
 }

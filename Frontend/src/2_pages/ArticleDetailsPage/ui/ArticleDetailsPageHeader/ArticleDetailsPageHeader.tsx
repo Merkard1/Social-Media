@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { getArticleReadOnly, useArticlesDetailsData } from "@/5_entities/Article";
+import { getArticleUpsertReadOnly, useArticlesDetailsData } from "@/5_entities/Article";
 
 import { getRouteArticles } from "@/6_shared/const/router";
 import { Button } from "@/6_shared/ui/Button/Button";
@@ -17,7 +17,7 @@ const ArticleDetailsPageHeader = ({ className } : ArticleDetailsPageHeaderProps)
   const { t } = useTranslation();
   const navigate = useNavigate();
   // TODO mb error
-  const canEdit = useSelector(getArticleReadOnly);
+  const canEdit = useSelector(getArticleUpsertReadOnly);
   const article = useArticlesDetailsData();
 
   const onBackToList = useCallback(() => {

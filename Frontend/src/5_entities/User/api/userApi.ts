@@ -17,7 +17,6 @@ interface RegistrationForm {
 
 const userApi = rtkApi.injectEndpoints({
   endpoints: (build) => ({
-
     registerUser: build.mutation<User, RegistrationForm>({
       query: (form) => ({
         url: "/users",
@@ -26,9 +25,16 @@ const userApi = rtkApi.injectEndpoints({
       }),
     }),
 
+    getUserDataById: build.query<User, string>({
+      query: (userId) => ({
+        url: `/users/id/${userId}`,
+      }),
+      providesTags: (result, error, userId) => [{ type: "User", id: userId }],
+    }),
+
     getUserByUsername: build.query<User, string>({
       query: (username) => ({
-        url: `/users/${username}`,
+        url: `/users/username/${username}`,
       }),
     }),
 
@@ -42,13 +48,6 @@ const userApi = rtkApi.injectEndpoints({
         },
       }),
       invalidatesTags: (result, error, { userId }) => [{ type: "User", id: userId }],
-    }),
-
-    getUserDataById: build.query<User, string>({
-      query: (userId) => ({
-        url: `/users/id/${userId}`,
-      }),
-      providesTags: (result, error, userId) => [{ type: "User", id: userId }],
     }),
 
     deleteUser: build.mutation<{ message: string }, string>({

@@ -2,15 +2,15 @@ import { StateSchema } from "@/1_app/providers/StoreProvider";
 
 import { buildSelector } from "@/6_shared/lib/store/buildSelector";
 
-export const [useArticleForm, getArticleForm] = buildSelector(
+export const [useArticleUpsertForm, getArticleUpsertForm] = buildSelector(
   (state: StateSchema) => state.article?.articleUpsert.form,
 );
-export const [useArticleReadOnly, getArticleReadOnly] = buildSelector(
+export const [useArticleUpsertReadOnly, getArticleUpsertReadOnly] = buildSelector(
   (state: StateSchema) => state.article?.articleUpsert.readOnly,
 );
-export const [useArticleIsLoading, getArticleIsLoading] = buildSelector(
+export const [useArticleUpsertIsLoading, getArticleUpsertIsLoading] = buildSelector(
   (state: StateSchema) => state.article?.articleUpsert.isLoading,
 );
-export const [useArticleError, getArticleError] = buildSelector(
+export const [useArticleUpsertError, getArticleUpsertError] = buildSelector(
   (state: StateSchema) => state.article?.articleUpsert.error,
 );

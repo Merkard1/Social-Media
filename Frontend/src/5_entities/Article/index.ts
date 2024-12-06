@@ -28,14 +28,14 @@ export {
   getArticlesDetailsData,
 } from "./model/selectors/articleDetailsSelectors/articleDetailsSelectors";
 export {
-  getArticleError,
-  useArticleError,
-  getArticleForm,
-  useArticleForm,
-  getArticleIsLoading,
-  useArticleIsLoading,
-  getArticleReadOnly,
-  useArticleReadOnly,
+  getArticleUpsertError,
+  useArticleUpsertError,
+  getArticleUpsertForm,
+  useArticleUpsertForm,
+  getArticleUpsertIsLoading,
+  useArticleUpsertIsLoading,
+  getArticleUpsertReadOnly,
+  useArticleUpsertReadOnly,
 } from "./model/selectors/articleUpsertSelectors/articlesUpsertSelectors";
 export {
   useArticlesPageOrder,
@@ -66,6 +66,7 @@ export { fetchArticleById } from "./model/services/articleServices/fetchArticleB
 // Types
 export type { ArticleSchema } from "./model/types";
 export type { ArticleBlock } from "./model/types/article";
+export type { ArticleUpsert } from "./model/types/articleUpsertSchema";
 
 // UI
 export { ArticleDetails } from "./ui/ArticleDetails/ArticleDetails";
