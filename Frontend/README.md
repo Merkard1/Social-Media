@@ -134,29 +134,35 @@ is used.
 
 ---
 
-## Entities
-
-- [Article](/src/5_entities/Article)
-- [Comment](/src/5_entities/Comment)
-- [Country](/src/5_entities/Country)
-- [Currency](/src/5_entities/Currency)
-- [Notification](/src/5_entities/Notification)
-- [Profile](/src/5_entities/Profile)
-- [Rating](/src/5_entities/Rating)
-- [User](/src/5_entities/User)
-
 ## Features
 
-- [addCommentForm](/src/4_features/addCommentForm)
-- [articleRating](/src/4_features/articleRating)
-- [articleRecommendationsList](/src/4_features/articleRecommendationsList)
-- [AuthByUsername](/src/4_features/AuthByUsername)
-- [avatarDropdown](/src//4_features/avatarDropdown/)
-- [editableProfileCard](/src/4_features/editableProfileCard)
-- [LangSwitcher](/src/4_features/LangSwitcher)
-- [notificationButton](/src/4_features/notificationButton)
-- [ThemeSwitcher](/src/4_features/ThemeSwitcher)
-- [ScrollRestoration](/src/4_features/ScrollRestoration)
+- [addCommentForm](/Frontend/src/4_features/addCommentForm)
+- [articlePageGreeting](/Frontend/src/4_features/articlePageGreeting)
+- [articleRating](/Frontend/src/4_features/articleRating)
+- [articleRecommendationsList](/Frontend/src/4_features/articleRecommendationsList)
+- [ArticleSortSelector](/Frontend/src/4_features/ArticleSortSelector)
+- [ArticleTypeTabs](/Frontend/src/4_features/ArticleTypeTabs)
+- [ArticleViewSelector](/Frontend/src/4_features/ArticleViewSelector)
+- [AuthByUsername](/Frontend/src/4_features/AuthByUsername)
+- [avatarDropdown](/Frontend/src/4_features/avatarDropdown)
+- [EditableArticleCard](/Frontend/src/4_features/EditableArticleCard)
+- [EditableProfileCard](/Frontend/src/4_features/EditableProfileCard)
+- [LangSwitcher](/Frontend/src/4_features/LangSwitcher)
 
+---
 
+## Entities
+
+- [Article](/Frontend/src/5_entities/Article)
+- [Auth](/Frontend/src/5_entities/Auth)
+- [Comment](/Frontend/src/5_entities/Comment)
+- [Country](/Frontend/src/5_entities/Country)
+- [Currency](/Frontend/src/5_entities/Currency)
+- [Dialog](/Frontend/src/5_entities/Dialog)
+- [ImageLoader](/Frontend/src/5_entities/ImageLoader)
+- [Message](/Frontend/src/5_entities/Message)
+- [Notification](/Frontend/src/5_entities/Notification)
+- [Profile](/Frontend/src/5_entities/Profile)
+- [Rating](/Frontend/src/5_entities/Rating)
+- [User](/Frontend/src/5_entities/User)
 

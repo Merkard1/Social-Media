@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { UsersModule } from './users/users.module';
-import { ProfilesModule } from './profiles/profiles.module';
-import { ArticlesModule } from './articles/articles.module';
-import { CommentsModule } from './comments/comments.module';
-import { NotificationsModule } from './notifications/notifications.module';
-import { ArticleRatingsModule } from './article-ratings/article-ratings.module';
-import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { ProfilesModule } from './modules/profiles/profiles.module';
+import { ArticlesModule } from './modules/articles/articles.module';
+import { CommentsModule } from './modules/comments/comments.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
+import { ArticleRatingsModule } from './modules/article-ratings/article-ratings.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({

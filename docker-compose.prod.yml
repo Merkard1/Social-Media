@@ -18,7 +18,7 @@ services:
       DATABASE_USER: nestuser
       DATABASE_PASSWORD: LordStarkWinter
       DATABASE_NAME: nestdb
-      SOCIAL_MEDIA_BACK_PORT: 4444
+      PORT: 4444
     networks:
       - app-network
 
