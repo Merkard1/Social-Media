@@ -31,3 +31,4 @@ type OptionalRecord<K extends keyof any, T> = {
 declare module "uuid" {
     export function v4(): string;
 }
+

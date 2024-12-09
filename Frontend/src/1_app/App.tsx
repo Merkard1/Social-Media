@@ -11,6 +11,7 @@ import { classNames } from "@/6_shared/lib/classNames/classNames";
 import { useAppDispatch } from "@/6_shared/lib/hooks/useAppDispatch/useAppDispatch";
 
 import { useAppToolbar } from "./lib/useAppToolbar";
+import { Notifications } from "./Notifications";
 import { AppRouter } from "./providers/router";
 import { useTheme } from "./providers/ThemeProvider";
 import { withTheme } from "./providers/ThemeProvider/ui/withTheme";
@@ -44,12 +45,15 @@ const App = memo(() => {
       className={classNames("app", {}, [theme])}
     >
       <Suspense fallback="">
-        <MainLayout
-          header={<Navbar />}
-          content={<AppRouter />}
-          sidebar={<Sidebar />}
-          toolbar={toolbar}
-        />
+        <>
+          <Notifications />
+          <MainLayout
+            header={<Navbar />}
+            content={<AppRouter />}
+            sidebar={<Sidebar />}
+            toolbar={toolbar}
+          />
+        </>
       </Suspense>
     </div>
   );

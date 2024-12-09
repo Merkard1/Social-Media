@@ -22,5 +22,10 @@
       "module": "CommonJS",
     }
   },
-  "include": ["./config/jest/setupTests.ts", "./src/**/*.ts", "./src/**/*.tsx", "src/4_features/EditableArticleCard/model/services/fetchArticleData"]
+  "include": [
+    "./config/jest/setupTests.ts",
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+    "src/4_features/EditableArticleCard/model/services/fetchArticleData"
+  ]
 }

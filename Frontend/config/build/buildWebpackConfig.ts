@@ -25,5 +25,9 @@ export function buildWebpackConfig(options: BuildOptions): webpack.Configuration
     resolve: buildResolvers(options),
     devtool: isDev ? "eval-cheap-module-source-map" : undefined,
     devServer: isDev ? buildDevServer(options) : undefined,
+    externals: {
+      bufferutil: "bufferutil",
+      "utf-8-validate": "utf-8-validate",
+    },
   };
 }
