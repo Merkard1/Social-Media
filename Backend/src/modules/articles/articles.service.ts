@@ -95,6 +95,17 @@ export class ArticlesService {
     return this.articlesRepository.findOne({ where: { id: articleId } });
   }
 
+  async setImage(articleId: string, imageUrl: string): Promise<Article> {
+    const article = await this.articlesRepository.findOne({
+      where: { id: articleId },
+    });
+    if (!article) {
+      throw new Error('Article not found');
+    }
+    article.img = imageUrl;
+    return this.articlesRepository.save(article);
+  }
+
   async remove(articleId: string): Promise<void> {
     await this.articlesRepository.delete(articleId);
   }

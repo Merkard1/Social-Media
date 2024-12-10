@@ -16,6 +16,7 @@ import { ScrollRestoration } from "@/4_features/ScrollRestoration";
 
 import { ArticleSchema } from "@/5_entities/Article";
 import { CommentSchema } from "@/5_entities/Comment";
+import { NotificationSchema } from "@/5_entities/Notification";
 import { UserSchema } from "@/5_entities/User";
 
 import rtkApi from "@/6_shared/api/rtkApi";
@@ -24,6 +25,8 @@ export interface StateSchema {
   user: UserSchema;
   scrollRestoration: ScrollRestoration;
   [rtkApi.reducerPath]: ReturnType<typeof rtkApi.reducer>
+  // Sockets Reducers
+  notifications?: NotificationSchema;
 
   // Async Reducers
   profile?: ProfileSchema;

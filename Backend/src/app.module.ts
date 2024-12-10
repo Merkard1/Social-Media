@@ -10,6 +10,7 @@ import { ArticleRatingsModule } from './modules/article-ratings/article-ratings.
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { NotificationsGateway } from './notifications/notifications.gateway';
+import { UploadModule } from './modules/upload/upload.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { NotificationsGateway } from './notifications/notifications.gateway';
     ArticleRatingsModule,
     AuthModule,
     NotificationsGateway,
+    UploadModule,
   ],
 })
 export class AppModule {}

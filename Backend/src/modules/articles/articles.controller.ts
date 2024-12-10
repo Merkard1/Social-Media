@@ -11,12 +11,18 @@ import {
   HttpCode,
   HttpStatus,
   Query,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ArticleOwnerGuard } from './guards/article-owner.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from '@/config/multer.config';
 
 @Controller('articles')
 export class ArticlesController {
@@ -60,5 +66,30 @@ export class ArticlesController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(@Param('id') id: string) {
     await this.articlesService.remove(id);
+  }
+
+  @Post('upload-image')
+  @UseInterceptors(FileInterceptor('image', multerOptions))
+  async uploadArticleImage(
+    @UploadedFile() file: Express.MulterS3File,
+    @Body('articleId') articleId: string,
+  ) {
+    if (!file) {
+      throw new BadRequestException('File not provided');
+    }
+
+    try {
+      const imageUrl = file.location;
+      const updatedArticle = await this.articlesService.setImage(
+        articleId,
+        imageUrl,
+      );
+      return {
+        message: 'Image uploaded successfully',
+        article: updatedArticle,
+      };
+    } catch (error) {
+      throw new InternalServerErrorException('Image upload failed', error);
+    }
   }
 }
