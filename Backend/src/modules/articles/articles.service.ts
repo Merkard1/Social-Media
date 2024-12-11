@@ -1,19 +1,49 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { Article } from '@/database/entities/article.entity';
 import { User } from '@/database/entities/user.entity';
+import { S3 } from 'aws-sdk';
+import { S3ConfigService } from '@/config/s3.config';
 
 @Injectable()
 export class ArticlesService {
+  private s3: S3;
+  private readonly logger = new Logger(ArticlesService.name);
+
   constructor(
     @InjectRepository(Article)
-    private readonly articlesRepository: Repository<Article>,
+    private readonly articlesRepo: Repository<Article>,
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
-  ) {}
+    private readonly s3ConfigService: S3ConfigService,
+  ) {
+    this.s3 = new S3({
+      accessKeyId: this.s3ConfigService.accessKeyId,
+      secretAccessKey: this.s3ConfigService.secretAccessKey,
+      region: this.s3ConfigService.region,
+    });
+  }
+
+  private async deleteImageFromS3(imageUrl: string): Promise<void> {
+    try {
+      const url = new URL(imageUrl);
+      const key = decodeURIComponent(url.pathname.substring(1));
+
+      await this.s3
+        .deleteObject({
+          Bucket: this.s3ConfigService.bucketName,
+          Key: key,
+        })
+        .promise();
+
+      this.logger.log(`Deleted image from S3: ${imageUrl}`);
+    } catch (error) {
+      this.logger.error('Failed to delete image from S3:', error.stack);
+    }
+  }
 
   async create(
     createArticleDto: CreateArticleDto,
@@ -24,11 +54,16 @@ export class ArticlesService {
       throw new NotFoundException('User not found');
     }
 
-    const article = this.articlesRepository.create({
-      ...createArticleDto,
+    const article = this.articlesRepo.create({
+      title: createArticleDto.title,
+      subtitle: createArticleDto.subtitle,
+      img: createArticleDto.img ?? null,
+      type: createArticleDto.type,
+      blocks: createArticleDto.blocks,
       user,
     });
-    return this.articlesRepository.save(article);
+
+    return this.articlesRepo.save(article);
   }
 
   async findAll(query: any): Promise<Article[]> {
@@ -48,11 +83,10 @@ export class ArticlesService {
     const sortField = validSortFields.includes(_sort) ? _sort : 'createdAt';
     const sortOrder = _order.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
 
-    const queryBuilder: SelectQueryBuilder<Article> = this.articlesRepository
+    const queryBuilder: SelectQueryBuilder<Article> = this.articlesRepo
       .createQueryBuilder('article')
       .leftJoinAndSelect('article.user', 'user');
 
-    // Updated to handle array type
     if (_type && _type.toUpperCase() !== 'ALL') {
       queryBuilder.andWhere(':type = ANY (article.type)', { type: _type });
     }
@@ -67,22 +101,19 @@ export class ArticlesService {
     queryBuilder.orderBy(`article.${sortField}`, sortOrder as 'ASC' | 'DESC');
     queryBuilder.skip(skip).take(take);
 
-    const articles = await queryBuilder.getMany();
-
-    return articles;
+    return queryBuilder.getMany();
   }
 
   async findOneById(id: string): Promise<Article> {
-    const article = await this.articlesRepository.findOne({
+    const article = await this.articlesRepo.findOne({
       where: { id },
       relations: ['user', 'comments', 'ratings'],
     });
     if (!article) {
       throw new NotFoundException('Article not found');
     }
-    article.views = article.views + 1;
-
-    await this.articlesRepository.save(article);
+    article.views += 1;
+    await this.articlesRepo.save(article);
 
     return article;
   }
@@ -91,22 +122,54 @@ export class ArticlesService {
     articleId: string,
     updateArticleDto: UpdateArticleDto,
   ): Promise<Article> {
-    await this.articlesRepository.update(articleId, updateArticleDto);
-    return this.articlesRepository.findOne({ where: { id: articleId } });
-  }
-
-  async setImage(articleId: string, imageUrl: string): Promise<Article> {
-    const article = await this.articlesRepository.findOne({
+    const article = await this.articlesRepo.findOne({
       where: { id: articleId },
     });
     if (!article) {
-      throw new Error('Article not found');
+      throw new NotFoundException('Article not found');
     }
+    if (updateArticleDto.img && updateArticleDto.img !== article.img) {
+      if (article.img) {
+        await this.deleteImageFromS3(article.img);
+      }
+      this.logger.log(`Setting new image for article ID: ${articleId}`);
+    }
+
+    Object.assign(article, updateArticleDto);
+
+    await this.articlesRepo.save(article);
+
+    const updatedArticle = await this.articlesRepo.findOne({
+      where: { id: articleId },
+      relations: ['user', 'comments', 'ratings'],
+    });
+
+    if (!updatedArticle) {
+      throw new NotFoundException('Article not found after update');
+    }
+
+    return updatedArticle;
+  }
+
+  async setImage(articleId: string, imageUrl: string | null): Promise<Article> {
+    const article = await this.articlesRepo.findOne({
+      where: { id: articleId },
+    });
+    if (!article) {
+      throw new NotFoundException('Article not found');
+    }
+
+    if (imageUrl === null && article.img) {
+      await this.deleteImageFromS3(article.img);
+      this.logger.log(`Removed image for article ID: ${articleId}`);
+    }
+
     article.img = imageUrl;
-    return this.articlesRepository.save(article);
+    return this.articlesRepo.save(article);
   }
 
   async remove(articleId: string): Promise<void> {
-    await this.articlesRepository.delete(articleId);
+    await this.articlesRepo.delete(articleId);
+    this.logger.log(`Deleted article ID: ${articleId}`);
   }
 }

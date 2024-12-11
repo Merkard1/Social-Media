@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
-import { UploadService } from './upload.service';
+import { ConfigModule } from '@nestjs/config';
+import { S3ConfigService } from '@/config/s3.config';
+import { MulterConfigService } from '@/config/multer.config';
 
 @Module({
-  providers: [UploadService],
-  exports: [UploadService],
+  imports: [ConfigModule],
+  providers: [S3ConfigService, MulterConfigService],
+  exports: [S3ConfigService, MulterConfigService],
 })
 export class UploadModule {}

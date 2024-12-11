@@ -14,7 +14,8 @@ declare global {
       metadata?: any;
       etag?: string;
       versionId?: string;
-      bucketRegion?: string;
     }
   }
 }
+
+export {};

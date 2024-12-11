@@ -1,10 +1,10 @@
+import { ArticlesService } from '@/modules/articles/articles.service';
 import {
   Injectable,
   CanActivate,
   ExecutionContext,
   ForbiddenException,
 } from '@nestjs/common';
-import { ArticlesService } from 'src/modules/articles/articles.service';
 
 @Injectable()
 export class ArticleOwnerGuard implements CanActivate {

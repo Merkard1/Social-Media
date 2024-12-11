@@ -19,11 +19,10 @@ declare module 'multer-s3' {
     contentType?: (
       req: Express.Request,
       file: Express.Multer.File,
-      callback: (error: any, contentType?: string) => void,
+      callback: (error: any, mime?: string) => void,
     ) => void;
   }
 
   function multerS3(options: MulterS3Options): StorageEngine;
-
   export = multerS3;
 }

@@ -11,7 +11,8 @@ import {
 import { User } from './user.entity';
 import { Comment } from './comment.entity';
 import { ArticleRating } from './article-rating.entity';
-import { ArticleType, BlockType } from '@/utils/types/const';
+import { BlockType } from '@/modules/articles/types/ArticleBlock';
+import { ArticleType } from '@/modules/articles/types/ArticleType';
 
 export class Block {
   id: string;
@@ -33,8 +34,8 @@ export class Article {
   @Column()
   subtitle: string;
 
-  @Column()
-  img: string;
+  @Column({ nullable: true })
+  img?: string;
 
   @Column('text', { array: true })
   type: ArticleType[];

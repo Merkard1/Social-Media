@@ -12,7 +12,7 @@ import { Article } from './article.entity';
 import { Comment } from './comment.entity';
 import { ArticleRating } from './article-rating.entity';
 import { Notification } from './notification.entity';
-import { Role } from '@/utils/types/const';
+import { Role } from '@/modules/users/types/UserRoles';
 
 @Entity()
 export class User {

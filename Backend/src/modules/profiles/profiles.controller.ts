@@ -85,7 +85,7 @@ export class ProfilesController {
     return updatedProfile;
   }
 
-  // @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'))
   @Delete()
   async deleteProfile(@Request() req) {
     const userId = req.user.sub;

@@ -2,7 +2,9 @@
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
+    // "strict": true,
     "removeComments": true,
+    "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
@@ -23,7 +25,5 @@
       "@common/*": ["common/*"],
       "@database/*": ["database/*"]
     }
-  },
-  "include": ["src/**/*", "src/types/**/*"],
-  "exclude": ["node_modules", "dist"]
+  }
 }
