@@ -1,3 +1,5 @@
+import { Article } from '@/modules/articles/entities/article.entity';
+import { User } from '@/modules/users/entities/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -5,8 +7,6 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { Article } from './article.entity';
-import { User } from './user.entity';
 
 @Entity()
 export class Notification {

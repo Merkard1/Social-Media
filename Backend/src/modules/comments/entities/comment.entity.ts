@@ -1,3 +1,5 @@
+import { Article } from '@/modules/articles/entities/article.entity';
+import { User } from '@/modules/users/entities/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -5,8 +7,6 @@ import {
   ManyToOne,
   CreateDateColumn,
 } from 'typeorm';
-import { User } from './user.entity';
-import { Article } from './article.entity';
 
 @Entity()
 export class Comment {

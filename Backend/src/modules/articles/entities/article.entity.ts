@@ -8,11 +8,11 @@ import {
   JoinColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from './user.entity';
-import { Comment } from './comment.entity';
-import { ArticleRating } from './article-rating.entity';
+import { User } from '../../users/entities/user.entity';
+import { Comment } from '../../comments/entities/comment.entity';
 import { BlockType } from '@/modules/articles/types/ArticleBlock';
 import { ArticleType } from '@/modules/articles/types/ArticleType';
+import { ArticleRating } from '@/modules/article-ratings/entities/article-rating.entity';
 
 export class Block {
   id: string;

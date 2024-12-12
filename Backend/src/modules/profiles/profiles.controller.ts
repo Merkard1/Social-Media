@@ -17,7 +17,7 @@ import { CreateProfileDto } from './dto/create-profile.dto';
 
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateProfileDto } from './dto/update-profile.dto';
-import { Profile } from '@/database/entities/profile.entity';
+import { Profile } from './entities/profile.entity';
 
 @Controller('profiles')
 export class ProfilesController {

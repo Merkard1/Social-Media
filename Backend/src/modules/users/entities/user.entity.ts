@@ -7,12 +7,12 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
-import { Profile } from './profile.entity';
-import { Article } from './article.entity';
-import { Comment } from './comment.entity';
-import { ArticleRating } from './article-rating.entity';
-import { Notification } from './notification.entity';
+import { Profile } from '../../profiles/entities/profile.entity';
+import { Article } from '../../articles/entities/article.entity';
+import { Comment } from '../../comments/entities/comment.entity';
+import { Notification } from '../../notifications/entities/notification.entity';
 import { Role } from '@/modules/users/types/UserRoles';
+import { ArticleRating } from '@/modules/article-ratings/entities/article-rating.entity';
 
 @Entity()
 export class User {
