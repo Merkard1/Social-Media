@@ -23,7 +23,6 @@ const Template: ComponentStory<typeof ProfileCard> = (args) => <ProfileCard {...
 export const Primary = Template.bind({});
 Primary.args = {
   data: {
-    username: "admin",
     first: "name",
     age: 20,
     lastname: "lastname",
@@ -37,7 +36,6 @@ export const Secondary = Template.bind({});
 Secondary.args = {
   data: {
     avatar: img,
-    username: "admin",
     first: "name",
     age: 20,
     lastname: "lastname",

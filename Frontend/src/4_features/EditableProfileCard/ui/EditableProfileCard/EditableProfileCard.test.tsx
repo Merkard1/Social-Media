@@ -13,14 +13,12 @@ import { profileReducer } from "../../model/slice/profileSlice";
 import { EditableProfileCard } from "./EditableProfileCard";
 
 const profile: Profile = {
-  id: "1",
   first: "admin",
   lastname: "admin",
   age: 465,
   currency: Currency.USD,
   country: Country.AU,
   city: "Some city",
-  username: "admin",
 };
 
 const options = {

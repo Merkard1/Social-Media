@@ -21,8 +21,6 @@ ArticleUpsert,
         const articleForm = getArticleUpsertForm(getState());
         const articleData = getArticlesDetailsData(getState());
 
-        console.log(articleForm);
-
         if (!articleData || !articleForm) {
           return rejectWithValue(["No Data"]);
         }

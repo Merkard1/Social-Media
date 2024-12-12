@@ -47,26 +47,56 @@ const articleApi = rtkApi.injectEndpoints({
     }),
 
     createArticle: build.mutation<ArticleDetailsResponse, ArticleUpsert>({
-      query: (articleData) => ({
-        url: "/articles",
-        method: "POST",
-        body: articleData,
-      }),
+      query: (articleData) => {
+        const formData = new FormData();
+
+        // Append textual fields
+        if (articleData.title) formData.append("title", articleData.title);
+        if (articleData.subtitle) formData.append("subtitle", articleData.subtitle);
+
+        // Append array fields as JSON strings
+        if (articleData.type) formData.append("type", JSON.stringify(articleData.type));
+        if (articleData.blocks) formData.append("blocks", JSON.stringify(articleData.blocks));
+
+        // Append image file if present
+        if (articleData.img) formData.append("image", articleData.img);
+
+        return {
+          url: "/articles",
+          method: "POST",
+          body: formData,
+          headers: {
+            "Content-Type": undefined,
+          },
+        };
+      },
       invalidatesTags: (result, error) => [{ type: "Article" }],
     }),
 
     changeArticle: build.mutation<ArticleDetailsResponse, ChangeArticleParams>({
-      query: ({ id, articleData }) => ({
-        url: `/articles/${id}`,
-        method: "PATCH",
-        body: articleData,
-      }),
+      query: ({ id, articleData }) => {
+        const formData = new FormData();
+
+        if (articleData.title) formData.append("title", articleData.title);
+        if (articleData.subtitle) formData.append("subtitle", articleData.subtitle);
+        if (articleData.type) formData.append("type", JSON.stringify(articleData.type));
+        if (articleData.blocks) formData.append("blocks", JSON.stringify(articleData.blocks));
+        if (articleData.img) formData.append("image", articleData.img as File);
+
+        return {
+          url: `/articles/${id}`,
+          method: "PATCH",
+          body: formData,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        };
+      },
       invalidatesTags: (result, error, { id }) => [{ type: "Article", id }],
     }),
 
     deleteArticle: build.mutation<{ success: boolean }, DeleteArticleParams>({
       query: ({ id }) => ({
-
         url: `/articles/${id}`,
         method: "DELETE",
       }),

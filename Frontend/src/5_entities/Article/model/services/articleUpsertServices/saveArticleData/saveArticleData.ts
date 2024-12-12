@@ -3,10 +3,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 
 import { createArticle } from "../../../../api/articleApi";
-import { ArticleDetailsResponse } from "../../../types/article";
 
 export const saveArticleData = createAsyncThunk<
-  ArticleDetailsResponse,
+  any,
   void,
   ThunkConfig<string[]>
 >(
@@ -26,7 +25,7 @@ export const saveArticleData = createAsyncThunk<
       if (error.response && error.response.data && Array.isArray(error.response.data.errors)) {
         return rejectWithValue(error.response.data.errors);
       }
-      return rejectWithValue(["Failed to save article data"]);
+      return rejectWithValue(["Failed to save article data", error]);
     }
   },
 );

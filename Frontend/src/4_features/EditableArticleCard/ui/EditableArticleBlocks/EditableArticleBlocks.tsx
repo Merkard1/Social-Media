@@ -33,7 +33,7 @@ export const EditableArticleBlocks = memo((props: EditableArticleBlocksProps) =>
     [dispatch],
   );
 
-  if (!formData?.blocks.length) return null;
+  if (!formData || !formData?.blocks?.length) return null;
 
   return (
     <Card padding="16" max>
