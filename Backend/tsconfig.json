@@ -22,8 +22,7 @@
     "paths": {
       "@/*": ["src/*"],
       "@modules/*": ["modules/*"],
-      "@common/*": ["common/*"],
-      "@database/*": ["database/*"]
+      "@common/*": ["common/*"]
     }
   }
 }

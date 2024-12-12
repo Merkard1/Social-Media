@@ -38,7 +38,7 @@ const userApi = rtkApi.injectEndpoints({
       }),
     }),
 
-    updateUserJSONSettings: build.mutation<User, any>({
+    updateUserJSONSettings: build.mutation<User, Omit<SetJsonSettingsParams, "userId">>({
       query: ({ jsonSettings }) => ({
         url: "/users",
         method: "PATCH",
@@ -46,7 +46,7 @@ const userApi = rtkApi.injectEndpoints({
           jsonSettings,
         },
       }),
-      invalidatesTags: (result, error, { userId }) => [{ type: "User", id: userId }],
+      invalidatesTags: (result, error) => [{ type: "User" }],
     }),
 
     deleteUser: build.mutation<{ message: string }, string>({

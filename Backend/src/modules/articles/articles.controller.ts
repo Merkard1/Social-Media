@@ -33,7 +33,7 @@ import {
   ApiOperation,
   ApiResponse,
 } from '@nestjs/swagger';
-import { Article } from '@/database/entities/article.entity';
+import { Article } from '@/modules/articles/enteties/article.entity';
 
 @Controller('articles')
 export class ArticlesController {

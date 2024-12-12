@@ -6,8 +6,8 @@ import {
   CreateDateColumn,
   Unique,
 } from 'typeorm';
-import { User } from './user.entity';
-import { Article } from './article.entity';
+import { User } from '../../users/entities/user.entity';
+import { Article } from '../../articles/enteties/article.entity';
 
 @Entity('ratings')
 @Unique(['user', 'article'])
