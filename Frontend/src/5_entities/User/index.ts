@@ -12,12 +12,12 @@ export { getUserInited } from "./model/selectors/getUserInited/getUserInited";
 export {
   useRegisterUserMutation,
   useGetUserByUsernameQuery,
-  useSetJsonSettingsMutation,
+  useUpdateUserJSONSettingsMutation,
   useGetUserDataByIdQuery,
   useDeleteUserMutation,
   registerUser,
   getUserByUsername,
-  setJsonSettings,
+  updateUserJSONSettings,
   getUserDataById,
   deleteUser,
 } from "./api/userApi";

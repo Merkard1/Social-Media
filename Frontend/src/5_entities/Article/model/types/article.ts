@@ -35,7 +35,7 @@ export interface ArticleDetailsResponse {
   id: string;
   title: string;
   subtitle: string;
-  img: string;
+  img: any | null;
 
   type: ArticleType[];
   blocks: ArticleBlock[];

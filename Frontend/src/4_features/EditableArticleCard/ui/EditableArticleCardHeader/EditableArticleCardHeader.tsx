@@ -8,10 +8,11 @@ import {
   updateArticleData,
   saveArticleData,
   articleUpsertActions,
-  useGetArticleByIdQuery } from "@/5_entities/Article";
+  useGetArticleByIdQuery,
+  useDeleteArticleMutation } from "@/5_entities/Article";
 import { getUserAuthData } from "@/5_entities/User";
 
-import { getRouteArticleDetails } from "@/6_shared/const/router";
+import { getRouteArticleDetails, getRouteArticles } from "@/6_shared/const/router";
 import { useAppDispatch } from "@/6_shared/lib/hooks/useAppDispatch/useAppDispatch";
 import { Button } from "@/6_shared/ui/Button/Button";
 import { Card } from "@/6_shared/ui/Card/Card";
@@ -40,6 +41,8 @@ export const EditableArticleCardHeader = memo(
     const readonly = useSelector(getArticleUpsertReadOnly);
     const canEdit = !id || authData?.id === articleData?.user?.id;
 
+    const [deleteArticle, { isLoading: isDeleting, error: deleteError }] = useDeleteArticleMutation();
+
     const onEdit = useCallback(() => {
       dispatch(articleUpsertActions.setReadonly(false));
     }, [dispatch]);
@@ -47,6 +50,20 @@ export const EditableArticleCardHeader = memo(
     const onCancelEdit = useCallback(() => {
       dispatch(articleUpsertActions.cancelEdit());
     }, [dispatch]);
+
+    const onDeleteEdit = useCallback(async () => {
+      if (!id) {
+        alert("Cannot delete an article without an ID.");
+        return;
+      }
+      try {
+        const result = await deleteArticle({ id });
+        alert("Article deleted successfully.");
+        navigate(getRouteArticles());
+      } catch (error: any) {
+        alert("An error occurred while deleting the article. Please try again.");
+      }
+    }, [deleteArticle, id, navigate]);
 
     const onSave = useCallback(async () => {
       try {
@@ -56,10 +73,12 @@ export const EditableArticleCardHeader = memo(
         } else {
           result = await dispatch(saveArticleData()).unwrap();
         }
-
-        if (result && result.id) {
-          navigate(getRouteArticleDetails(result.id));
+        if (result && result?.article?.id) {
+          navigate(getRouteArticleDetails(result.article.id));
+        } else {
+          navigate(getRouteArticles());
         }
+        console.log(result);
       } catch (error) {
         console.error(id ? "Failed to update article:" : "Failed to save article:", error);
       }
@@ -96,6 +115,15 @@ export const EditableArticleCardHeader = memo(
                 </Button>
               ) : (
                 <HStack gap="16">
+                  {id && (
+                    <Button
+                      onClick={onDeleteEdit}
+                      data-testid="EditableProfileCardHeader.DeleteButton"
+                      color="error"
+                    >
+                      {t("Delete Article")}
+                    </Button>
+                  )}
                   {id && (
                     <Button
                       onClick={onCancelEdit}

@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 
-import { setJsonSettings } from "../../api/userApi";
+import { updateUserJSONSettings } from "../../api/userApi";
 import { getUserAuthData } from "../selectors/getUserAuthData/getUserAuthData";
 import { getJsonSettings } from "../selectors/jsonSettings/jsonSettings";
 import { JsonSettings } from "../types/jsonSettings";
@@ -26,8 +26,7 @@ export const saveJsonSettings = createAsyncThunk<
 
   try {
     const response = await dispatch(
-      setJsonSettings({
-        userId: userData.id,
+      updateUserJSONSettings({
         jsonSettings: mergedSettings,
       }),
     ).unwrap();
