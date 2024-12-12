@@ -8,9 +8,9 @@ import {
   JoinColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from './user.entity';
-import { Comment } from './comment.entity';
-import { ArticleRating } from './article-rating.entity';
+import { User } from '../../users/entities/user.entity';
+import { Comment } from '../../comments/entities/comment.entity';
+import { ArticleRating } from '../../article-ratings/entities/article-rating.entity';
 import { BlockType } from '@/modules/articles/types/ArticleBlock';
 import { ArticleType } from '@/modules/articles/types/ArticleType';
 

@@ -3,8 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
-import { Article } from '@/database/entities/article.entity';
-import { User } from '@/database/entities/user.entity';
+import { Article } from '@/modules/articles/enteties/article.entity';
+import { User } from '@/modules/users/entities/user.entity';
 import { S3 } from 'aws-sdk';
 import { S3ConfigService } from '@/config/s3.config';
 

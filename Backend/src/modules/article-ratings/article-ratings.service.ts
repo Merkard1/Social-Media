@@ -7,9 +7,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { HasUserRatedResponseDto } from './dto/has-user-rated-response.dto';
-import { ArticleRating } from '@/database/entities/article-rating.entity';
-import { Article } from '@/database/entities/article.entity';
-import { User } from '@/database/entities/user.entity';
+import { ArticleRating } from '@/modules/article-ratings/entities/article-rating.entity';
+import { Article } from '@/modules/articles/enteties/article.entity';
+import { User } from '@/modules/users/entities/user.entity';
 
 @Injectable()
 export class RatingsService {

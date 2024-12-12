@@ -3,8 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ArticlesService } from './articles.service';
 import { ArticlesController } from './articles.controller';
 import { ArticleOwnerGuard } from './guards/article-owner.guard';
-import { Article } from '@/database/entities/article.entity';
-import { User } from '@/database/entities/user.entity';
+import { Article } from '@/modules/articles/enteties/article.entity';
+import { User } from '@/modules/users/entities/user.entity';
 import { S3Module } from '../s3/s3.module';
 import { MulterModule } from '@nestjs/platform-express';
 

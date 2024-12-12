@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { Profile } from '@/database/entities/profile.entity';
-import { User } from '@/database/entities/user.entity';
+import { User } from '@/modules/users/entities/user.entity';
 
 @Injectable()
 export class ProfilesService {

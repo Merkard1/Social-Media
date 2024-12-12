@@ -1,6 +1,6 @@
-import { Article } from '@/database/entities/article.entity';
-import { Comment } from '@/database/entities/comment.entity';
-import { User } from '@/database/entities/user.entity';
+import { Article } from '@/modules/articles/enteties/article.entity';
+import { Comment } from '@/modules/comments/entities/comment.entity';
+import { User } from '@/modules/users/entities/user.entity';
 import {
   Injectable,
   NotFoundException,

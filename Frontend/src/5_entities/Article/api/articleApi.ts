@@ -87,9 +87,6 @@ const articleApi = rtkApi.injectEndpoints({
           url: `/articles/${id}`,
           method: "PATCH",
           body: formData,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
         };
       },
       invalidatesTags: (result, error, { id }) => [{ type: "Article", id }],

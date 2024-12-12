@@ -8,10 +8,10 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Profile } from './profile.entity';
-import { Article } from './article.entity';
-import { Comment } from './comment.entity';
-import { ArticleRating } from './article-rating.entity';
-import { Notification } from './notification.entity';
+import { Article } from '../../articles/enteties/article.entity';
+import { Comment } from '../../comments/entities/comment.entity';
+import { ArticleRating } from '../../article-ratings/entities/article-rating.entity';
+import { Notification } from '../../notifications/entities/notification.entity';
 import { Role } from '@/modules/users/types/UserRoles';
 
 @Entity()
