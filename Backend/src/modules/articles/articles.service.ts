@@ -38,10 +38,8 @@ export class ArticlesService {
           Key: key,
         })
         .promise();
-
-      this.logger.log(`Deleted image from S3: ${imageUrl}`);
     } catch (error) {
-      this.logger.error('Failed to delete image from S3:', error.stack);
+      Logger.error(error);
     }
   }
 
@@ -132,7 +130,6 @@ export class ArticlesService {
       if (article.img) {
         await this.deleteImageFromS3(article.img);
       }
-      this.logger.log(`Setting new image for article ID: ${articleId}`);
     }
 
     Object.assign(article, updateArticleDto);
@@ -161,7 +158,6 @@ export class ArticlesService {
 
     if (imageUrl === null && article.img) {
       await this.deleteImageFromS3(article.img);
-      this.logger.log(`Removed image for article ID: ${articleId}`);
     }
 
     article.img = imageUrl;
@@ -170,6 +166,5 @@ export class ArticlesService {
 
   async remove(articleId: string): Promise<void> {
     await this.articlesRepo.delete(articleId);
-    this.logger.log(`Deleted article ID: ${articleId}`);
   }
 }
