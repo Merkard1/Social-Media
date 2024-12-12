@@ -78,7 +78,6 @@ export const EditableArticleCardHeader = memo(
         } else {
           navigate(getRouteArticles());
         }
-        console.log(result);
       } catch (error) {
         console.error(id ? "Failed to update article:" : "Failed to save article:", error);
       }

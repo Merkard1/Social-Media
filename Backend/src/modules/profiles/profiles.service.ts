@@ -11,6 +11,7 @@ import { UpdateProfileDto } from './dto/update-profile.dto';
 import { User } from '@/modules/users/entities/user.entity';
 import { Profile } from './entities/profile.entity';
 
+
 @Injectable()
 export class ProfilesService {
   constructor(

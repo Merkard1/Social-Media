@@ -1,4 +1,4 @@
-import { Article } from '@/modules/articles/entities/article.entity';
+import { Article } from '@/modules/articles/enteties/article.entity';
 import { Comment } from '@/modules/comments/entities/comment.entity';
 import { User } from '@/modules/users/entities/user.entity';
 import {

@@ -1,4 +1,3 @@
-// user.entity.ts
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -94,3 +93,4 @@ export class User {
   @OneToMany(() => Notification, (notification) => notification.recipient)
   receivedNotifications: Notification[];
 }
+
