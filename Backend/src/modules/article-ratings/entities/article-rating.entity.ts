@@ -1,3 +1,5 @@
+import { Article } from '@/modules/articles/entities/article.entity';
+import { User } from '@/modules/users/entities/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -6,8 +8,6 @@ import {
   CreateDateColumn,
   Unique,
 } from 'typeorm';
-import { User } from '../../users/entities/user.entity';
-import { Article } from '../../articles/enteties/article.entity';
 
 @Entity('ratings')
 @Unique(['user', 'article'])
