@@ -1,5 +1,6 @@
 export { userReducer, userActions } from "./model/slice/userSlice";
-export type { UserSchema, User } from "./model/types/user";
+export type { User } from "./model/types/user";
+export type { UserSchema } from "./model/types/UserSchema";
 export type { UserRole } from "./model/consts/userConsts";
 export { useUserAuthData, getUserAuthData } from "./model/selectors/getUserAuthData/getUserAuthData";
 export { useUserInited } from "./model/selectors/getUserInited/getUserInited";

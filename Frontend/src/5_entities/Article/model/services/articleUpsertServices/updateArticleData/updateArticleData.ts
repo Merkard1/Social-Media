@@ -29,7 +29,7 @@ ArticleUpsert,
           const updatedArticleData: ArticleUpdateInput = {
             title: articleForm.title,
             subtitle: articleForm.subtitle,
-            img: articleForm.img,
+            image: articleForm.image,
             type: articleForm.type as ArticleType[],
             blocks: articleForm.blocks,
           };

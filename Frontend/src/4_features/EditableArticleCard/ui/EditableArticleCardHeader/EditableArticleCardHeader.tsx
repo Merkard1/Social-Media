@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import {
-  getArticleUpsertReadOnly,
   updateArticleData,
   saveArticleData,
   articleUpsertActions,
@@ -14,6 +13,7 @@ import { getUserAuthData } from "@/5_entities/User";
 
 import { getRouteArticleDetails, getRouteArticles } from "@/6_shared/const/router";
 import { useAppDispatch } from "@/6_shared/lib/hooks/useAppDispatch/useAppDispatch";
+import { useInitialEffect } from "@/6_shared/lib/hooks/useInitialEffect/useInitialEffect";
 import { Button } from "@/6_shared/ui/Button/Button";
 import { Card } from "@/6_shared/ui/Card/Card";
 import { HStack } from "@/6_shared/ui/Stack";
@@ -38,18 +38,14 @@ export const EditableArticleCardHeader = memo(
     } = useGetArticleByIdQuery({ id: id || "" }, { skip: !id });
 
     const authData = useSelector(getUserAuthData);
-    const readonly = useSelector(getArticleUpsertReadOnly);
     const canEdit = !id || authData?.id === articleData?.user?.id;
 
     const [deleteArticle, { isLoading: isDeleting, error: deleteError }] = useDeleteArticleMutation();
 
-    const onEdit = useCallback(() => {
-      dispatch(articleUpsertActions.setReadonly(false));
-    }, [dispatch]);
-
-    const onCancelEdit = useCallback(() => {
+    const onCancel = useCallback(() => {
       dispatch(articleUpsertActions.cancelEdit());
-    }, [dispatch]);
+      navigate(-1);
+    }, [dispatch, navigate]);
 
     const onDeleteEdit = useCallback(async () => {
       if (!id) {
@@ -65,6 +61,12 @@ export const EditableArticleCardHeader = memo(
       }
     }, [deleteArticle, id, navigate]);
 
+    useInitialEffect(() => {
+      if (!canEdit) {
+        navigate(-1);
+      }
+    });
+
     const onSave = useCallback(async () => {
       try {
         let result;
@@ -73,6 +75,7 @@ export const EditableArticleCardHeader = memo(
         } else {
           result = await dispatch(saveArticleData()).unwrap();
         }
+        console.log(result);
         if (result && result?.article?.id) {
           navigate(getRouteArticleDetails(result.article.id));
         } else {
@@ -104,44 +107,33 @@ export const EditableArticleCardHeader = memo(
         <HStack max justify="between">
           <Text title={t(title)} />
           {canEdit && (
-            <div>
-              {readonly ? (
+            <HStack gap="16">
+              {id && (
                 <Button
-                  onClick={onEdit}
-                  data-testid="EditableProfileCardHeader.EditButton"
+                  onClick={onDeleteEdit}
+                  data-testid="EditableProfileCardHeader.DeleteButton"
+                  color="error"
                 >
-                  {t("Edit")}
+                  {t("Delete Article")}
                 </Button>
-              ) : (
-                <HStack gap="16">
-                  {id && (
-                    <Button
-                      onClick={onDeleteEdit}
-                      data-testid="EditableProfileCardHeader.DeleteButton"
-                      color="error"
-                    >
-                      {t("Delete Article")}
-                    </Button>
-                  )}
-                  {id && (
-                    <Button
-                      onClick={onCancelEdit}
-                      data-testid="EditableProfileCardHeader.CancelButton"
-                      color="error"
-                    >
-                      {t("Cancel")}
-                    </Button>
-                  )}
-                  <Button
-                    onClick={onSave}
-                    data-testid="EditableProfileCardHeader.SaveButton"
-                    color="success"
-                  >
-                    {t(id ? "Save" : "Create")}
-                  </Button>
-                </HStack>
               )}
-            </div>
+              {id && (
+                <Button
+                  onClick={onCancel}
+                  data-testid="EditableProfileCardHeader.CancelButton"
+                  color="error"
+                >
+                  {t("Cancel")}
+                </Button>
+              )}
+              <Button
+                onClick={onSave}
+                data-testid="EditableProfileCardHeader.SaveButton"
+                color="success"
+              >
+                {t(id ? "Save" : "Create")}
+              </Button>
+            </HStack>
           )}
         </HStack>
       </Card>

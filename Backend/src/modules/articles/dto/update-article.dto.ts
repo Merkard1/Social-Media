@@ -35,7 +35,7 @@ export class UpdateArticleDto extends PartialType(CreateArticleDto) {
   })
   @IsOptional()
   @IsString()
-  img?: string | null;
+  image?: string | null;
 
   @ApiPropertyOptional({
     description: 'Types/categories of the article',

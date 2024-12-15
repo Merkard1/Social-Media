@@ -34,8 +34,6 @@ export {
   useArticleUpsertForm,
   getArticleUpsertIsLoading,
   useArticleUpsertIsLoading,
-  getArticleUpsertReadOnly,
-  useArticleUpsertReadOnly,
 } from "./model/selectors/articleUpsertSelectors/articlesUpsertSelectors";
 export {
   useArticlesPageOrder,

@@ -2,6 +2,8 @@ import { Comment } from "@/5_entities/Comment";
 import { Rating } from "@/5_entities/Rating";
 import { User } from "@/5_entities/User";
 
+import { Image } from "@/6_shared/ui/ImageUploader";
+
 import { ArticleBlockType, ArticleType } from "../consts/articleConsts";
 
 export interface ArticleBlockBase {
@@ -35,7 +37,7 @@ export interface ArticleDetailsResponse {
   id: string;
   title: string;
   subtitle: string;
-  img: any | null;
+  image: Image;
 
   type: ArticleType[];
   blocks: ArticleBlock[];

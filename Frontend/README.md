@@ -159,7 +159,7 @@ is used.
 - [Country](/Frontend/src/5_entities/Country)
 - [Currency](/Frontend/src/5_entities/Currency)
 - [Dialog](/Frontend/src/5_entities/Dialog)
-- [ImageLoader](/Frontend/src/5_entities/ImageLoader)
+- [ImageLoader](/Frontend/src/6_shared/ui/ImageUploader)
 - [Message](/Frontend/src/5_entities/Message)
 - [Notification](/Frontend/src/5_entities/Notification)
 - [Profile](/Frontend/src/5_entities/Profile)

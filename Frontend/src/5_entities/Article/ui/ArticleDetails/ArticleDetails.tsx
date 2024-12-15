@@ -60,7 +60,7 @@ const Content = () => {
     <>
       <Text title={article.title} size="l" bold />
       <Text title={article.subtitle} />
-      {article.img && (
+      {article.image && (
         <AppImage
           fallback={
             <Skeleton
@@ -69,7 +69,7 @@ const Content = () => {
               border="16px"
             />
           }
-          src={article.img}
+          src={article.image as string}
           className={cls.img}
         />
       )}

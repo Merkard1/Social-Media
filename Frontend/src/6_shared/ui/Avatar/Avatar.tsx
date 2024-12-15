@@ -11,7 +11,7 @@ import cls from "./Avatar.module.scss";
 
 interface AvatarProps {
     className?: string;
-    src?: string;
+    src?: any;
     size?: number;
     alt?: string;
 }

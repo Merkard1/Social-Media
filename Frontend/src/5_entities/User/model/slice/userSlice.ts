@@ -7,7 +7,8 @@ import { buildSlice } from "@/6_shared/lib/store/buildSlice";
 import { initAuthData } from "../services/initAuthData";
 import { saveJsonSettings } from "../services/saveJsonSettings";
 import { JsonSettings } from "../types/jsonSettings";
-import { User, UserSchema } from "../types/user";
+import { User } from "../types/user";
+import { UserSchema } from "../types/UserSchema";
 
 const initialState: UserSchema = {
   isLoading: false,
