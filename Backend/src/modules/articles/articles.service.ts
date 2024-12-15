@@ -24,6 +24,7 @@ export class ArticlesService {
       accessKeyId: this.s3ConfigService.accessKeyId,
       secretAccessKey: this.s3ConfigService.secretAccessKey,
       region: this.s3ConfigService.region,
+      logger: console,
     });
   }
 
@@ -55,7 +56,7 @@ export class ArticlesService {
     const article = this.articlesRepo.create({
       title: createArticleDto.title,
       subtitle: createArticleDto.subtitle,
-      img: createArticleDto.img ?? null,
+      image: createArticleDto.image ?? null,
       type: createArticleDto.type,
       blocks: createArticleDto.blocks,
       user,
@@ -126,9 +127,9 @@ export class ArticlesService {
     if (!article) {
       throw new NotFoundException('Article not found');
     }
-    if (updateArticleDto.img && updateArticleDto.img !== article.img) {
-      if (article.img) {
-        await this.deleteImageFromS3(article.img);
+    if (updateArticleDto.image && updateArticleDto.image !== article.image) {
+      if (article.image) {
+        await this.deleteImageFromS3(article.image);
       }
     }
 
@@ -156,11 +157,11 @@ export class ArticlesService {
       throw new NotFoundException('Article not found');
     }
 
-    if (imageUrl === null && article.img) {
-      await this.deleteImageFromS3(article.img);
+    if (imageUrl === null && article.image) {
+      await this.deleteImageFromS3(article.image);
     }
 
-    article.img = imageUrl;
+    article.image = imageUrl;
     return this.articlesRepo.save(article);
   }
 

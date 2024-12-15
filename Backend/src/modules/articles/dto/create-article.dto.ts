@@ -34,7 +34,7 @@ export class CreateArticleDto {
   })
   @IsOptional()
   @IsString()
-  img?: string | null;
+  image?: string | null;
 
   @ApiProperty({
     description: 'Types/categories of the article',

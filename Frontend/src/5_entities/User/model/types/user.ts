@@ -15,11 +15,3 @@ export interface User {
   jsonSettings: JsonSettings | null;
   profile: Profile | null;
 }
-
-export interface UserSchema {
-  authData?: User;
-  _inited: boolean;
-  isLoading: boolean;
-  error?: string;
-  access_token?: string;
-}

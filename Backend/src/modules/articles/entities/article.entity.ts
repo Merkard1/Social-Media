@@ -89,7 +89,7 @@ export class Article {
     description: 'URL of the main image for the article, if any',
   })
   @Column({ nullable: true })
-  img?: string;
+  image?: string;
 
   @ApiProperty({
     example: ['technology', 'education'],

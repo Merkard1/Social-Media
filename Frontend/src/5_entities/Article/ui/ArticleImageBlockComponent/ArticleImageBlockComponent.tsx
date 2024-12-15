@@ -1,10 +1,9 @@
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
-import { ImageLoader } from "@/5_entities/ImageLoader";
-
 import { Button } from "@/6_shared/ui/Button/Button";
 import { Card } from "@/6_shared/ui/Card/Card";
+import { ImageUploader } from "@/6_shared/ui/ImageUploader";
 import { Input } from "@/6_shared/ui/Input/Input";
 import { HStack, VStack } from "@/6_shared/ui/Stack";
 import { Text } from "@/6_shared/ui/Text/Text";
@@ -31,7 +30,7 @@ export const ArticleImageBlockComponent = memo((props: ArticleImageBlockComponen
     }
   }, [block.id, onChange]);
 
-  const handleImageUpload = useCallback((imgSrc: string) => {
+  const handleImageUpload = useCallback((imgSrc: File) => {
     if (onChange) {
       onChange(block.id, { src: imgSrc });
     }
@@ -53,7 +52,7 @@ export const ArticleImageBlockComponent = memo((props: ArticleImageBlockComponen
               {t("Delete Block")}
             </Button>
           </HStack>
-          <ImageLoader label={t("Upload article image")} onImageUpload={handleImageUpload} />
+          <ImageUploader label={t("Upload article image")} onImageUpload={handleImageUpload} />
           <Input
             value={block.title}
             label={`${t("Title")}:`}

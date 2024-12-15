@@ -3,23 +3,24 @@ import { useTranslation } from "react-i18next";
 
 import { classNames } from "@/6_shared/lib/classNames/classNames";
 
-import cls from "./ImageLoader.module.scss";
+import { Image } from "../model/type/ImageUploader";
 
-type variant = "square" | "round";
+import cls from "./ImageUploader.module.scss";
 
-interface ImageLoaderProps {
-  // TODO
-  onImageUpload: any;
+type Variant = "square" | "round";
+
+interface ImageUploaderProps {
+  onImageUpload: (file: File) => void;
   label?: string;
-  className?: string;
-  variant?: variant;
+  variant?: Variant;
+  src?: Image;
 }
 
-export const ImageLoader: React.FC<ImageLoaderProps> = ({
+export const ImageUploader: React.FC<ImageUploaderProps> = ({
   onImageUpload,
   label = "Drag & Drop a file or click to upload",
-  className,
   variant = "square",
+  src,
 }) => {
   const { t } = useTranslation();
   const [preview, setPreview] = useState<string | null>(null);
@@ -34,31 +35,31 @@ export const ImageLoader: React.FC<ImageLoaderProps> = ({
     [onImageUpload],
   );
 
-  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) handleImageUpload(file);
-  };
+  }, [handleImageUpload]);
 
-  const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
+  const onDrop = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     const file = event.dataTransfer.files?.[0];
     if (file) handleImageUpload(file);
-  };
+  }, [handleImageUpload]);
 
-  const preventDefault = (event: React.DragEvent<HTMLDivElement>) => {
+  const preventDefault = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-  };
+  }, []);
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       document.getElementById("image-input")?.click();
     }
-  };
+  }, []);
 
   return (
     <div
-      className={classNames(cls.ImageLoader, {}, [cls[variant]])}
+      className={classNames(cls.ImageUploader, {}, [cls[variant]])}
       onDrop={onDrop}
       onDragOver={preventDefault}
       onDragEnter={preventDefault}
@@ -75,8 +76,8 @@ export const ImageLoader: React.FC<ImageLoaderProps> = ({
         className={cls.input}
         hidden
       />
-      {preview ? (
-        <img src={preview} alt={t("Preview")} className={cls.preview} />
+      {src ? (
+        <img src={src as string} alt={t("Preview")} className={cls.preview} />
       ) : (
         <p className={cls.placeholder}>{label}</p>
       )}
@@ -84,4 +85,4 @@ export const ImageLoader: React.FC<ImageLoaderProps> = ({
   );
 };
 
-export default memo(ImageLoader);
+export default memo(ImageUploader);

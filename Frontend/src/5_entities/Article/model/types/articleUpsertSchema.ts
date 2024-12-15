@@ -1,10 +1,12 @@
+import { Image } from "@/6_shared/ui/ImageUploader";
+
 import { ArticleBlock } from "./article";
 
 export interface ArticleUpsert {
   id: string;
   title: string;
   subtitle: string;
-  img: string;
+  image: Image;
   type: string[];
   blocks: ArticleBlock[];
   user: {
@@ -18,7 +20,6 @@ export interface ArticleUpsert {
 }
 
 export interface ArticleUpsertSchema {
-  readOnly: boolean;
   isLoading: boolean;
   error?: string;
   validateErrors?: string[];

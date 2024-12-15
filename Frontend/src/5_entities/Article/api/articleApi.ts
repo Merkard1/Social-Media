@@ -59,7 +59,7 @@ const articleApi = rtkApi.injectEndpoints({
         if (articleData.blocks) formData.append("blocks", JSON.stringify(articleData.blocks));
 
         // Append image file if present
-        if (articleData.img) formData.append("image", articleData.img);
+        if (articleData.image) formData.append("image", articleData.image);
 
         return {
           url: "/articles",
@@ -81,7 +81,7 @@ const articleApi = rtkApi.injectEndpoints({
         if (articleData.subtitle) formData.append("subtitle", articleData.subtitle);
         if (articleData.type) formData.append("type", JSON.stringify(articleData.type));
         if (articleData.blocks) formData.append("blocks", JSON.stringify(articleData.blocks));
-        if (articleData.img) formData.append("image", articleData.img as File);
+        if (articleData.image) formData.append("image", articleData.image);
 
         return {
           url: `/articles/${id}`,

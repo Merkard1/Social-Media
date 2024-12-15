@@ -16,13 +16,14 @@ export class MulterConfigService {
       accessKeyId: this.s3ConfigService.accessKeyId,
       secretAccessKey: this.s3ConfigService.secretAccessKey,
       region: this.s3ConfigService.region,
+      logger: console,
     });
 
     return {
       storage: multerS3({
         s3: s3,
         bucket: this.s3ConfigService.bucketName,
-        acl: 'public-read',
+        // acl: 'public-read',
         key: (
           req: Request,
           file: Express.Multer.File,

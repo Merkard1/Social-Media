@@ -1,4 +1,3 @@
-import { Article } from '@/modules/articles/enteties/article.entity';
 import { Comment } from '@/modules/comments/entities/comment.entity';
 import { User } from '@/modules/users/entities/user.entity';
 import {
@@ -8,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Article } from '@/modules/articles/entities/article.entity';
 
 @Injectable()
 export class CommentsService {

@@ -5,7 +5,7 @@ import {
   articleReducer,
   fetchArticleData,
   articleUpsertActions,
-  useArticleUpsertReadOnly,
+  ArticleUpsert,
 } from "@/5_entities/Article";
 
 import {
@@ -18,7 +18,7 @@ import { VStack } from "@/6_shared/ui/Stack";
 import { EditableArticleBlocks } from "../EditableArticleBlocks/EditableArticleBlocks";
 import { EditableArticleCardFooter } from "../EditableArticleCardFooter/EditableArticleCardFooter";
 import { EditableArticleCardHeader } from "../EditableArticleCardHeader/EditableArticleCardHeader";
-import { EditableArticleTitle } from "../EditableArticleTitle/EditableArticleTitle";
+import { EditableArticleMainBlock } from "../EditableArticleMainBlock/EditableArticleMainBlock";
 
 interface ArticlePageProps {
   id?: string;
@@ -33,14 +33,27 @@ export const EditableArticleCard = memo((props: ArticlePageProps) => {
   const { t } = useTranslation("article");
 
   const dispatch = useAppDispatch();
-  const readOnly = useArticleUpsertReadOnly();
 
   useEffect(() => {
     if (id) {
       dispatch(fetchArticleData(id)).then((response) => {
         if (fetchArticleData.fulfilled.match(response)) {
           const article = response.payload;
-          dispatch(articleUpsertActions.initializeArticleForm(article));
+
+          const upsertArticle: ArticleUpsert = {
+            id: article.id,
+            title: article.title,
+            subtitle: article.subtitle,
+            image: article.image || null,
+            type: article.type,
+            blocks: article.blocks,
+            user: article.user,
+            views: article.views,
+            createdAt: article.createdAt,
+            updatedAt: article.updatedAt,
+          };
+
+          dispatch(articleUpsertActions.initializeArticleForm(upsertArticle));
         } else {
           console.error("Failed to fetch article data");
         }
@@ -54,9 +67,9 @@ export const EditableArticleCard = memo((props: ArticlePageProps) => {
     <DynamicModuleLoader reducers={reducers}>
       <VStack gap="16" max>
         <EditableArticleCardHeader id={id || ""} />
-        <EditableArticleTitle readOnly={readOnly} />
-        <EditableArticleBlocks readOnly={readOnly} />
-        {!readOnly && <EditableArticleCardFooter />}
+        <EditableArticleMainBlock />
+        <EditableArticleBlocks />
+        <EditableArticleCardFooter />
       </VStack>
     </DynamicModuleLoader>
   );

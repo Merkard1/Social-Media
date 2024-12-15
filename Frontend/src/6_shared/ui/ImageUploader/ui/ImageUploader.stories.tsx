@@ -1,10 +1,10 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
-import { ImageLoader } from "./ImageLoader";
+import { ImageUploader } from "./ImageUploader";
 
 export default {
-  title: "5_entities/ImageLoader",
-  component: ImageLoader,
+  title: "5_entities/ImageUploader",
+  component: ImageUploader,
   argTypes: {
     label: {
       control: "text",
@@ -20,10 +20,10 @@ export default {
       description: "Callback triggered when an image is uploaded.",
     },
   },
-} as ComponentMeta<typeof ImageLoader>;
+} as ComponentMeta<typeof ImageUploader>;
 
-const Template: ComponentStory<typeof ImageLoader> = (args) => (
-  <ImageLoader {...args} />
+const Template: ComponentStory<typeof ImageUploader> = (args) => (
+  <ImageUploader {...args} />
 );
 
 export const Default = Template.bind({});

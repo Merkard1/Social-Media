@@ -9,7 +9,6 @@ import { ArticleBlock } from "../types/article";
 import { ArticleUpsert, ArticleUpsertSchema } from "../types/articleUpsertSchema";
 
 const initialState: ArticleUpsertSchema = {
-  readOnly: false,
   isLoading: false,
   error: undefined,
   validateErrors: undefined,
@@ -27,7 +26,7 @@ export const articleUpsertSlice = buildSlice({
         id: "",
         title: "",
         subtitle: "",
-        img: "",
+        image: null,
         type: [],
         blocks: [],
         user: null,
@@ -37,21 +36,14 @@ export const articleUpsertSlice = buildSlice({
       };
       state.form = emptyArticle;
       state.initialData = emptyArticle;
-      state.readOnly = false;
     },
     // Initialize article form
     initializeArticleForm: (state, action: PayloadAction<ArticleUpsert>) => {
       state.form = { ...action.payload };
       state.initialData = { ...action.payload };
-      state.readOnly = true;
-    },
-    // Change readonly
-    setReadonly: (state, action: PayloadAction<boolean>) => {
-      state.readOnly = action.payload;
     },
     // Cancel edit
     cancelEdit: (state) => {
-      state.readOnly = true;
       state.validateErrors = undefined;
       if (state.initialData) {
         state.form = { ...state.initialData };
@@ -106,7 +98,6 @@ export const articleUpsertSlice = buildSlice({
           state.isLoading = false;
           state.form = { ...action.payload };
           state.initialData = { ...action.payload };
-          state.readOnly = true;
         },
       )
       .addCase(saveArticleData.rejected, (state, action) => {
@@ -124,7 +115,6 @@ export const articleUpsertSlice = buildSlice({
           state.isLoading = false;
           state.form = { ...action.payload };
           state.initialData = { ...action.payload };
-          state.readOnly = true;
           state.validateErrors = undefined;
         },
       )

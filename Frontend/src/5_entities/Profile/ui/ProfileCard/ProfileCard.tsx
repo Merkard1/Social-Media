@@ -1,12 +1,12 @@
-import { memo } from "react";
+import { memo, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { CountrySelect } from "@/5_entities/Country";
 import { CurrencySelect } from "@/5_entities/Currency";
-import ImageLoader from "@/5_entities/ImageLoader/ui/ImageLoader";
 
 import { Avatar } from "@/6_shared/ui/Avatar/Avatar";
 import { Card } from "@/6_shared/ui/Card/Card";
+import ImageLoader from "@/6_shared/ui/ImageUploader/ui/ImageUploader";
 import { Input } from "@/6_shared/ui/Input/Input";
 import { Skeleton } from "@/6_shared/ui/Skeleton/Skeleton";
 import { HStack, VStack } from "@/6_shared/ui/Stack";
@@ -33,6 +33,22 @@ const ProfileCard = memo((props : ProfileCardProps) => {
     onChangeFormField,
   } = props;
   const { t } = useTranslation("profile");
+
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  const handleImageUpload = useCallback(
+    async (imageFile: File) => {
+      try {
+        onChangeFormField("avatar", imageFile);
+      } catch (error) {
+        setUploadError(t("Image upload failed. Please try again."));
+      } finally {
+        setIsUploading(false);
+      }
+    },
+    [onChangeFormField, t],
+  );
 
   if (isLoading) {
     return (
@@ -78,17 +94,20 @@ const ProfileCard = memo((props : ProfileCardProps) => {
   return (
     <Card padding="24" border="partial" max className={className}>
       <VStack gap="32">
-        {data?.avatar && (
+        {data?.avatar && readOnly && (
           <HStack justify="center" max>
             <Avatar size={128} src={data?.avatar} />
           </HStack>
         )}
-        {!readOnly && !data?.avatar
+        {!readOnly
         && (
           <HStack justify="center" max>
-            <VStack>
-              <ImageLoader variant="round" label={t("Upload new Avatar")} onImageUpload={() => {}} />
-            </VStack>
+            <ImageLoader
+              src={data?.avatar instanceof File ? URL.createObjectURL(data.avatar) : data?.avatar}
+              variant="round"
+              label={t("Upload new Avatar")}
+              onImageUpload={handleImageUpload}
+            />
           </HStack>
         )}
         <HStack gap="24" max rowToColumn>

@@ -32,7 +32,7 @@ export const ArticleListItem = memo((props: ArticleListItemProps) => {
   const { className, article, view, target } = props;
   const isBelowLargeScreen = useMediaQuery("(max-width: 1200px)");
   const { t } = useTranslation();
-  const { title, createdAt, img, id, subtitle, blocks } = article;
+  const { title, createdAt, image, id, subtitle, blocks } = article;
 
   const userInfo = (
     <>
@@ -75,7 +75,7 @@ export const ArticleListItem = memo((props: ArticleListItemProps) => {
           <Text title={subtitle} size="s" />
           <AppImage
             fallback={<Skeleton width="100%" height={250} />}
-            src={img}
+            src={image as string}
             className={cls.img}
             alt={title}
           />
@@ -115,7 +115,7 @@ export const ArticleListItem = memo((props: ArticleListItemProps) => {
         <AppImage
           fallback={<Skeleton width="100%" height={200} />}
           alt={article.title}
-          src={article.img}
+          src={article.image as string}
           className={cls.img}
         />
         <VStack className={cls.info} gap="4">
@@ -135,3 +135,5 @@ export const ArticleListItem = memo((props: ArticleListItemProps) => {
     </AppLink>
   );
 });
+
+// TODO remove as string

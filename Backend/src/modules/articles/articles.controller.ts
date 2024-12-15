@@ -14,6 +14,7 @@ import {
   UseInterceptors,
   UploadedFile,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -36,6 +37,7 @@ import { Article } from '@/modules/articles/entities/article.entity';
 
 @Controller('articles')
 export class ArticlesController {
+  private readonly logger = new Logger(ArticlesController.name);
   constructor(private readonly articlesService: ArticlesService) {}
 
   /**
@@ -74,7 +76,7 @@ export class ArticlesController {
       subtitle,
       type,
       blocks,
-      img: file ? file.location : null,
+      image: file ? file.location : null,
     };
     return this.articlesService.create(createArticleDto, userId);
   }
@@ -155,7 +157,7 @@ export class ArticlesController {
     };
 
     if (file) {
-      updateArticleDto.img = file.location;
+      updateArticleDto.image = file.location;
     }
 
     try {
@@ -168,10 +170,8 @@ export class ArticlesController {
         article: updatedArticle,
       };
     } catch (error) {
-      throw new InternalServerErrorException(
-        'Failed to update the article',
-        error,
-      );
+      this.logger.error('Update Article Error:', error.stack);
+      throw new InternalServerErrorException('Failed to update the article');
     }
   }
 
@@ -219,6 +219,10 @@ export class ArticlesController {
         article: updatedArticle,
       };
     } catch (error) {
+      this.logger.error(
+        `Failed to remove image for article ID: ${id}`,
+        error.stack,
+      );
       throw new InternalServerErrorException('Image removal failed', error);
     }
   }
