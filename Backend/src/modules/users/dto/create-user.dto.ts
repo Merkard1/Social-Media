@@ -5,7 +5,6 @@ import {
   IsOptional,
   IsEmail,
   ValidateNested,
-  Equals,
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
@@ -30,7 +29,6 @@ export class CreateUserDto {
   @ApiProperty({ example: 'StrongPassword123!', format: 'password' })
   @IsString()
   @IsNotEmpty()
-  @Equals('password', { message: 'Passwords do not match' })
   repeatPassword: string;
 
   @ApiPropertyOptional({

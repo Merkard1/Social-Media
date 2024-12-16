@@ -2,59 +2,30 @@ import {
   Controller,
   Get,
   Param,
-  Delete,
   Body,
-  UseGuards,
-  Request,
-  Post,
   Patch,
   NotFoundException,
-  BadRequestException,
+  UseInterceptors,
+  UploadedFile,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { ProfilesService } from './profiles.service';
-import { CreateProfileDto } from './dto/create-profile.dto';
-import { AuthGuard } from '@nestjs/passport';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { Profile } from './entities/profile.entity';
 import {
-  ApiBearerAuth,
   ApiTags,
   ApiOperation,
   ApiResponse,
   ApiParam,
   ApiBody,
+  ApiConsumes,
 } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiTags('Profiles')
 @Controller('profiles')
 export class ProfilesController {
   constructor(private readonly profilesService: ProfilesService) {}
-
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
-  @Post()
-  @ApiOperation({ summary: 'Create a new profile' })
-  @ApiBody({ type: CreateProfileDto })
-  @ApiResponse({
-    status: 201,
-    description: 'Profile created successfully',
-    type: Profile,
-  })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
-  @ApiResponse({ status: 404, description: 'User not found' })
-  async createProfile(
-    @Request() req,
-    @Body() createProfileDto: CreateProfileDto,
-  ) {
-    const userId = req.user.sub;
-
-    const existingProfile = await this.profilesService.findByUserId(userId);
-    if (existingProfile) {
-      throw new BadRequestException('Profile already exists for this user');
-    }
-
-    return this.profilesService.create(userId, createProfileDto);
-  }
 
   @Get(':username')
   @ApiOperation({ summary: 'Get profile by username' })
@@ -75,23 +46,6 @@ export class ProfilesController {
     return this.profilesService.findByUsername(username);
   }
 
-  @Get('id/:id')
-  @ApiOperation({ summary: 'Get profile by user ID' })
-  @ApiParam({
-    name: 'id',
-    type: 'string',
-    description: 'User ID of the profile to retrieve',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Profile retrieved successfully',
-    type: Profile,
-  })
-  @ApiResponse({ status: 404, description: 'Profile not found' })
-  async getProfileById(@Param('id') id: string): Promise<Profile> {
-    return this.profilesService.findByUserId(id);
-  }
-
   @Patch(':username')
   @ApiOperation({ summary: 'Update profile by username' })
   @ApiParam({
@@ -99,71 +53,65 @@ export class ProfilesController {
     type: 'string',
     description: 'Username of the profile to update',
   })
-  @ApiBody({ type: UpdateProfileDto })
+  @ApiBody({
+    description: 'Profile update payload with optional avatar',
+    schema: {
+      type: 'object',
+      properties: {
+        first: { type: 'string' },
+        lastname: { type: 'string' },
+        age: { type: 'number' },
+        currency: { type: 'string' },
+        country: { type: 'string' },
+        city: { type: 'string' },
+        avatar: {
+          type: 'string',
+          format: 'binary',
+          description: 'Avatar image file',
+        },
+      },
+    },
+  })
+  @ApiConsumes('multipart/form-data')
   @ApiResponse({
     status: 200,
     description: 'Profile updated successfully',
     type: Profile,
   })
   @ApiResponse({ status: 404, description: 'Profile not found' })
+  @UseInterceptors(FileInterceptor('avatar'))
   async updateProfileByUsername(
     @Param('username') username: string,
-    @Body() updateProfileDto: UpdateProfileDto,
+    @Body() body: UpdateProfileDto,
+    @UploadedFile() file?: Express.MulterS3File,
   ) {
-    const updatedProfile = await this.profilesService.updateByUsername(
-      username,
-      updateProfileDto,
-    );
+    const updateProfileDto: UpdateProfileDto = {
+      first: body.first,
+      lastname: body.lastname,
+      age: body.age ? Number(body.age) : undefined,
+      currency: body.currency,
+      country: body.country,
+      city: body.city,
+    };
 
-    if (!updatedProfile) {
-      throw new NotFoundException('Profile not found');
+    if (file && file.location) {
+      updateProfileDto.avatar = file.location;
     }
 
-    return updatedProfile;
-  }
+    try {
+      const updatedProfile = await this.profilesService.updateByUsername(
+        username,
+        updateProfileDto,
+      );
 
-  @Patch('id/:id')
-  @ApiOperation({ summary: 'Update profile by user ID' })
-  @ApiParam({
-    name: 'id',
-    type: 'string',
-    description: 'User ID of the profile to update',
-  })
-  @ApiBody({ type: UpdateProfileDto })
-  @ApiResponse({
-    status: 200,
-    description: 'Profile updated successfully',
-    type: Profile,
-  })
-  @ApiResponse({ status: 404, description: 'Profile not found' })
-  async updateProfileById(
-    @Param('id') id: string,
-    @Body() updateProfileDto: UpdateProfileDto,
-  ) {
-    const updatedProfile = await this.profilesService.updateByUserId(
-      id,
-      updateProfileDto,
-    );
+      if (!updatedProfile) {
+        throw new NotFoundException('Profile not found');
+      }
 
-    if (!updatedProfile) {
-      throw new NotFoundException('Profile not found');
+      return updatedProfile;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to update the profile');
     }
-
-    return updatedProfile;
-  }
-
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
-  @Delete()
-  @ApiOperation({ summary: "Delete the authenticated user's profile" })
-  @ApiResponse({
-    status: 200,
-    description: 'Profile deleted successfully',
-  })
-  @ApiResponse({ status: 404, description: 'Profile not found' })
-  async deleteProfile(@Request() req) {
-    const userId = req.user.sub;
-    await this.profilesService.remove(userId);
-    return { message: 'Profile deleted successfully' };
   }
 }

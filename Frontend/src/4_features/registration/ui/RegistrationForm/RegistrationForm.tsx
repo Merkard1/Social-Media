@@ -1,7 +1,6 @@
 import { memo, useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 import { classNames } from "@/6_shared/lib/classNames/classNames";
 import {
@@ -40,13 +39,12 @@ const RegistrationForm = memo((props: RegistrationFormProps) => {
   const { className, onSuccess, onLoginButtonClick } = props;
   const { t } = useTranslation("auth");
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const username = useSelector(getRegistrationUsername);
-  const email = useSelector(getRegistrationEmail);
-  const password = useSelector(getRegistrationPassword);
-  const repeatPassword = useSelector(getRegistrationRepeatPassword);
+  const username = useSelector(getRegistrationUsername || "admin");
+  const email = useSelector(getRegistrationEmail || "test@example.test");
+  const password = useSelector(getRegistrationPassword || "securePassword123");
+  const repeatPassword = useSelector(getRegistrationRepeatPassword || "securePassword123");
   const isLoading = useSelector(getRegistrationIsLoading);
   const error = useSelector(getRegistrationError);
 

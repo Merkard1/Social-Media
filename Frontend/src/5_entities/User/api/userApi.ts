@@ -32,12 +32,6 @@ const userApi = rtkApi.injectEndpoints({
       providesTags: (result, error, userId) => [{ type: "User", id: userId }],
     }),
 
-    getUserByUsername: build.query<User, string>({
-      query: (username) => ({
-        url: `/users/username/${username}`,
-      }),
-    }),
-
     updateUserJSONSettings: build.mutation<User, Omit<SetJsonSettingsParams, "userId">>({
       query: ({ jsonSettings }) => ({
         url: "/users",
@@ -61,14 +55,12 @@ const userApi = rtkApi.injectEndpoints({
 
 export const {
   useRegisterUserMutation,
-  useGetUserByUsernameQuery,
   useUpdateUserJSONSettingsMutation,
   useGetUserDataByIdQuery,
   useDeleteUserMutation,
 } = userApi;
 
 export const registerUser = userApi.endpoints.registerUser.initiate;
-export const getUserByUsername = userApi.endpoints.getUserByUsername.initiate;
 export const updateUserJSONSettings = userApi.endpoints.updateUserJSONSettings.initiate;
 export const getUserDataById = userApi.endpoints.getUserDataById.initiate;
 export const deleteUser = userApi.endpoints.deleteUser.initiate;

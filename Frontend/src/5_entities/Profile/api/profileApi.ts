@@ -8,7 +8,7 @@ interface GetProfileParams {
 
 interface ChangeProfileParams {
   username: string;
-  formData: Partial<Profile>;
+  profileData: Partial<Profile>;
 }
 
 const profileApi = rtkApi.injectEndpoints({
@@ -25,15 +25,31 @@ const profileApi = rtkApi.injectEndpoints({
     }),
 
     changeProfile: build.mutation<Profile, ChangeProfileParams>({
-      query: ({ username, formData }) => ({
-        url: `/profiles/${username}`,
-        method: "PATCH",
-        body: formData,
-      }),
+      query: ({ username, profileData }) => {
+        const formData = new FormData();
+
+        if (profileData.first) formData.append("first", profileData.first);
+        if (profileData.lastname) formData.append("lastname", profileData.lastname);
+        if (typeof profileData.age !== "undefined") formData.append("age", String(profileData.age));
+        if (profileData.currency) formData.append("currency", profileData.currency);
+        if (profileData.country) formData.append("country", profileData.country);
+        if (profileData.city) formData.append("city", profileData.city);
+
+        if (profileData.avatar) {
+          formData.append("avatar", profileData.avatar);
+        }
+
+        return {
+          url: `/profiles/${username}`,
+          method: "PATCH",
+          body: formData,
+        };
+      },
       invalidatesTags: (result, error, { username }) => [
         { type: "Profile", id: username },
       ],
     }),
+
   }),
 });
 

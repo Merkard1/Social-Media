@@ -12,12 +12,10 @@ export { initAuthData } from "./model/services/initAuthData";
 export { getUserInited } from "./model/selectors/getUserInited/getUserInited";
 export {
   useRegisterUserMutation,
-  useGetUserByUsernameQuery,
   useUpdateUserJSONSettingsMutation,
   useGetUserDataByIdQuery,
   useDeleteUserMutation,
   registerUser,
-  getUserByUsername,
   updateUserJSONSettings,
   getUserDataById,
   deleteUser,

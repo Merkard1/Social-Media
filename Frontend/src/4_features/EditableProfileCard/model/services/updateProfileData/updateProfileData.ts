@@ -18,22 +18,22 @@ export const updateProfileData = createAsyncThunk<
       async (username, thunkApi) => {
         const { rejectWithValue, getState, dispatch } = thunkApi;
 
-        const formData = getProfileForm(getState());
+        const profileData = getProfileForm(getState());
         const userData = getUserAuthData(getState());
 
-        const errors = validateProfileData(formData);
+        const errors = validateProfileData(profileData);
 
         if (errors.length) {
           return rejectWithValue(errors);
         }
 
-        if (!userData || !formData) {
+        if (!userData || !profileData) {
           return rejectWithValue([ValidateProfileError.NO_DATA]);
         }
 
         try {
           const response = await dispatch(
-            changeProfile({ username, formData }),
+            changeProfile({ username, profileData }),
           ).unwrap();
 
           if (!response) {

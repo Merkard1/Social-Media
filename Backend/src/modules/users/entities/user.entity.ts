@@ -21,15 +21,15 @@ import {
 
 @Entity()
 export class User {
-  @ApiProperty({ example: '60d0fe4f5311236168a109cb' })
+  @ApiProperty({ example: '60d0fe4f5-31123-6168a1-09cb' })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty({ example: 'johndoe' })
+  @ApiProperty({ example: 'merkard' })
   @Column({ unique: true })
   username: string;
 
-  @ApiProperty({ example: 'johndoe@example.com' })
+  @ApiProperty({ example: 'merkard@example.com' })
   @Column({ unique: true })
   email: string;
 
@@ -93,4 +93,3 @@ export class User {
   @OneToMany(() => Notification, (notification) => notification.recipient)
   receivedNotifications: Notification[];
 }
-
