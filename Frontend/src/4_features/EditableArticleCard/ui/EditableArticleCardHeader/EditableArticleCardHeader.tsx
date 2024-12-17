@@ -76,8 +76,8 @@ export const EditableArticleCardHeader = memo(
           result = await dispatch(saveArticleData()).unwrap();
         }
         console.log(result);
-        if (result && result?.article?.id) {
-          navigate(getRouteArticleDetails(result.article.id));
+        if (result && result?.id) {
+          navigate(getRouteArticleDetails(result.id));
         } else {
           navigate(getRouteArticles());
         }

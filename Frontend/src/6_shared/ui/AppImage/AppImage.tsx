@@ -6,6 +6,10 @@ import {
   useState,
 } from "react";
 
+import { classNames } from "@/6_shared/lib/classNames/classNames";
+
+import cls from "./AppImage.module.scss";
+
 interface AppImageProps extends ImgHTMLAttributes<HTMLImageElement> {
     className?: string;
     fallback?: ReactElement;
@@ -44,5 +48,5 @@ export const AppImage = memo((props: AppImageProps) => {
     return errorFallback;
   }
 
-  return <img className={className} src={src} alt={alt} {...otherProps} />;
+  return <img className={classNames(cls.AppImage, {}, [className])} src={src} alt={alt} {...otherProps} />;
 });

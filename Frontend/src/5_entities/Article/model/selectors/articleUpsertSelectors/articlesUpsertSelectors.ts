@@ -11,3 +11,6 @@ export const [useArticleUpsertIsLoading, getArticleUpsertIsLoading] = buildSelec
 export const [useArticleUpsertError, getArticleUpsertError] = buildSelector(
   (state: StateSchema) => state.article?.articleUpsert.error,
 );
+export const [useArticleUpsertBlockImages, getArticleUpsertBlockImages] = buildSelector(
+  (state: StateSchema) => state.article?.articleUpsert.blockImages || {},
+);

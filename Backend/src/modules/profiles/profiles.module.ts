@@ -9,6 +9,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { S3Module } from '../s3/s3.module';
 import { MulterConfigService } from '@/config/multer.config';
 import { S3ConfigService } from '@/config/s3.config';
+import { ImageService } from '@/common/services/image.service';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { S3ConfigService } from '@/config/s3.config';
     }),
     S3Module,
   ],
-  providers: [ProfilesService, S3ConfigService],
+  providers: [ProfilesService, S3ConfigService, ImageService],
   controllers: [ProfilesController],
 })
 export class ProfilesModule {}

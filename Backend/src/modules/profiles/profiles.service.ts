@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { User } from '@/modules/users/entities/user.entity';
 import { Profile } from './entities/profile.entity';
+import { ImageService } from '@/common/services/image.service';
 
 @Injectable()
 export class ProfilesService {
@@ -14,6 +15,8 @@ export class ProfilesService {
 
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
+
+    private readonly imageService: ImageService,
   ) {}
 
   async findByUsername(username: string): Promise<Profile> {

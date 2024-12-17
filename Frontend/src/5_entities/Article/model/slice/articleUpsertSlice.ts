@@ -1,11 +1,12 @@
 /* eslint-disable no-param-reassign */
+// src/5_entities/Article/model/slice/articleUpsertSlice.ts
 import { PayloadAction } from "@reduxjs/toolkit";
 
 import { buildSlice } from "@/6_shared/lib/store/buildSlice";
 
 import { saveArticleData } from "../services/articleUpsertServices/saveArticleData/saveArticleData";
 import { updateArticleData } from "../services/articleUpsertServices/updateArticleData/updateArticleData";
-import { ArticleBlock } from "../types/article";
+import { ArticleBlock, ArticleCodeBlock, ArticleImageBlock, ArticleTextBlock, UpdatedBlock } from "../types/article";
 import { ArticleUpsert, ArticleUpsertSchema } from "../types/articleUpsertSchema";
 
 const initialState: ArticleUpsertSchema = {
@@ -14,13 +15,16 @@ const initialState: ArticleUpsertSchema = {
   validateErrors: undefined,
   form: null,
   initialData: null,
+  blockImages: {},
 };
 
 export const articleUpsertSlice = buildSlice({
   name: "articleUpsert",
   initialState,
   reducers: {
-    // Create new Article
+    /*
+    / Create new Article
+    */
     createNewArticle: (state) => {
       const emptyArticle: ArticleUpsert = {
         id: "",
@@ -37,19 +41,22 @@ export const articleUpsertSlice = buildSlice({
       state.form = emptyArticle;
       state.initialData = emptyArticle;
     },
-    // Initialize article form
     initializeArticleForm: (state, action: PayloadAction<ArticleUpsert>) => {
       state.form = { ...action.payload };
       state.initialData = { ...action.payload };
     },
-    // Cancel edit
+    /*
+    / Cancel edit
+    */
     cancelEdit: (state) => {
       state.validateErrors = undefined;
       if (state.initialData) {
         state.form = { ...state.initialData };
       }
     },
-    // Update article field
+    /*
+    / Update Article field
+    */
     updateArticleField: (
       state,
       action: PayloadAction<{ field: keyof ArticleUpsert; value: any }>,
@@ -61,24 +68,52 @@ export const articleUpsertSlice = buildSlice({
         };
       }
     },
-    // Update article block
+    /*
+    / Update Article block
+    */
     updateArticleBlock: (
       state,
-      action: PayloadAction<{ blockId: string; updatedBlock: Partial<Omit<ArticleBlock, "type">> }>,
+      action: PayloadAction<{ blockId: string; updatedBlock: UpdatedBlock }>,
     ) => {
       if (state.form) {
         const { blockId, updatedBlock } = action.payload;
-        state.form.blocks = state.form.blocks.map((block) =>
-          (block.id === blockId ? { ...block, ...updatedBlock } : block));
+
+        state.form.blocks = state.form.blocks.map((block) => {
+          if (block.id !== blockId) return block;
+
+          switch (block.type) {
+          case "CODE":
+            return { ...block, ...(updatedBlock as Partial<ArticleCodeBlock>) };
+          case "IMAGE":
+            return { ...block, ...(updatedBlock as Partial<ArticleImageBlock>) };
+          case "TEXT":
+            return { ...block, ...(updatedBlock as Partial<ArticleTextBlock>) };
+          default:
+            return block;
+          }
+        });
       }
     },
-    // Add article block
+    /*
+    / Add Article block
+    */
     addArticleBlock: (state, action: PayloadAction<ArticleBlock>) => {
       if (state.form && state.form.blocks) {
         state.form.blocks.push(action.payload);
       }
     },
-    // Delete article block
+    /*
+    / Update Article block image
+    */
+    updateBlockImage: (
+      state,
+      action: PayloadAction<{ placeholder: string; file: File }>,
+    ) => {
+      state.blockImages[action.payload.placeholder] = action.payload.file;
+    },
+    /*
+    / Delete Article block
+    */
     deleteArticleBlock: (state, action: PayloadAction<string>) => {
       if (state.form && state.form.blocks) {
         state.form.blocks = state.form.blocks.filter((block) => block.id !== action.payload);
@@ -87,37 +122,29 @@ export const articleUpsertSlice = buildSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Creating article
       .addCase(saveArticleData.pending, (state) => {
         state.isLoading = true;
         state.validateErrors = undefined;
       })
-      .addCase(
-        saveArticleData.fulfilled,
-        (state, action: PayloadAction<ArticleUpsert>) => {
-          state.isLoading = false;
-          state.form = { ...action.payload };
-          state.initialData = { ...action.payload };
-        },
-      )
+      .addCase(saveArticleData.fulfilled, (state, action: PayloadAction<ArticleUpsert>) => {
+        state.isLoading = false;
+        state.form = { ...action.payload };
+        state.initialData = { ...action.payload };
+      })
       .addCase(saveArticleData.rejected, (state, action) => {
         state.isLoading = false;
         state.validateErrors = action.payload as string[];
       })
-      // Updating article data
       .addCase(updateArticleData.pending, (state) => {
         state.validateErrors = undefined;
         state.isLoading = true;
       })
-      .addCase(
-        updateArticleData.fulfilled,
-        (state, action: PayloadAction<ArticleUpsert>) => {
-          state.isLoading = false;
-          state.form = { ...action.payload };
-          state.initialData = { ...action.payload };
-          state.validateErrors = undefined;
-        },
-      )
+      .addCase(updateArticleData.fulfilled, (state, action: PayloadAction<ArticleUpsert>) => {
+        state.isLoading = false;
+        state.form = { ...action.payload };
+        state.initialData = { ...action.payload };
+        state.validateErrors = undefined;
+      })
       .addCase(updateArticleData.rejected, (state, action) => {
         state.isLoading = false;
         state.validateErrors = action.payload as string[];

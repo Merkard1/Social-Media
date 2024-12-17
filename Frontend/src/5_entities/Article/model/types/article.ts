@@ -66,3 +66,8 @@ export type ArticleUpdateInput = Omit<
   | "comments"
   | "ratings"
 >;
+
+export type UpdatedBlock =
+  | Partial<Omit<ArticleCodeBlock, "type">>
+  | Partial<Omit<ArticleImageBlock, "type">>
+  | Partial<Omit<ArticleTextBlock, "type">>;

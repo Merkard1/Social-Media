@@ -2,7 +2,7 @@ import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 import { articleUpsertActions, useArticleUpsertForm } from "@/5_entities/Article";
-import { ArticleBlock } from "@/5_entities/Article/model/types/article";
+import { ArticleBlock, UpdatedBlock } from "@/5_entities/Article/model/types/article";
 import { renderArticleBlock } from "@/5_entities/Article/ui/renderArticleBlock/renderArticleBlock";
 
 import { useAppDispatch } from "@/6_shared/lib/hooks/useAppDispatch/useAppDispatch";
@@ -20,7 +20,7 @@ export const EditableArticleBlocks = memo((props: EditableArticleBlocksProps) =>
   const formData = useArticleUpsertForm();
 
   const onChangeBlockField = useCallback(
-    (blockId: string, updatedBlock: Partial<ArticleBlock>) => {
+    (blockId: string, updatedBlock: UpdatedBlock) => {
       dispatch(articleUpsertActions.updateArticleBlock({ blockId, updatedBlock }));
     },
     [dispatch],
@@ -33,17 +33,31 @@ export const EditableArticleBlocks = memo((props: EditableArticleBlocksProps) =>
     [dispatch],
   );
 
+  const onImageUpload = useCallback(
+    (blockId: string, file: File) => {
+      const blockIndex = formData!.blocks.findIndex((b) => b.id === blockId);
+      const placeholder = `BLOCK_IMAGE_${blockIndex}`;
+      dispatch(articleUpsertActions.updateArticleBlock({
+        blockId,
+        updatedBlock: { src: placeholder },
+      }));
+      dispatch(articleUpsertActions.updateBlockImage({ placeholder, file }));
+    },
+    [dispatch, formData],
+  );
+
   if (!formData || !formData?.blocks?.length) return null;
 
   return (
     <Card padding="16" max>
       <VStack gap="16" max>
-        {formData.blocks.map((block: any) =>
+        {formData.blocks.map((block: ArticleBlock) =>
           renderArticleBlock({
             block,
             readOnly,
             onChange: onChangeBlockField,
             onDelete,
+            onImageUpload,
           }))}
       </VStack>
     </Card>
