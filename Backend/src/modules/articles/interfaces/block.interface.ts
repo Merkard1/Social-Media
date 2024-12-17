@@ -12,3 +12,25 @@ export interface Block {
   code?: string;
   src?: string;
 }
+
+//  TODO
+export type newBlockType = TextBlock | CodeBlock;
+
+export interface TextBlock extends Block {
+  id: string;
+  // type: 'TEXT';
+  title: string;
+  paragraphs?: string[];
+}
+
+export interface CodeBlock {
+  id: string;
+  type: 'CODE';
+  code: string;
+}
+
+export interface ImageBlock {
+  id: string;
+  type: 'IMAGE';
+  src: string;
+}

@@ -12,9 +12,9 @@ import {
   HttpStatus,
   Query,
   UseInterceptors,
-  UploadedFile,
   InternalServerErrorException,
   Logger,
+  UploadedFiles,
 } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -22,8 +22,7 @@ import { BlockDto } from './dto/article-block.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ArticleOwnerGuard } from './guards/article-owner.guard';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { Express } from 'express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ParseJsonPipe } from '@/common/pipes/parse-json.pipe';
 import { ArticleType } from './types/ArticleType';
 import {
@@ -44,31 +43,42 @@ export class ArticlesController {
    * Create a new article
    */
   @ApiOperation({ summary: 'Create a new article' })
-  @ApiResponse({
-    status: 201,
-    description: 'Article created successfully',
-    type: Article,
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad Request',
-  })
+  @ApiResponse({ status: 201, type: Article })
   @ApiBearerAuth()
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'Article creation payload',
-    type: CreateArticleDto,
+    schema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string' },
+        subtitle: { type: 'string' },
+        type: { type: 'string', description: 'JSON string of ArticleType[]' },
+        blocks: { type: 'string', description: 'JSON string of BlockDto[]' },
+        image: { type: 'string', format: 'binary' },
+        'blockImages[]': { type: 'string', format: 'binary' },
+      },
+    },
   })
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'image', maxCount: 1 },
+      { name: 'blockImages', maxCount: 20 },
+    ]),
+  )
   async create(
     @Body('title') title: string,
     @Body('subtitle') subtitle: string,
     @Body('type', ParseJsonPipe) type: ArticleType[],
     @Body('blocks', ParseJsonPipe) blocks: BlockDto[],
     @Request() req,
-    @UploadedFile() file?: Express.MulterS3File,
+    @UploadedFiles()
+    files: {
+      image?: Express.MulterS3File[];
+      blockImages?: Express.MulterS3File[];
+    },
   ) {
     const userId = req.user.id;
     const createArticleDto: CreateArticleDto = {
@@ -76,20 +86,20 @@ export class ArticlesController {
       subtitle,
       type,
       blocks,
-      image: file ? file.location : null,
     };
-    return this.articlesService.create(createArticleDto, userId);
+
+    return this.articlesService.createArticleWithImages(
+      createArticleDto,
+      userId,
+      files,
+    );
   }
 
   /**
    * Get all articles with support for query parameters
    */
   @ApiOperation({ summary: 'Retrieve all articles' })
-  @ApiResponse({
-    status: 200,
-    description: 'List of articles retrieved successfully',
-    type: [Article],
-  })
+  @ApiResponse({ status: 200, type: [Article] })
   @Get()
   async findAll(@Query() query: any) {
     return this.articlesService.findAll(query);
@@ -99,47 +109,43 @@ export class ArticlesController {
    * Get a single article by ID
    */
   @ApiOperation({ summary: 'Retrieve an article by its ID' })
-  @ApiResponse({
-    status: 200,
-    description: 'Article retrieved successfully',
-    type: Article,
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Article not found',
-  })
+  @ApiResponse({ status: 200, type: Article })
+  @ApiResponse({ status: 404 })
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    const article = await this.articlesService.findOneById(id);
-    return article;
+    return this.articlesService.findOneById(id);
   }
 
   /**
    * Update an existing article
    */
   @ApiOperation({ summary: 'Update an existing article' })
-  @ApiResponse({
-    status: 200,
-    description: 'Article updated successfully',
-    type: Article,
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Bad Request',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Article not found',
-  })
+  @ApiResponse({ status: 200, description: 'Article updated successfully' })
+  @ApiResponse({ status: 404 })
   @ApiBearerAuth()
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     description: 'Article update payload',
-    type: UpdateArticleDto,
+    schema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string' },
+        subtitle: { type: 'string' },
+        type: { type: 'string', description: 'JSON of ArticleType[]' },
+        blocks: { type: 'string', description: 'JSON of BlockDto[]' },
+        image: { type: 'string', format: 'binary' },
+        'blockImages[]': { type: 'string', format: 'binary' },
+      },
+    },
   })
   @UseGuards(AuthGuard('jwt'), ArticleOwnerGuard)
   @Patch(':id')
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'image', maxCount: 1 },
+      { name: 'blockImages', maxCount: 20 },
+    ]),
+  )
   async update(
     @Param('id') id: string,
     @Body('title') title: string,
@@ -147,7 +153,11 @@ export class ArticlesController {
     @Body('type', ParseJsonPipe) type: ArticleType[],
     @Body('blocks', ParseJsonPipe) blocks: BlockDto[],
     @Request() req,
-    @UploadedFile() file?: Express.MulterS3File,
+    @UploadedFiles()
+    files: {
+      image?: Express.MulterS3File[];
+      blockImages?: Express.MulterS3File[];
+    },
   ) {
     const updateArticleDto: UpdateArticleDto = {
       title,
@@ -156,14 +166,11 @@ export class ArticlesController {
       blocks,
     };
 
-    if (file) {
-      updateArticleDto.image = file.location;
-    }
-
     try {
-      const updatedArticle = await this.articlesService.update(
+      const updatedArticle = await this.articlesService.updateArticleWithImages(
         id,
         updateArticleDto,
+        files,
       );
       return {
         message: 'Article updated successfully',
@@ -199,25 +206,14 @@ export class ArticlesController {
    * Remove image from an article
    */
   @ApiOperation({ summary: 'Remove image from an article' })
-  @ApiResponse({
-    status: 200,
-    description: 'Image removed successfully',
-    type: Article,
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Article not found',
-  })
+  @ApiResponse({ status: 200 })
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'), ArticleOwnerGuard)
   @Delete(':id/image')
   async removeArticleImage(@Param('id') id: string) {
     try {
       const updatedArticle = await this.articlesService.setImage(id, null);
-      return {
-        message: 'Image removed successfully',
-        article: updatedArticle,
-      };
+      return { message: 'Image removed successfully', article: updatedArticle };
     } catch (error) {
       this.logger.error(
         `Failed to remove image for article ID: ${id}`,

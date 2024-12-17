@@ -9,6 +9,7 @@ import { S3Module } from '../s3/s3.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { S3ConfigService } from '@/config/s3.config';
 import { MulterConfigService } from '@/config/multer.config';
+import { ImageService } from '@/common/services/image.service';
 
 @Module({
   imports: [
@@ -19,7 +20,12 @@ import { MulterConfigService } from '@/config/multer.config';
     }),
     S3Module,
   ],
-  providers: [ArticlesService, ArticleOwnerGuard, S3ConfigService],
+  providers: [
+    ArticlesService,
+    ArticleOwnerGuard,
+    S3ConfigService,
+    ImageService,
+  ],
   controllers: [ArticlesController],
   exports: [ArticlesService],
 })

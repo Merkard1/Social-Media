@@ -8,6 +8,7 @@ interface RenderArticleBlockProps {
   readOnly?: boolean;
   onChange?: (blockId: string, updatedBlock: Partial<ArticleBlock>) => void;
   onDelete?: (blockId: string) => void;
+  onImageUpload?: (blockId: string, file: File) => void;
 }
 
 export const renderArticleBlock = ({
@@ -15,6 +16,7 @@ export const renderArticleBlock = ({
   readOnly = true,
   onChange = () => {},
   onDelete = () => {},
+  onImageUpload = () => {},
 }: RenderArticleBlockProps): JSX.Element | null => {
   switch (block.type) {
   case "CODE":
@@ -35,6 +37,7 @@ export const renderArticleBlock = ({
         readOnly={readOnly}
         onChange={onChange}
         onDelete={onDelete}
+        onImageUpload={onImageUpload}
       />
     );
   case "TEXT":

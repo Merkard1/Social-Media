@@ -7,8 +7,10 @@ export interface ArticleUpsert {
   title: string;
   subtitle: string;
   image: Image;
+
   type: string[];
   blocks: ArticleBlock[];
+
   user: {
     id: string;
     username: string;
@@ -25,4 +27,5 @@ export interface ArticleUpsertSchema {
   validateErrors?: string[];
   form: ArticleUpsert | null;
   initialData: ArticleUpsert | null;
+  blockImages: Record<string, File>;
 }

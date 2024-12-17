@@ -1,5 +1,7 @@
-import { memo, useCallback } from "react";
+/* eslint-disable no-nested-ternary */
+import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 import { Button } from "@/6_shared/ui/Button/Button";
 import { Card } from "@/6_shared/ui/Card/Card";
@@ -8,39 +10,51 @@ import { Input } from "@/6_shared/ui/Input/Input";
 import { HStack, VStack } from "@/6_shared/ui/Stack";
 import { Text } from "@/6_shared/ui/Text/Text";
 
+import { getArticleUpsertBlockImages } from "../../model/selectors/articleUpsertSelectors/articlesUpsertSelectors";
 import { ArticleImageBlock } from "../../model/types/article";
 
-import cls from "./ArticleImageBlockComponent.module.scss";
-
 interface ArticleImageBlockComponentProps {
-    className?: string;
-    block: ArticleImageBlock;
-    readOnly?: boolean;
-    onChange?: any;
-    onDelete?: (blockId: string) => void,
+  block: ArticleImageBlock;
+  readOnly?: boolean;
+  onChange?: (blockId: string, updatedBlock: Partial<ArticleImageBlock>) => void;
+  onDelete?: (blockId: string) => void;
+  onImageUpload?: (blockId: string, file: File) => void;
 }
 
 export const ArticleImageBlockComponent = memo((props: ArticleImageBlockComponentProps) => {
-  const { className, block, readOnly, onChange, onDelete = () => {} } = props;
+  const { block, readOnly, onChange, onDelete = () => {}, onImageUpload = () => {} } = props;
   const { t } = useTranslation();
+  const blockImages = useSelector(getArticleUpsertBlockImages);
 
-  const handleTitleChange = useCallback((value: string) => {
-    if (onChange) {
-      onChange(block.id, { title: value });
-    }
-  }, [block.id, onChange]);
+  const handleTitleChange = useCallback(
+    (value: string) => {
+      onChange?.(block.id, { title: value });
+    },
+    [block.id, onChange],
+  );
 
-  const handleImageUpload = useCallback((imgSrc: File) => {
-    if (onChange) {
-      onChange(block.id, { src: imgSrc });
-    }
-  }, [block.id, onChange]);
+  const handleImageUpload = useCallback(
+    (file: File) => {
+      onImageUpload?.(block.id, file);
+    },
+    [block.id, onImageUpload],
+  );
 
   const handleDeleteBlock = useCallback(() => {
-    if (onDelete) {
-      onDelete(block.id);
-    }
+    onDelete?.(block.id);
   }, [block.id, onDelete]);
+
+  // Determine the correct src to display
+  const imageSrc = useMemo(() => {
+    if (block.src?.startsWith("BLOCK_IMAGE_")) {
+      const file = blockImages[block.src];
+      if (file) {
+        return URL.createObjectURL(file);
+      }
+      return ""; // No file yet
+    }
+    return block.src || ""; // Normal URL if not a placeholder
+  }, [block.src, blockImages]);
 
   if (!readOnly) {
     return (
@@ -52,7 +66,11 @@ export const ArticleImageBlockComponent = memo((props: ArticleImageBlockComponen
               {t("Delete Block")}
             </Button>
           </HStack>
-          <ImageUploader label={t("Upload article image")} onImageUpload={handleImageUpload} />
+          <ImageUploader
+            label={t("Upload article image")}
+            onImageUpload={handleImageUpload}
+            src={imageSrc || undefined}
+          />
           <Input
             value={block.title}
             label={`${t("Title")}:`}
@@ -65,10 +83,16 @@ export const ArticleImageBlockComponent = memo((props: ArticleImageBlockComponen
 
   return (
     <VStack max gap="16">
-      <img src={block.src} alt={block.title} className={cls.img} />
-      {block.title && (
-        <Text text={block.title} align="center" />
+      {block.src?.startsWith("BLOCK_IMAGE_") ? (
+        !imageSrc ? (
+          <Text text={t("Image is uploading...")} />
+        ) : (
+          <img src={imageSrc} alt={block.title} />
+        )
+      ) : (
+        block.src && <img src={block.src} alt={block.title} />
       )}
+      {block.title && <Text text={block.title} align="center" />}
     </VStack>
   );
 });

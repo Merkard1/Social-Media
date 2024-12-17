@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from "react";
+import React, { memo, useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { classNames } from "@/6_shared/lib/classNames/classNames";
@@ -24,6 +24,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
 }) => {
   const { t } = useTranslation();
   const [preview, setPreview] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = useCallback(
     (file: File) => {
@@ -35,16 +36,22 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     [onImageUpload],
   );
 
-  const onFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) handleImageUpload(file);
-  }, [handleImageUpload]);
+  const onFileChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (file) handleImageUpload(file);
+    },
+    [handleImageUpload],
+  );
 
-  const onDrop = useCallback((event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    const file = event.dataTransfer.files?.[0];
-    if (file) handleImageUpload(file);
-  }, [handleImageUpload]);
+  const onDrop = useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      const file = event.dataTransfer.files?.[0];
+      if (file) handleImageUpload(file);
+    },
+    [handleImageUpload],
+  );
 
   const preventDefault = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -53,8 +60,12 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
-      document.getElementById("image-input")?.click();
+      inputRef.current?.click();
     }
+  }, []);
+
+  const handleClick = useCallback(() => {
+    inputRef.current?.click();
   }, []);
 
   return (
@@ -63,13 +74,13 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
       onDrop={onDrop}
       onDragOver={preventDefault}
       onDragEnter={preventDefault}
-      onClick={() => document.getElementById("image-input")?.click()}
+      onClick={handleClick}
       role="button"
       tabIndex={0}
       onKeyDown={handleKeyDown}
     >
       <input
-        id="image-input"
+        ref={inputRef}
         type="file"
         accept="image/*"
         onChange={onFileChange}

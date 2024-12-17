@@ -1,7 +1,6 @@
 import rtkApi from "@/6_shared/api/rtkApi";
 
 import { ArticleDetailsResponse } from "../model/types/article";
-import { ArticleUpsert } from "../model/types/articleUpsertSchema";
 
 interface GetArticleByIdParams {
   id: string;
@@ -9,7 +8,7 @@ interface GetArticleByIdParams {
 
 interface ChangeArticleParams {
   id: string;
-  articleData: Partial<ArticleDetailsResponse>;
+  formData: FormData;
 }
 
 interface DeleteArticleParams {
@@ -46,49 +45,27 @@ const articleApi = rtkApi.injectEndpoints({
       providesTags: (result, error, { id }) => [{ type: "Article", id }],
     }),
 
-    createArticle: build.mutation<ArticleDetailsResponse, ArticleUpsert>({
-      query: (articleData) => {
-        const formData = new FormData();
-
-        // Append textual fields
-        if (articleData.title) formData.append("title", articleData.title);
-        if (articleData.subtitle) formData.append("subtitle", articleData.subtitle);
-
-        // Append array fields as JSON strings
-        if (articleData.type) formData.append("type", JSON.stringify(articleData.type));
-        if (articleData.blocks) formData.append("blocks", JSON.stringify(articleData.blocks));
-
-        // Append image file if present
-        if (articleData.image) formData.append("image", articleData.image);
-
-        return {
-          url: "/articles",
-          method: "POST",
-          body: formData,
-          headers: {
-            "Content-Type": undefined,
-          },
-        };
-      },
-      invalidatesTags: (result, error) => [{ type: "Article" }],
+    createArticle: build.mutation<ArticleDetailsResponse, FormData>({
+      query: (formData) => ({
+        url: "/articles",
+        method: "POST",
+        body: formData,
+        headers: {
+          "Content-Type": undefined,
+        },
+      }),
+      invalidatesTags: [{ type: "Article", id: "LIST" }],
     }),
 
     changeArticle: build.mutation<ArticleDetailsResponse, ChangeArticleParams>({
-      query: ({ id, articleData }) => {
-        const formData = new FormData();
-
-        if (articleData.title) formData.append("title", articleData.title);
-        if (articleData.subtitle) formData.append("subtitle", articleData.subtitle);
-        if (articleData.type) formData.append("type", JSON.stringify(articleData.type));
-        if (articleData.blocks) formData.append("blocks", JSON.stringify(articleData.blocks));
-        if (articleData.image) formData.append("image", articleData.image);
-
-        return {
-          url: `/articles/${id}`,
-          method: "PATCH",
-          body: formData,
-        };
-      },
+      query: ({ id, formData }) => ({
+        url: `/articles/${id}`,
+        method: "PATCH",
+        body: formData,
+        headers: {
+          "Content-Type": undefined,
+        },
+      }),
       invalidatesTags: (result, error, { id }) => [{ type: "Article", id }],
     }),
 

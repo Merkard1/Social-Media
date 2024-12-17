@@ -3,49 +3,50 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 
 import { changeArticle } from "../../../../api/articleApi";
-import { ArticleType } from "../../../consts/articleConsts";
-import { getArticlesDetailsData } from "../../../selectors/articleDetailsSelectors/articleDetailsSelectors";
-import { getArticleUpsertForm } from "../../../selectors/articleUpsertSelectors/articlesUpsertSelectors";
-import { ArticleUpdateInput } from "../../../types/article";
-import { ArticleUpsert } from "../../../types/articleUpsertSchema";
+import { getArticleUpsertBlockImages, getArticleUpsertForm } from "../../../selectors/articleUpsertSelectors/articlesUpsertSelectors";
+import { ArticleDetailsResponse } from "../../../types/article";
 
 export const updateArticleData = createAsyncThunk<
-ArticleUpsert,
-    any,
-    ThunkConfig<any[]>
-    >(
-      "profile/updateProfileData",
-      async (id, thunkApi) => {
-        const { rejectWithValue, getState, dispatch } = thunkApi;
+  ArticleDetailsResponse,
+  string,
+  ThunkConfig<any[]>
+>(
+  "article/updateArticleData",
+  async (id, thunkApi) => {
+    const { rejectWithValue, getState, dispatch } = thunkApi;
 
-        const articleForm = getArticleUpsertForm(getState());
-        const articleData = getArticlesDetailsData(getState());
+    const articleForm = getArticleUpsertForm(getState());
+    const blockImages = getArticleUpsertBlockImages(getState());
 
-        if (!articleData || !articleForm) {
-          return rejectWithValue(["No Data"]);
-        }
+    if (!articleForm) {
+      return rejectWithValue(["No Data"]);
+    }
 
-        try {
-          const updatedArticleData: ArticleUpdateInput = {
-            title: articleForm.title,
-            subtitle: articleForm.subtitle,
-            image: articleForm.image,
-            type: articleForm.type as ArticleType[],
-            blocks: articleForm.blocks,
-          };
+    try {
+      const formData = new FormData();
+      formData.append("title", articleForm.title || "");
+      formData.append("subtitle", articleForm.subtitle || "");
+      formData.append("type", JSON.stringify(articleForm.type || []));
+      formData.append("blocks", JSON.stringify(articleForm.blocks || []));
 
-          const response = await dispatch(
-            changeArticle({ id, articleData: updatedArticleData }),
-          ).unwrap();
+      if (articleForm.image instanceof File) {
+        formData.append("image", articleForm.image);
+      }
 
-          if (!response) {
-            throw new Error();
+      articleForm.blocks?.forEach((block) => {
+        if (block.type === "IMAGE" && block.src && block.src.startsWith("BLOCK_IMAGE_")) {
+          const file = blockImages[block.src];
+          if (file) {
+            formData.append("blockImages", file);
           }
-
-          return response;
-        } catch (e) {
-          console.log(e);
-          return rejectWithValue(["Server Error"]);
         }
-      },
-    );
+      });
+
+      const response = await dispatch(changeArticle({ id, formData })).unwrap();
+      return response;
+    } catch (e) {
+      console.log(e);
+      return rejectWithValue(["Server Error"]);
+    }
+  },
+);
