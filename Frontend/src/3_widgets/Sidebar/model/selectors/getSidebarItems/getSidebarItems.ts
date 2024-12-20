@@ -7,8 +7,8 @@ import ArticleIcon from "@/6_shared/assets/icons/article.svg";
 import ProfileIcon from "@/6_shared/assets/icons/avatar.svg";
 import MainIcon from "@/6_shared/assets/icons/home.svg";
 import AboutIcon from "@/6_shared/assets/icons/Info.svg";
-import MessagesIcon from "@/6_shared/assets/icons/messages.svg";
-import { getRouteAbout, getRouteArticles, getRouteMain, getRouteMessages, getRouteProfile } from "@/6_shared/const/router";
+import ChatIcon from "@/6_shared/assets/icons/messages.svg";
+import { getRouteAbout, getRouteArticles, getRouteMain, getRouteChat, getRouteProfile } from "@/6_shared/const/router";
 
 import { SidebarItemType } from "../../types/sidebar";
 
@@ -37,8 +37,8 @@ export const useSidebarItems = () => {
         authOnly: true,
       },
       {
-        path: getRouteMessages(),
-        Icon: MessagesIcon,
+        path: getRouteChat(),
+        Icon: ChatIcon,
         text: t("Messages"),
         authOnly: true,
       },

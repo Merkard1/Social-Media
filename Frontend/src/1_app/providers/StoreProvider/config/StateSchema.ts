@@ -9,6 +9,9 @@ import {
 import { AxiosInstance } from "axios";
 import { NavigateOptions, To } from "react-router-dom";
 
+import { ChatListSchema } from "@/3_widgets/ChatList";
+import { ConversationSchema } from "@/3_widgets/Conversation";
+
 import { LoginSchema } from "@/4_features/AuthByUsername";
 import { ProfileSchema } from "@/4_features/EditableProfileCard";
 import { RegistrationSchema } from "@/4_features/registration";
@@ -32,6 +35,10 @@ export interface StateSchema {
   profile?: ProfileSchema;
   article?: ArticleSchema;
   comment?: CommentSchema;
+
+  // Sockets
+  conversation?: ConversationSchema;
+  chatList?: ChatListSchema;
 
   registrationForm?: RegistrationSchema;
   loginForm?: LoginSchema;

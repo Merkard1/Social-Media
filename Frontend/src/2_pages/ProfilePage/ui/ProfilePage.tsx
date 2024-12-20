@@ -4,8 +4,10 @@ import { Page } from "@/3_widgets/Page";
 
 import { EditableProfileCard } from "@/4_features/EditableProfileCard";
 
+import { StickyContentLayout } from "@/6_shared/layouts";
 import { classNames } from "@/6_shared/lib/classNames/classNames";
-import { VStack } from "@/6_shared/ui/Stack";
+
+import cls from "./ProfilePage.module.scss";
 
 interface ProfilePageProps {
     className?: string;
@@ -16,9 +18,10 @@ const ProfilePage = ({ className }: ProfilePageProps) => {
 
   return (
     <Page data-testid="ProfilePage" className={classNames("", {}, [className])}>
-      <VStack gap="16" max>
-        <EditableProfileCard username={username} />
-      </VStack>
+      <StickyContentLayout
+        className={cls.content}
+        content={<EditableProfileCard username={username} />}
+      />
     </Page>
   );
 };

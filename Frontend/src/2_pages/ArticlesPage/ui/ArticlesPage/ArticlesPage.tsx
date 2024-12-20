@@ -54,30 +54,26 @@ const ArticlesPage = (props: ArticlesPageProps) => {
     }
   });
 
-  const content = (
-    <StickyContentLayout
-      left={<ViewSelectorContainer />}
-      right={<FiltersContainer />}
-      content={
-        <Page
-          data-testid="ArticlesPage"
-          onScrollEnd={onLoadNextPart}
-          className={classNames(
-            cls.ArticlesPage,
-            {},
-            [className],
-          )}
-        >
-          <ArticleInfiniteList className={cls.list} />
-          <ArticlePageGreeting />
-        </Page>
-      }
-    />
-  );
-
   return (
     <DynamicModuleLoader reducers={reducers} removeAfterUnmount={false}>
-      {content}
+      <StickyContentLayout
+        left={<ViewSelectorContainer />}
+        right={<FiltersContainer />}
+        content={
+          <Page
+            data-testid="ArticlesPage"
+            onScrollEnd={onLoadNextPart}
+            className={classNames(
+              cls.ArticlesPage,
+              {},
+              [className],
+            )}
+          >
+            <ArticleInfiniteList className={cls.list} />
+            <ArticlePageGreeting />
+          </Page>
+        }
+      />
     </DynamicModuleLoader>
   );
 };

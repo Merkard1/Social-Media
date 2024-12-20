@@ -22,13 +22,11 @@
 }
 
 .rightbar {
-  position: sticky;
-  top: 0;
   display: flex;
   height: 100vh;
   flex-direction: column;
   align-items: flex-end;
-  flex: 0 0 100px;
+  flex: 0 0 40px;
 }
 
 .toolbar {
@@ -37,6 +35,10 @@
 }
 
 @media (max-width: 768px), (max-width: var(--width-m)) {
+  .MainLayout {
+    flex-direction: column-reverse;
+  }
+
   .toolbar {
     display: none;
   }
@@ -44,21 +46,34 @@
   .header {
     position: absolute;
     display: flex;
-    width: 100vw;
     justify-content: end;
   }
 
   .rightbar {
-    flex: 0;
+    width: 100%;
+    height: auto;
+    padding: 8px 24px;
+    order: 1;
+    flex: none;
+    align-items: end;
+  }
+
+  .sidebar {
+    position: sticky;
+    bottom: 0;
+    z-index: var(--sidebar-z-index);
+    display: flex;
+    width: 100%;
+    height: 64px;
+    padding: 0;
+    max-width: none;
+    justify-content: center;
   }
 }
 
 @media (max-width: 576px), (max-width: var(--width-s)) {
   .MainLayout {
     padding: 0;
-    grid-template-areas: unset;
-    grid-template-columns: unset;
-    flex-direction: column-reverse;
   }
 
   .content {
@@ -79,7 +94,5 @@
   }
 
   .rightbar {
-    height: auto;
-    padding: 0;
   }
 }

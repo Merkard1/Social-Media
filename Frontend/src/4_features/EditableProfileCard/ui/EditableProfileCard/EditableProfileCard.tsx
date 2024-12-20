@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 
 import { ProfileCard } from "@/5_entities/Profile";
 
-import { classNames } from "@/6_shared/lib/classNames/classNames";
 import { DynamicModuleLoader, ReducersList } from "@/6_shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import { useAppDispatch } from "@/6_shared/lib/hooks/useAppDispatch/useAppDispatch";
 import { useInitialEffect } from "@/6_shared/lib/hooks/useInitialEffect/useInitialEffect";
@@ -64,11 +63,7 @@ export const EditableProfileCard = memo((props: EditableProfileCardProps) => {
 
   return (
     <DynamicModuleLoader reducers={reducers}>
-      <VStack
-        gap="8"
-        max
-        className={classNames("", {}, [className])}
-      >
+      <VStack gap="8" max>
         <EditableProfileCardHeader />
         {validateErrors?.length && validateErrors.map((err: ValidateProfileError) => (
           <Text

@@ -1,6 +1,5 @@
 .Navbar {
   padding: 16px;
-
 }
 
 .links,
@@ -9,10 +8,16 @@
 }
 
 .mainLink {
-  margin-right: 15px;
+  margin-right: 16px;
 }
 
 .appName {
   width: var(--sidebar-width);
-  margin-left: 15px;
+  margin-left: 16px;
+}
+
+@media (max-width: 768px), (max-width: var(--width-m)) {
+  .Navbar {
+    padding: 0;
+  }
 }
