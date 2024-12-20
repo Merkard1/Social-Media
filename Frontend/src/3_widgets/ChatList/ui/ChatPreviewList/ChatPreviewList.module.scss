@@ -1,0 +1,25 @@
+.ChatPreviewList {
+  display: flex;
+  height: 82.8vh;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.ChatPreviewList::-webkit-scrollbar {
+  width: 4px;
+  height: 8px;
+}
+
+.ChatPreviewList::-webkit-scrollbar-track {
+  background: var(--scrollbar);
+}
+
+.ChatPreviewList::-webkit-scrollbar-thumb {
+  border: 1px solid var(--accent);
+  background-color: var(--icon);
+  border-radius: 20px;
+}
+
+.ChatPreviewList::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

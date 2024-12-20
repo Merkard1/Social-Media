@@ -21,7 +21,7 @@
 }
 
 *::-webkit-scrollbar-track {
-  background: var(--scrollbar); /* Set the scrollbar track to black */
+  background: var(--scrollbar);
 }
 
 *::-webkit-scrollbar-thumb {
@@ -37,7 +37,7 @@
 }
 
 .app *::-webkit-scrollbar-track {
-  background: var(--scrollbar); /* Set the scrollbar track to black */
+  background: var(--scrollbar);
 }
 
 .app *::-webkit-scrollbar-thumb {

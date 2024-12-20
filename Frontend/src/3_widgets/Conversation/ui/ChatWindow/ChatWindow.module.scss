@@ -1,0 +1,26 @@
+.ChatWindow {
+  display: flex;
+  height: 77.8vh;
+  overflow-y: auto;
+  padding-right: 8px;
+  flex-direction: column-reverse;
+}
+
+.ChatWindow::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.ChatWindow::-webkit-scrollbar-track {
+  background: var(--scrollbar);
+}
+
+.ChatWindow::-webkit-scrollbar-thumb {
+  border: 1px solid var(--accent);
+  background-color: var(--icon);
+  border-radius: 20px;
+}
+
+.ChatWindow::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

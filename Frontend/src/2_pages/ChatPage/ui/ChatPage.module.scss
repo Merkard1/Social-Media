@@ -1,0 +1,21 @@
+.ChatPage {
+  display: flex;
+  height: 100%;
+  gap: 16px;
+}
+
+.ChatSidebar {
+  display: flex;
+  flex: 2;
+  overflow-y: auto;
+}
+
+@media (max-width: 1200px) {
+  .ChatPage {
+
+  }
+
+  .ChatSidebar {
+
+  }
+}
