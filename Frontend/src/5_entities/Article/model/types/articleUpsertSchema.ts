@@ -1,6 +1,6 @@
 import { Image } from "@/6_shared/ui/ImageUploader";
 
-import { ArticleBlock } from "./article";
+import { ArticleBlock } from "./Article";
 
 export interface ArticleUpsert {
   id: string;

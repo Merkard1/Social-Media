@@ -2,7 +2,7 @@ import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 
 import { articleUpsertActions, useArticleUpsertForm } from "@/5_entities/Article";
-import { ArticleBlock, UpdatedBlock } from "@/5_entities/Article/model/types/article";
+import { ArticleBlock, UpdatedBlock } from "@/5_entities/Article/model/types/Article";
 import { renderArticleBlock } from "@/5_entities/Article/ui/renderArticleBlock/renderArticleBlock";
 
 import { useAppDispatch } from "@/6_shared/lib/hooks/useAppDispatch/useAppDispatch";
@@ -35,7 +35,7 @@ export const EditableArticleBlocks = memo((props: EditableArticleBlocksProps) =>
 
   const onImageUpload = useCallback(
     (blockId: string, file: File) => {
-      const blockIndex = formData!.blocks.findIndex((b) => b.id === blockId);
+      const blockIndex = formData!.blocks.findIndex((b: ArticleBlock) => b.id === blockId);
       const placeholder = `BLOCK_IMAGE_${blockIndex}`;
       dispatch(articleUpsertActions.updateArticleBlock({
         blockId,

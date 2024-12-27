@@ -10,12 +10,14 @@ import { Type } from 'class-transformer';
 import { ArticleType } from '../types/ArticleType';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { BlockDto } from './article-block.dto';
+import { Expose } from 'class-transformer';
 
 export class CreateArticleDto {
   @ApiProperty({
     description: 'Title of the article',
     example: 'Introduction to NestJS',
   })
+  @Expose()
   @IsString()
   @IsNotEmpty()
   title: string;
@@ -24,6 +26,7 @@ export class CreateArticleDto {
     description: 'Subtitle of the article',
     example: 'Building efficient server-side applications',
   })
+  @Expose()
   @IsString()
   @IsNotEmpty()
   subtitle: string;
@@ -32,6 +35,7 @@ export class CreateArticleDto {
     description: 'Image URL of the article',
     example: 'https://example.com/image.png',
   })
+  @Expose()
   @IsOptional()
   @IsString()
   image?: string | null;
@@ -42,6 +46,7 @@ export class CreateArticleDto {
     enum: ['IT', 'ECONOMICS', 'SCIENCE'],
     isArray: true,
   })
+  @Expose()
   @IsArray()
   @IsString({ each: true })
   type: ArticleType[];
@@ -50,6 +55,7 @@ export class CreateArticleDto {
     description: 'Content blocks of the article',
     type: [BlockDto],
   })
+  @Expose()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => BlockDto)

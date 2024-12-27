@@ -9,6 +9,7 @@ import {
   UseGuards,
   Request,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,12 +23,51 @@ import {
   ApiResponse,
   ApiParam,
   ApiBody,
+  ApiQuery,
 } from '@nestjs/swagger';
+import { SearchUsersDto } from './dto/search-users.dto';
+import { UserDto } from './dto/user.dto';
 
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  // TODO Swagger
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @Get('search')
+  @ApiOperation({ summary: 'Search users by username' })
+  @ApiQuery({
+    name: 'query',
+    required: true,
+    description: 'Search term for usernames',
+  })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    description: 'Page number for pagination',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Number of users per page',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'List of matching users',
+    type: [User],
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 404, description: 'Not Found' })
+  async searchUsers(@Query() searchUsersDto: SearchUsersDto) {
+    return this.usersService.searchUsers(
+      searchUsersDto.q,
+      searchUsersDto.page,
+      searchUsersDto.limit,
+    );
+  }
 
   @Post()
   @ApiOperation({ summary: 'Create a new user' })
@@ -44,9 +84,7 @@ export class UsersController {
   })
   async create(@Body() createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...userWithoutPassword } = user;
-    return userWithoutPassword;
+    return user;
   }
 
   @Get('id/:id')
@@ -68,14 +106,12 @@ export class UsersController {
   })
   async getUserWithProfile(
     @Param('id') id: string,
-  ): Promise<Omit<User, 'password'>> {
+  ): Promise<Omit<UserDto, 'password'>> {
     const user = await this.usersService.findUserWithProfile(id);
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...result } = user;
-    return result;
+    return user;
   }
 
   @Get('username/:username')
@@ -98,9 +134,7 @@ export class UsersController {
   async findOne(@Param('username') username: string) {
     const user = await this.usersService.findOneByUsername(username);
     if (user) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...result } = user;
-      return result;
+      return user;
     }
     throw new NotFoundException('User not found');
   }

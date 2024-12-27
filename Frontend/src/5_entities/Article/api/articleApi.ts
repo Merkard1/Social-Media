@@ -1,6 +1,6 @@
 import rtkApi from "@/6_shared/api/rtkApi";
 
-import { ArticleDetailsResponse } from "../model/types/article";
+import { ArticleDetailsResponse } from "../model/types/Article";
 
 interface GetArticleByIdParams {
   id: string;
@@ -25,7 +25,6 @@ const articleApi = rtkApi.injectEndpoints({
     getAllArticles: build.query<ArticleDetailsResponse[], GetAllArticlesParams >({
       query: ({ params }) => ({
         url: "/articles/",
-        method: "GET",
         params,
       }),
       providesTags: (result) =>
@@ -40,7 +39,6 @@ const articleApi = rtkApi.injectEndpoints({
     getArticleById: build.query<ArticleDetailsResponse, GetArticleByIdParams>({
       query: ({ id }) => ({
         url: `/articles/${id}`,
-        method: "GET",
       }),
       providesTags: (result, error, { id }) => [{ type: "Article", id }],
     }),

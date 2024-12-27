@@ -10,16 +10,18 @@ import {
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Comment } from '../../comments/entities/comment.entity';
-import { BlockType } from '@/modules/articles/types/ArticleBlock';
-import { ArticleType } from '@/modules/articles/types/ArticleType';
-import { ArticleRating } from '@/modules/article-ratings/entities/article-rating.entity';
+import { BlockType } from '../types/ArticleBlock';
+import { ArticleType } from '../types/ArticleType';
+import { ArticleRating } from '../../article-ratings/entities/article-rating.entity';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
 export class Block {
   @ApiProperty({
     example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
     description: 'Unique identifier for the block',
   })
+  @Expose()
   @Column()
   id: string;
 
@@ -28,6 +30,7 @@ export class Block {
     enum: ['TEXT', 'IMAGE', 'CODE'],
     description: 'Type of the block',
   })
+  @Expose()
   @Column()
   type: BlockType;
 
@@ -35,6 +38,7 @@ export class Block {
     example: 'Introduction',
     description: 'Title of the block, if applicable',
   })
+  @Expose()
   @Column({ nullable: true })
   title?: string;
 
@@ -42,6 +46,7 @@ export class Block {
     example: ['This is the first paragraph.', 'This is the second paragraph.'],
     description: 'Paragraphs contained within the block',
   })
+  @Expose()
   @Column('text', { array: true, nullable: true })
   paragraphs?: string[];
 
@@ -49,6 +54,7 @@ export class Block {
     example: "console.log('Hello, World!');",
     description: 'Code snippet contained within the block, if applicable',
   })
+  @Expose()
   @Column({ nullable: true })
   code?: string;
 
@@ -56,6 +62,7 @@ export class Block {
     example: 'https://example.com/image.jpg',
     description: 'Source URL for the image block, if applicable',
   })
+  @Expose()
   @Column({ nullable: true })
   src?: string;
 }
@@ -66,6 +73,7 @@ export class Article {
     example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
     description: 'Unique identifier for the article',
   })
+  @Expose()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -73,6 +81,7 @@ export class Article {
     example: 'Understanding NestJS',
     description: 'Title of the article',
   })
+  @Expose()
   @Column()
   title: string;
 
@@ -81,6 +90,7 @@ export class Article {
       'A comprehensive guide to building scalable server-side applications.',
     description: 'Subtitle or brief description of the article',
   })
+  @Expose()
   @Column()
   subtitle: string;
 
@@ -88,6 +98,7 @@ export class Article {
     example: 'https://example.com/article-image.jpg',
     description: 'URL of the main image for the article, if any',
   })
+  @Expose()
   @Column({ nullable: true })
   image?: string;
 
@@ -97,6 +108,7 @@ export class Article {
     isArray: true,
     description: 'Categories or types associated with the article',
   })
+  @Expose()
   @Column('text', { array: true })
   type: ArticleType[];
 
@@ -104,6 +116,7 @@ export class Article {
     type: [Block],
     description: 'Array of content blocks that make up the article',
   })
+  @Expose()
   @Column({ type: 'jsonb' })
   blocks: Block[];
 
@@ -111,6 +124,7 @@ export class Article {
     example: 150,
     description: 'Number of views the article has received',
   })
+  @Expose()
   @Column({ default: 0 })
   views: number;
 
@@ -118,6 +132,7 @@ export class Article {
     example: 4.5,
     description: 'Average rating of the article',
   })
+  @Expose()
   @Column({ type: 'float', default: 0 })
   averageRating: number;
 
@@ -125,6 +140,7 @@ export class Article {
     example: 30,
     description: 'Total number of ratings the article has received',
   })
+  @Expose()
   @Column({ default: 0 })
   numberOfRatings: number;
 
@@ -132,6 +148,7 @@ export class Article {
     type: () => User,
     description: 'User who authored the article',
   })
+  @Expose()
   @ManyToOne(() => User, (user) => user.articles, {
     eager: true,
     onDelete: 'CASCADE',
@@ -143,6 +160,7 @@ export class Article {
     type: () => [Comment],
     description: 'Comments associated with the article',
   })
+  @Expose()
   @OneToMany(() => Comment, (comment) => comment.article)
   comments: Comment[];
 
@@ -150,6 +168,7 @@ export class Article {
     type: () => [ArticleRating],
     description: 'Ratings associated with the article',
   })
+  @Expose()
   @OneToMany(() => ArticleRating, (rating) => rating.article)
   ratings: ArticleRating[];
 
@@ -159,6 +178,7 @@ export class Article {
     format: 'date-time',
     description: 'Timestamp when the article was created',
   })
+  @Expose()
   @CreateDateColumn()
   createdAt: Date;
 
@@ -168,6 +188,7 @@ export class Article {
     format: 'date-time',
     description: 'Timestamp when the article was last updated',
   })
+  @Expose()
   @UpdateDateColumn()
   updatedAt: Date;
 }

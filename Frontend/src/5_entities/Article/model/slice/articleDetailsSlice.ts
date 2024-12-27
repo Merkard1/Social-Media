@@ -4,8 +4,8 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { buildSlice } from "@/6_shared/lib/store/buildSlice";
 
 import { fetchArticleData } from "../services/articleServices/fetchArticleData/fetchArticleData";
-import { ArticleDetailsResponse } from "../types/article";
-import { ArticleDetailsSchema } from "../types/articleDetailsSchema";
+import { ArticleDetailsResponse } from "../types/Article";
+import { ArticleDetailsSchema } from "../types/ArticleDetailsSchema";
 
 const initialState: ArticleDetailsSchema = {
   isLoading: false,
@@ -19,7 +19,6 @@ export const articleDetailsSlice = buildSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-    // Getting article data
       .addCase(fetchArticleData.pending, (state) => {
         state.error = undefined;
         state.isLoading = true;

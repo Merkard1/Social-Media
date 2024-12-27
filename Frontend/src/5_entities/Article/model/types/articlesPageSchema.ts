@@ -4,7 +4,7 @@ import { SortOrder } from "@/6_shared/types/sort";
 
 import { ArticleSortField, ArticleType, ArticleView } from "../consts/articleConsts";
 
-import { ArticleDetailsResponse } from "./article";
+import { ArticleDetailsResponse } from "./Article";
 
 export interface ArticlesPageSchema extends EntityState<ArticleDetailsResponse> {
     isLoading?: boolean;

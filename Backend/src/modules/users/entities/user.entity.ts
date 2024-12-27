@@ -5,37 +5,44 @@ import {
   OneToOne,
   OneToMany,
   JoinColumn,
+  ManyToMany,
 } from 'typeorm';
-import { Exclude } from 'class-transformer';
-import { Profile } from '../../profiles/entities/profile.entity';
-import { Article } from '../../articles/entities/article.entity';
-import { Comment } from '../../comments/entities/comment.entity';
-import { Notification } from '../../notifications/entities/notification.entity';
+import { Profile } from '@/modules/profiles/entities/profile.entity';
+import { Article } from '@/modules/articles/entities/article.entity';
+import { Comment } from '@/modules/comments/entities/comment.entity';
+import { Notification } from '@/modules/notifications/entities/notification.entity';
 import { Role } from '@/modules/users/types/UserRoles';
 import { ArticleRating } from '@/modules/article-ratings/entities/article-rating.entity';
+import { Chat } from '@/modules/chats/entities/chat.entity';
+import { Message } from '@/modules/chats/entities/message.entity';
+
 import {
   ApiProperty,
   ApiPropertyOptional,
   ApiHideProperty,
 } from '@nestjs/swagger';
+import { Exclude, Expose } from 'class-transformer';
 
 @Entity()
 export class User {
   @ApiProperty({ example: '60d0fe4f5-31123-6168a1-09cb' })
+  @Expose()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @ApiProperty({ example: 'merkard' })
+  @Expose()
   @Column({ unique: true })
   username: string;
 
   @ApiProperty({ example: 'merkard@example.com' })
+  @Expose()
   @Column({ unique: true })
   email: string;
 
   @ApiHideProperty()
-  @Column()
   @Exclude()
+  @Column()
   password: string;
 
   @ApiProperty({
@@ -43,6 +50,7 @@ export class User {
     enum: ['USER', 'ADMIN', 'MANAGER'],
     description: 'Roles assigned to the user',
   })
+  @Expose()
   @Column('simple-array', { default: 'USER' })
   roles: Role[];
 
@@ -50,21 +58,30 @@ export class User {
     example: { darkMode: true, betaAccess: false },
     description: 'Feature flags for the user',
   })
+  @Expose()
   @Column('jsonb', { nullable: true })
   features: Record<string, any>;
 
   @ApiPropertyOptional({
+    example: {
+      theme: 'app_dark_theme',
+      isFirstVisit: false,
+      settingsPageHasBeenOpen: false,
+      isArticlesPageWasOpened: false,
+    },
     description: 'JSON settings for the user',
   })
+  @Expose()
   @Column('jsonb', { nullable: true })
   jsonSettings: {
-    theme?: 'app_light_theme' | 'app_dark_theme';
+    theme?: string;
     isFirstVisit?: boolean;
     settingsPageHasBeenOpen?: boolean;
     isArticlesPageWasOpened?: boolean;
   };
 
   @ApiPropertyOptional({ type: () => Profile })
+  @Expose()
   @OneToOne(() => Profile, (profile) => profile.user, {
     cascade: true,
     eager: true,
@@ -74,22 +91,33 @@ export class User {
   profile: Profile;
 
   @ApiPropertyOptional({ type: () => [Article] })
+  @Expose()
   @OneToMany(() => Article, (article) => article.user)
   articles: Article[];
 
   @ApiPropertyOptional({ type: () => [Comment] })
+  @Expose()
   @OneToMany(() => Comment, (comment) => comment.user)
   comments: Comment[];
 
   @ApiPropertyOptional({ type: () => [ArticleRating] })
+  @Expose()
   @OneToMany(() => ArticleRating, (rating) => rating.user)
   ratings: ArticleRating[];
 
+  @ManyToMany(() => Chat, (chat) => chat.participants)
+  chats: Chat[];
+
+  @OneToMany(() => Message, (message) => message.sender)
+  messages: Message[];
+
   @ApiPropertyOptional({ type: () => [Notification] })
+  @Expose()
   @OneToMany(() => Notification, (notification) => notification.sender)
   sentNotifications: Notification[];
 
   @ApiPropertyOptional({ type: () => [Notification] })
+  @Expose()
   @OneToMany(() => Notification, (notification) => notification.recipient)
   receivedNotifications: Notification[];
 }

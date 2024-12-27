@@ -9,37 +9,51 @@ import {
 import { AxiosInstance } from "axios";
 import { NavigateOptions, To } from "react-router-dom";
 
-import { ChatListSchema } from "@/3_widgets/ChatList";
-import { ConversationSchema } from "@/3_widgets/Conversation";
-
 import { LoginSchema } from "@/4_features/AuthByUsername";
 import { ProfileSchema } from "@/4_features/EditableProfileCard";
 import { RegistrationSchema } from "@/4_features/registration";
 import { ScrollRestoration } from "@/4_features/ScrollRestoration";
 
-import { ArticleSchema } from "@/5_entities/Article";
+import {
+  ArticleDetailsSchema,
+  ArticleRecommendationsSchema,
+  ArticlesPageSchema,
+  ArticleUpsertSchema } from "@/5_entities/Article";
+import { ChatSchema } from "@/5_entities/Chat";
 import { CommentSchema } from "@/5_entities/Comment";
 import { NotificationSchema } from "@/5_entities/Notification";
-import { UserSchema } from "@/5_entities/User";
+import { UserSchema, UsersListSchema } from "@/5_entities/User";
 
 import rtkApi from "@/6_shared/api/rtkApi";
 
 export interface StateSchema {
   user: UserSchema;
   scrollRestoration: ScrollRestoration;
+
   [rtkApi.reducerPath]: ReturnType<typeof rtkApi.reducer>
-  // Sockets Reducers
   notifications?: NotificationSchema;
 
   // Async Reducers
-  profile?: ProfileSchema;
-  article?: ArticleSchema;
+
+  // Comment
   comment?: CommentSchema;
 
-  // Sockets
-  conversation?: ConversationSchema;
-  chatList?: ChatListSchema;
+  // Articles
+  articleDetails?: ArticleDetailsSchema,
+  articleRecommendations?: ArticleRecommendationsSchema,
+  articlesPage?: ArticlesPageSchema,
+  articleUpsert?: ArticleUpsertSchema,
 
+  // Chat
+  chat?: ChatSchema;
+
+  // User
+  usersList?: UsersListSchema;
+
+  // Profile
+  profile?: ProfileSchema;
+
+  // Auth
   registrationForm?: RegistrationSchema;
   loginForm?: LoginSchema;
 }

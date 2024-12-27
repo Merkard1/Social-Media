@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { ArticleBlock } from "@/5_entities/Article";
 import { ArticleCodeBlock,
-  ArticleImageBlock, ArticleTextBlock } from "@/5_entities/Article/model/types/article";
+  ArticleImageBlock, ArticleTextBlock } from "@/5_entities/Article/model/types/Article";
 
 export const createArticleBlock = (type: ArticleBlock["type"]): ArticleBlock => {
   switch (type) {

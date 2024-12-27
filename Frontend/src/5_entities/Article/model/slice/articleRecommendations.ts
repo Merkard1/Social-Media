@@ -5,7 +5,7 @@ import { fetchArticleRecommendations } from "@/5_entities/Comment/model/services
 
 import { buildSlice } from "@/6_shared/lib/store/buildSlice";
 
-import { articleRecommendationsSchema } from "../types/articleRecommendationsSchema";
+import { ArticleRecommendationsSchema } from "../types/ArticleRecommendationsSchema";
 
 const recommendationsAdapter = createEntityAdapter<any>({
   selectId: (article) => article.id,
@@ -17,7 +17,7 @@ const recommendationsAdapter = createEntityAdapter<any>({
 
 const articleRecommendationsSlice = buildSlice({
   name: "articleRecommendationsSlice",
-  initialState: recommendationsAdapter.getInitialState<articleRecommendationsSchema>({
+  initialState: recommendationsAdapter.getInitialState<ArticleRecommendationsSchema>({
     isLoading: false,
     error: undefined,
     ids: [],

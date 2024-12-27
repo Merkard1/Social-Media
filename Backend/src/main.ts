@@ -10,7 +10,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Social Media API')
-    .setDescription('API Description')
+    .setDescription('Social Media API')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
@@ -19,7 +19,11 @@ async function bootstrap() {
 
   SwaggerModule.setup('api-docs', app, document);
 
-  app.enableCors();
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -41,9 +45,12 @@ async function bootstrap() {
     }),
   );
   app.use(cookieParser());
+
   try {
     await app.listen(port);
-    console.log(`Application is running on: http://localhost:${port}`);
+    console.log(
+      `🚀 Backend Application is running on: http://localhost:${port}`,
+    );
   } catch (err) {
     if (err.code === 'EADDRINUSE') {
       console.error(`Port ${port} is already in use.`);

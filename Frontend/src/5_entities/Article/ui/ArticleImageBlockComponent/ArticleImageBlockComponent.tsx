@@ -11,7 +11,7 @@ import { HStack, VStack } from "@/6_shared/ui/Stack";
 import { Text } from "@/6_shared/ui/Text/Text";
 
 import { getArticleUpsertBlockImages } from "../../model/selectors/articleUpsertSelectors/articlesUpsertSelectors";
-import { ArticleImageBlock } from "../../model/types/article";
+import { ArticleImageBlock } from "../../model/types/Article";
 
 interface ArticleImageBlockComponentProps {
   block: ArticleImageBlock;
@@ -44,16 +44,15 @@ export const ArticleImageBlockComponent = memo((props: ArticleImageBlockComponen
     onDelete?.(block.id);
   }, [block.id, onDelete]);
 
-  // Determine the correct src to display
   const imageSrc = useMemo(() => {
     if (block.src?.startsWith("BLOCK_IMAGE_")) {
       const file = blockImages[block.src];
       if (file) {
         return URL.createObjectURL(file);
       }
-      return ""; // No file yet
+      return "";
     }
-    return block.src || ""; // Normal URL if not a placeholder
+    return block.src || "";
   }, [block.src, blockImages]);
 
   if (!readOnly) {

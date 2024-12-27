@@ -17,7 +17,7 @@ import { HStack, VStack } from "@/6_shared/ui/Stack";
 import { Text } from "@/6_shared/ui/Text/Text";
 
 import { ArticleView } from "../../model/consts/articleConsts";
-import { ArticleBlock, ArticleDetailsResponse, ArticleTextBlock } from "../../model/types/article";
+import { ArticleBlock, ArticleDetailsResponse, ArticleTextBlock } from "../../model/types/Article";
 
 import cls from "./ArticleListItem.module.scss";
 

@@ -19,8 +19,8 @@ import {
   getArticlesDetailsIsLoading,
 } from "../../model/selectors/articleDetailsSelectors/articleDetailsSelectors";
 import { fetchArticleData } from "../../model/services/articleServices/fetchArticleData/fetchArticleData";
-import { articleReducer } from "../../model/slice";
-import { ArticleBlock } from "../../model/types/article";
+import { articleUpsertReducer } from "../../model/slice/articleUpsertSlice";
+import { ArticleBlock } from "../../model/types/Article";
 import { renderArticleBlock } from "../renderArticleBlock/renderArticleBlock";
 
 import cls from "./ArticleDetails.module.scss";
@@ -31,7 +31,7 @@ interface ArticleDetailsProps {
 }
 
 const reducers: ReducersList = {
-  article: articleReducer,
+  articleUpsert: articleUpsertReducer,
 };
 
 export const ArticleDetailsSkeleton = () => (

@@ -7,7 +7,7 @@ import { Page } from "@/3_widgets/Page";
 import { ArticleRating } from "@/4_features/articleRating";
 import { ArticleRecommendationsList } from "@/4_features/articleRecommendationsList";
 
-import { articleReducer } from "@/5_entities/Article";
+import { articleDetailsReducer } from "@/5_entities/Article";
 
 import { StickyContentLayout } from "@/6_shared/layouts";
 import { classNames } from "@/6_shared/lib/classNames/classNames";
@@ -28,7 +28,7 @@ interface ArticleDetailsPageProps {
 }
 
 const reducers: ReducersList = {
-  article: articleReducer,
+  articleDetails: articleDetailsReducer,
 };
 
 const ArticleDetailsPage = (props: ArticleDetailsPageProps) => {

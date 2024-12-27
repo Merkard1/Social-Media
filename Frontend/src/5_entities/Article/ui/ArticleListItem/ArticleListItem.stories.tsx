@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 
-import { ArticleDetailsResponse } from "../../model/types/article";
+import { ArticleDetailsResponse } from "../../model/types/Article";
 
 import { ArticleListItem } from "./ArticleListItem";
 

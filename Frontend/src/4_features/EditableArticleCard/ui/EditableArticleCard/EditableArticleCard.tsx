@@ -2,11 +2,10 @@ import { memo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
-  articleReducer,
   fetchArticleData,
   articleUpsertActions,
   ArticleUpsert,
-} from "@/5_entities/Article";
+  articleUpsertReducer } from "@/5_entities/Article";
 
 import {
   DynamicModuleLoader,
@@ -25,7 +24,7 @@ interface ArticlePageProps {
 }
 
 const reducers: ReducersList = {
-  article: articleReducer,
+  articleUpsert: articleUpsertReducer,
 };
 
 export const EditableArticleCard = memo((props: ArticlePageProps) => {
