@@ -18,39 +18,18 @@ export { useArticleFilters } from "./lib/hooks/useArticleFilters";
 // MODEL
 // Consts
 export type { ArticleView, ArticleSortField, ArticleType } from "./model/consts/articleConsts";
-export type { ArticleDetailsResponse } from "./model/types/article";
+export type { ArticleDetailsResponse } from "./model/types/Article";
 
 // Selectors
-export {
-  useArticlesDetailsData,
-  getArticlesDetailsIsLoading,
-  getArticlesDetailsError,
-  getArticlesDetailsData,
-} from "./model/selectors/articleDetailsSelectors/articleDetailsSelectors";
-export {
-  getArticleUpsertError,
-  useArticleUpsertError,
-  getArticleUpsertForm,
-  useArticleUpsertForm,
-  getArticleUpsertIsLoading,
-  useArticleUpsertIsLoading,
-} from "./model/selectors/articleUpsertSelectors/articlesUpsertSelectors";
-export {
-  useArticlesPageOrder,
-  useArticlesPageSearch,
-  useArticlesPageSort,
-  useArticlesPageType,
-  useArticlesPageView,
-  getArticlesPageIsLoading,
-  useArticlesPageError } from "./model/selectors/articlesPageSelectors/articlesPageSelectors";
+export * from "./model/selectors/articleDetailsSelectors/articleDetailsSelectors";
+export * from "./model/selectors/articleUpsertSelectors/articlesUpsertSelectors";
+export * from "./model/selectors/articlesPageSelectors/articlesPageSelectors";
 
 // Slice
-export { articleReducer } from "./model/slice";
-export { articleUpsertActions } from "./model/slice/articleUpsertSlice";
-export {
-  articlesPageActions,
-  articlesPageReducer,
-  getArticles } from "./model/slice/articlesPageSlice";
+export * from "./model/slice/articleDetailsSlice";
+export * from "./model/slice/articleRecommendations";
+export * from "./model/slice/articleUpsertSlice";
+export * from "./model/slice/articlesPageSlice";
 
 // Services
 export { fetchArticleData } from "./model/services/articleServices/fetchArticleData/fetchArticleData";
@@ -62,9 +41,13 @@ export { updateArticleData } from "./model/services/articleUpsertServices/update
 export { fetchArticleById } from "./model/services/articleServices/fetchArticleById/fetchArticleById";
 
 // Types
-export type { ArticleSchema } from "./model/types";
-export type { ArticleBlock } from "./model/types/article";
-export type { ArticleUpsert } from "./model/types/articleUpsertSchema";
+
+export type { ArticleDetailsSchema } from "./model/types/ArticleDetailsSchema";
+export type { ArticleRecommendationsSchema } from "./model/types/ArticleRecommendationsSchema";
+export type { ArticleUpsertSchema } from "./model/types/ArticleUpsertSchema";
+export type { ArticlesPageSchema } from "./model/types/ArticlesPageSchema";
+export type { ArticleBlock } from "./model/types/Article";
+export type { ArticleUpsert } from "./model/types/ArticleUpsertSchema";
 
 // UI
 export { ArticleDetails } from "./ui/ArticleDetails/ArticleDetails";

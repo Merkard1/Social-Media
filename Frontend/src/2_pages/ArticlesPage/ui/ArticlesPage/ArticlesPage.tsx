@@ -9,7 +9,7 @@ import {
   fetchNextArticlesPage,
   initArticlesPage,
   articlesPageActions,
-  articleReducer,
+  articlesPageReducer,
 } from "@/5_entities/Article";
 
 import { StickyContentLayout } from "@/6_shared/layouts";
@@ -33,7 +33,7 @@ interface ArticlesPageProps {
 }
 
 const reducers: ReducersList = {
-  article: articleReducer,
+  articlesPage: articlesPageReducer,
 };
 
 const ArticlesPage = (props: ArticlesPageProps) => {

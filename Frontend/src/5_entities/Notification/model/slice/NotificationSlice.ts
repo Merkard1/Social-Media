@@ -4,9 +4,11 @@ import { PayloadAction } from "@reduxjs/toolkit";
 
 import { buildSlice } from "@/6_shared/lib/store/buildSlice";
 
+import { NotificationType } from "../types/notification";
+
 interface Notification {
   id: string;
-  type: "comment" | "message";
+  type: NotificationType;
   payload: any;
   read: boolean;
   createdAt: number;
@@ -24,6 +26,7 @@ const notificationSlice = buildSlice({
   name: "notificationSlice",
   initialState: null,
   reducers: {
+    addNotification: (state, action: PayloadAction<any>) => { },
     newCommentNotification: (
       state,
       action: PayloadAction<{ articleId: string; comment: string; userId: string }>,

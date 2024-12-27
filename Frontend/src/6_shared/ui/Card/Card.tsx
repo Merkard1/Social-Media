@@ -1,4 +1,6 @@
-import { HTMLAttributes, memo, ReactNode } from "react";
+// src/6_shared/ui/Card/Card.tsx
+
+import React, { forwardRef, memo, ReactNode } from "react";
 
 import { classNames } from "@/6_shared/lib/classNames/classNames";
 
@@ -8,15 +10,14 @@ export type CardVariant = "normal" | "outlined" | "light";
 export type CardPadding = "0" | "8" | "16" | "24";
 export type CardBorder = "round" | "normal" | "partial";
 
-interface CardProps extends HTMLAttributes<HTMLDivElement> {
-    className?: string;
-    children: ReactNode;
-    variant?: CardVariant;
-    max?: boolean;
-    padding?: CardPadding;
-    border?: CardBorder;
-
-    fullHeight?: boolean;
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string;
+  children: ReactNode;
+  variant?: CardVariant;
+  max?: boolean;
+  padding?: CardPadding;
+  border?: CardBorder;
+  fullHeight?: boolean;
 }
 
 const mapPaddingToClass: Record<CardPadding, string> = {
@@ -26,7 +27,10 @@ const mapPaddingToClass: Record<CardPadding, string> = {
   24: "gap_24",
 };
 
-export const Card = memo((props: CardProps) => {
+const CardComponent = (
+  props: CardProps,
+  ref: React.Ref<HTMLDivElement>,
+) => {
   const {
     className,
     children,
@@ -50,9 +54,15 @@ export const Card = memo((props: CardProps) => {
         },
         [className, cls[variant], cls[paddingClass], cls[border]],
       )}
+      ref={ref}
       {...otherProps}
     >
       {children}
     </div>
   );
-});
+};
+
+// Wrap the component with forwardRef and memo
+export const Card = memo(forwardRef(CardComponent));
+
+Card.displayName = "Card";

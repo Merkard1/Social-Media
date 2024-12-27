@@ -9,15 +9,15 @@ import { SortOrder } from "@/6_shared/types/sort";
 
 import { ArticleSortField, ArticleType, ArticleView } from "../consts/articleConsts";
 import { fetchArticlesList } from "../services/articlesPageServices/fetchArticlesList/fetchArticlesList";
-import { ArticleDetailsResponse } from "../types/article";
-import { ArticlesPageSchema } from "../types/articlesPageSchema";
+import { ArticleDetailsResponse } from "../types/Article";
+import { ArticlesPageSchema } from "../types/ArticlesPageSchema";
 
 const articlesAdapter = createEntityAdapter<ArticleDetailsResponse>({
   selectId: (article) => article.id,
 });
 
 export const getArticles = articlesAdapter.getSelectors<StateSchema>(
-  (state) => state.article?.articlesPage || articlesAdapter.getInitialState(),
+  (state) => state.articlesPage || articlesAdapter.getInitialState(),
 );
 
 const initialState: ArticlesPageSchema = articlesAdapter.getInitialState({

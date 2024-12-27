@@ -28,8 +28,7 @@ export const fetchArticlesList = createAsyncThunk<
   "articlesPage/fetchArticlesList",
   async (args, thunkApi) => {
     const { rejectWithValue, getState, extra } = thunkApi;
-    const { replace = false } = args || {};
-    const { api } = extra; // Assuming you have an API instance in your extra arguments
+    const { api } = extra;
 
     const page = getArticlesPageNum(getState());
     const limit = getArticlesPageLimit(getState());

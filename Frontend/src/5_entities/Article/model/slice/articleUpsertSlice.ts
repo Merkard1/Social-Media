@@ -1,13 +1,12 @@
 /* eslint-disable no-param-reassign */
-// src/5_entities/Article/model/slice/articleUpsertSlice.ts
 import { PayloadAction } from "@reduxjs/toolkit";
 
 import { buildSlice } from "@/6_shared/lib/store/buildSlice";
 
 import { saveArticleData } from "../services/articleUpsertServices/saveArticleData/saveArticleData";
 import { updateArticleData } from "../services/articleUpsertServices/updateArticleData/updateArticleData";
-import { ArticleBlock, ArticleCodeBlock, ArticleImageBlock, ArticleTextBlock, UpdatedBlock } from "../types/article";
-import { ArticleUpsert, ArticleUpsertSchema } from "../types/articleUpsertSchema";
+import { ArticleBlock, ArticleCodeBlock, ArticleImageBlock, ArticleTextBlock, UpdatedBlock } from "../types/Article";
+import { ArticleUpsert, ArticleUpsertSchema } from "../types/ArticleUpsertSchema";
 
 const initialState: ArticleUpsertSchema = {
   isLoading: false,

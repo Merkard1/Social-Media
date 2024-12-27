@@ -1,4 +1,3 @@
-// src/entities/notification/model/services/initSocketConnection.ts
 import { io, Socket } from "socket.io-client";
 
 import { AppDispatch } from "@/1_app/providers/StoreProvider";

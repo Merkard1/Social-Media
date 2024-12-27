@@ -1,5 +1,3 @@
-// src/features/article/ui/ArticleRating/ArticleRating.tsx
-
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 

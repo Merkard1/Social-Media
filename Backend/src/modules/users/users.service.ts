@@ -4,13 +4,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-
+import { Like, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from '@/modules/users/entities/user.entity';
 import { Profile } from '@/modules/profiles/entities/profile.entity';
+import { UserDto } from './dto/user.dto';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class UsersService {
@@ -20,7 +21,32 @@ export class UsersService {
     private readonly profilesRepository: Repository<Profile>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  /**
+   * Search users by username with pagination.
+   */
+  async searchUsers(
+    q: string,
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<Partial<UserDto>[]> {
+    if (!q) return [];
+
+    const skip = (page - 1) * limit;
+
+    const users = await this.usersRepository.find({
+      where: { username: Like(`%${q}%`) },
+      take: limit,
+      skip,
+      select: ['id', 'username'],
+    });
+
+    return users.map((user) => plainToClass(UserDto, user));
+  }
+
+  /**
+   * Create a new user with hashed password.
+   */
+  async create(createUserDto: CreateUserDto): Promise<UserDto> {
     if (createUserDto.password !== createUserDto.repeatPassword) {
       throw new BadRequestException('Passwords do not match');
     }
@@ -53,17 +79,29 @@ export class UsersService {
       },
     });
 
-    return this.usersRepository.save(user);
+    const savedUser = await this.usersRepository.save(user);
+
+    return plainToClass(UserDto, savedUser);
   }
 
-  async findOneByUsername(username: string): Promise<User> {
-    return this.usersRepository.findOne({
+  /**
+   * Find a user by username (without password).
+   */
+  async findOneByUsername(username: string): Promise<UserDto> {
+    const user = await this.usersRepository.findOne({
       where: { username },
       relations: ['profile'],
     });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return plainToClass(UserDto, user);
   }
 
-  async findById(id: string): Promise<User> {
+  /**
+   * Find a user by ID (without password).
+   */
+  async findById(id: string): Promise<UserDto> {
     const user = await this.usersRepository.findOne({
       where: { id },
       relations: ['articles', 'profile'],
@@ -71,10 +109,13 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    return user;
+    return plainToClass(UserDto, user);
   }
 
-  async findUserWithProfile(userId: string): Promise<User> {
+  /**
+   * Find a user with profile by user ID (without password).
+   */
+  async findUserWithProfile(userId: string): Promise<UserDto> {
     const user = await this.usersRepository.findOne({
       where: { id: userId },
       relations: ['profile'],
@@ -84,13 +125,19 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    return user;
+    return plainToClass(UserDto, user);
   }
 
-  async update(userId: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.usersRepository.findOne({ where: { id: userId } });
+  /**
+   * Update a user's information.
+   */
+  async update(userId: string, updateUserDto: UpdateUserDto): Promise<UserDto> {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['profile'],
+    });
     if (!user) {
-      return null;
+      throw new NotFoundException('User not found');
     }
 
     if (updateUserDto.password) {
@@ -109,21 +156,48 @@ export class UsersService {
 
     Object.assign(user, updateUserDto);
 
-    return this.usersRepository.save(user);
+    const updatedUser = await this.usersRepository.save(user);
+
+    return plainToClass(UserDto, updatedUser);
   }
 
-  async validateUser(username: string, password: string): Promise<User | null> {
-    const user = await this.usersRepository.findOne({ where: { username } });
-    if (user && (await bcrypt.compare(password, user.password))) {
-      return user;
-    }
-    return null;
+  /**
+   * Validate a user by username and password.
+   * Returns the user object without the password if valid.
+   */
+  async validateUser(
+    username: string,
+    password: string,
+  ): Promise<UserDto | null> {
+    const user = await this.findOneByUsernameWithPassword(username);
+    if (!user) return null;
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return null;
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _password, ...result } = user;
+    return plainToClass(UserDto, result);
   }
 
+  /**
+   * Remove a user by ID.
+   */
   async remove(id: string): Promise<void> {
     const result = await this.usersRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException('User not found');
     }
+  }
+
+  /**
+   * Find a user by username including password (for auth).
+   */
+  async findOneByUsernameWithPassword(username: string): Promise<User | null> {
+    return this.usersRepository.findOne({
+      where: { username },
+      select: ['id', 'username', 'email', 'password', 'roles'],
+      relations: ['profile'],
+    });
   }
 }

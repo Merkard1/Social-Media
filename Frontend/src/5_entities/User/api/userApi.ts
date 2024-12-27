@@ -15,6 +15,12 @@ interface RegistrationForm {
   repeatPassword: string;
 }
 
+interface GetAllUsersParams {
+  q?: string;
+  page?: number,
+  limit?: number
+}
+
 const userApi = rtkApi.injectEndpoints({
   endpoints: (build) => ({
     registerUser: build.mutation<User, RegistrationForm>({
@@ -23,6 +29,20 @@ const userApi = rtkApi.injectEndpoints({
         method: "POST",
         body: form,
       }),
+    }),
+
+    getAllUsers: build.query<User[], GetAllUsersParams>({
+      query: (params) => ({
+        url: "/users/search",
+        params,
+      }),
+      providesTags: (result, error, params) =>
+        (result
+          ? [
+            ...result.map(({ id }) => ({ type: "User" as const, id })),
+            { type: "User", id: "LIST" },
+          ]
+          : [{ type: "User", id: "LIST" }]),
     }),
 
     getUserDataById: build.query<User, string>({
@@ -55,12 +75,14 @@ const userApi = rtkApi.injectEndpoints({
 
 export const {
   useRegisterUserMutation,
+  useGetAllUsersQuery,
   useUpdateUserJSONSettingsMutation,
   useGetUserDataByIdQuery,
   useDeleteUserMutation,
 } = userApi;
 
 export const registerUser = userApi.endpoints.registerUser.initiate;
+export const getAllUsers = userApi.endpoints.getAllUsers.initiate;
 export const updateUserJSONSettings = userApi.endpoints.updateUserJSONSettings.initiate;
 export const getUserDataById = userApi.endpoints.getUserDataById.initiate;
 export const deleteUser = userApi.endpoints.deleteUser.initiate;

@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { UserDto } from '../users/dto/user.dto';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class AuthService {
@@ -10,17 +12,30 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOneByUsername(username);
-    if (user && (await bcrypt.compare(pass, user.password))) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...result } = user;
-      return result;
+  /**
+   * Validate a user by username and password.
+   * Returns the user object without the password if valid.
+   */
+  async validateUser(username: string, pass: string): Promise<UserDto | null> {
+    const user =
+      await this.usersService.findOneByUsernameWithPassword(username);
+    if (!user) {
+      return null;
     }
-    return null;
+
+    const isMatch = await bcrypt.compare(pass, user.password);
+    if (!isMatch) {
+      return null;
+    }
+
+    const { password, ...result } = user;
+    return plainToClass(UserDto, result);
   }
 
-  async login(user: any) {
+  /**
+   * Login a user and return a JWT token along with user data (without password).
+   */
+  async login(user: UserDto): Promise<{ accessToken: string; user: UserDto }> {
     const payload = {
       username: user.username,
       sub: user.id,

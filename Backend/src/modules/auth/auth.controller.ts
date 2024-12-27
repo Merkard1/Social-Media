@@ -1,18 +1,42 @@
 import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { UserDto } from '../users/dto/user.dto';
+import { plainToClass } from 'class-transformer';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() loginDto: LoginDto) {
+  @ApiOperation({ summary: 'User login' })
+  @ApiResponse({
+    status: 201,
+    description: 'User successfully logged in',
+    schema: {
+      type: 'object',
+      properties: {
+        accessToken: { type: 'string' },
+        user: { type: 'object', $ref: '#/components/schemas/UserDto' },
+      },
+    },
+  })
+  @ApiResponse({ status: 401, description: 'Invalid credentials' })
+  async login(
+    @Body() loginDto: LoginDto,
+  ): Promise<{ accessToken: string; user: UserDto }> {
     const { username, password } = loginDto;
     const user = await this.authService.validateUser(username, password);
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    return this.authService.login(user);
+    const loginResult = await this.authService.login(user);
+    return {
+      accessToken: loginResult.accessToken,
+      user: plainToClass(UserDto, loginResult.user, {
+        excludeExtraneousValues: true,
+      }),
+    };
   }
 }

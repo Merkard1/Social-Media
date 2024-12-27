@@ -6,7 +6,7 @@ import { HStack } from "@/6_shared/ui/Stack";
 import { Text } from "@/6_shared/ui/Text/Text";
 
 import { ArticleView } from "../../model/consts/articleConsts";
-import { ArticleDetailsResponse } from "../../model/types/article";
+import { ArticleDetailsResponse } from "../../model/types/Article";
 import { ArticleListItem } from "../ArticleListItem/ArticleListItem";
 import { ArticleListItemSkeleton } from "../ArticleListItem/ArticleListItemSkeleton";
 

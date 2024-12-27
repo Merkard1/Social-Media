@@ -23,7 +23,7 @@ export const rtkApi = createApi({
     }
     return result;
   },
-  tagTypes: ["User", "Profile", "Article", "Comment", "Rating"],
+  tagTypes: ["User", "Profile", "Article", "Comment", "Rating", "Chat", "Message"],
   endpoints: () => ({}),
 });
 

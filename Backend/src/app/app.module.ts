@@ -11,7 +11,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { NotificationsGateway } from '../modules/notifications/notifications.gateway';
 import { UploadModule } from '../modules/upload/upload.module';
 import { S3Module } from '../modules/s3/s3.module';
-import { ChatGateway } from '@/common/gateway/chat.gateway';
+import { ChatsModule } from '@/modules/chats/chats.module';
 
 @Module({
   imports: [
@@ -47,7 +47,7 @@ import { ChatGateway } from '@/common/gateway/chat.gateway';
     ArticleRatingsModule,
     AuthModule,
     NotificationsGateway,
+    ChatsModule,
   ],
-  providers: [ChatGateway],
 })
 export class AppModule {}

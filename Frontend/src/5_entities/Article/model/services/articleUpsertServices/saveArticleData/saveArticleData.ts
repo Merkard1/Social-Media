@@ -5,7 +5,7 @@ import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 import { createArticle } from "@/5_entities/Article/api/articleApi";
 
 import { getArticleUpsertBlockImages, getArticleUpsertForm } from "../../../selectors/articleUpsertSelectors/articlesUpsertSelectors";
-import { ArticleDetailsResponse } from "../../../types/article";
+import { ArticleDetailsResponse } from "../../../types/Article";
 
 export const saveArticleData = createAsyncThunk<
   ArticleDetailsResponse,

@@ -10,15 +10,13 @@ jest.mock("../fetchArticlesList/fetchArticlesList");
 describe("fetchNextArticlesPage.test", () => {
   test("success", async () => {
     const thunk = new TestAsyncThunk(fetchNextArticlesPage, {
-      article: {
-        articlesPage: {
-          page: 2,
-          ids: [],
-          entities: {},
-          limit: 5,
-          isLoading: false,
-          hasMore: true,
-        },
+      articlesPage: {
+        page: 2,
+        ids: [],
+        entities: {},
+        limit: 5,
+        isLoading: false,
+        hasMore: true,
       },
     });
 
@@ -35,15 +33,13 @@ describe("fetchNextArticlesPage.test", () => {
 
   test("fetchArticlesList not called when hasMore is false", async () => {
     const thunk = new TestAsyncThunk(fetchNextArticlesPage, {
-      article: {
-        articlesPage: {
-          page: 2,
-          ids: [],
-          entities: {},
-          limit: 5,
-          isLoading: false,
-          hasMore: false,
-        },
+      articlesPage: {
+        page: 2,
+        ids: [],
+        entities: {},
+        limit: 5,
+        isLoading: false,
+        hasMore: false,
       },
     });
 
@@ -56,15 +52,13 @@ describe("fetchNextArticlesPage.test", () => {
 
   test("fetchArticlesList not called when isLoading is true", async () => {
     const thunk = new TestAsyncThunk(fetchNextArticlesPage, {
-      article: {
-        articlesPage: {
-          page: 2,
-          ids: [],
-          entities: {},
-          limit: 5,
-          isLoading: true,
-          hasMore: true,
-        },
+      articlesPage: {
+        page: 2,
+        ids: [],
+        entities: {},
+        limit: 5,
+        isLoading: true,
+        hasMore: true,
       },
     });
 

@@ -1,12 +1,14 @@
 import { BlockType } from '../types/ArticleBlock';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional, IsString, IsIn, IsArray } from 'class-validator';
+import { Expose } from 'class-transformer';
 
 export class BlockDto {
   @ApiPropertyOptional({
     description: 'Unique identifier for the block',
     example: '1',
   })
+  @Expose()
   @IsOptional()
   @IsString()
   id?: string;
@@ -16,6 +18,7 @@ export class BlockDto {
     example: 'TEXT',
     enum: ['TEXT', 'IMAGE', 'CODE'],
   })
+  @Expose()
   @IsString()
   @IsIn(['TEXT', 'IMAGE', 'CODE'])
   type: BlockType;
@@ -24,6 +27,7 @@ export class BlockDto {
     description: 'Title of the block',
     example: 'Introduction',
   })
+  @Expose()
   @IsOptional()
   @IsString()
   title?: string;
@@ -36,6 +40,7 @@ export class BlockDto {
     ],
     type: [String],
   })
+  @Expose()
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
@@ -45,6 +50,7 @@ export class BlockDto {
     description: 'Code snippet for code blocks',
     example: "console.log('Hello, world!');",
   })
+  @Expose()
   @IsOptional()
   @IsString()
   code?: string;
@@ -53,6 +59,7 @@ export class BlockDto {
     description: 'Image source URL for image blocks',
     example: 'https://example.com/image.png',
   })
+  @Expose()
   @IsOptional()
   @IsString()
   src?: string;

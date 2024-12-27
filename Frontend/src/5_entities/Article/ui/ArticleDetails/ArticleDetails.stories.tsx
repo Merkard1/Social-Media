@@ -76,10 +76,8 @@ export const Normal = Template.bind({});
 Normal.args = {};
 Normal.decorators = [
   StoreDecorator({
-    article: {
-      articlesPage: {
+    articlesPage: {
 
-      },
     },
   }),
 ];
@@ -88,10 +86,8 @@ export const Loading = Template.bind({});
 Loading.args = {};
 Loading.decorators = [
   StoreDecorator({
-    article: {
-      articlesPage: {
-        isLoading: true,
-      },
+    articlesPage: {
+      isLoading: true,
     },
   }),
 ];
@@ -100,9 +96,7 @@ export const Error = Template.bind({});
 Error.args = {};
 Error.decorators = [
   StoreDecorator({
-    article: {
-      articlesPage: {
-        error: "Failed to load the article." },
-    },
+    articlesPage: {
+      error: "Failed to load the article." },
   }),
 ];

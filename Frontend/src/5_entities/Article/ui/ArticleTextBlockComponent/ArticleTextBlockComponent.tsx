@@ -8,7 +8,7 @@ import { Input } from "@/6_shared/ui/Input/Input";
 import { HStack, VStack } from "@/6_shared/ui/Stack";
 import { Text } from "@/6_shared/ui/Text/Text";
 
-import { ArticleTextBlock } from "../../model/types/article";
+import { ArticleTextBlock } from "../../model/types/Article";
 
 import cls from "./ArticleTextBlockComponent.module.scss";
 

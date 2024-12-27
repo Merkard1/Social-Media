@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ThunkConfig } from "@/1_app/providers/StoreProvider";
 
 import { getArticleById } from "../../../../api/articleApi";
-import { ArticleDetailsResponse } from "../../../types/article";
+import { ArticleDetailsResponse } from "../../../types/Article";
 
 export const fetchArticleData = createAsyncThunk<
   ArticleDetailsResponse,

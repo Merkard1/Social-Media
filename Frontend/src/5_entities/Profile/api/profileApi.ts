@@ -17,7 +17,6 @@ const profileApi = rtkApi.injectEndpoints({
     getProfile: build.query<Profile, GetProfileParams>({
       query: ({ username }) => ({
         url: `/profiles/${username}`,
-        method: "GET",
       }),
       providesTags: (result, error, { username }) => [
         { type: "Profile", id: username },

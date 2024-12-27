@@ -11,12 +11,14 @@ import {
 import { ArticleType } from '../types/ArticleType';
 import { Type } from 'class-transformer';
 import { ApiPropertyOptional } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
 export class UpdateArticleDto extends PartialType(CreateArticleDto) {
   @ApiPropertyOptional({
     description: 'Title of the article',
     example: 'Updated Introduction to NestJS',
   })
+  @Expose()
   @IsOptional()
   @IsString()
   title?: string;
@@ -25,6 +27,7 @@ export class UpdateArticleDto extends PartialType(CreateArticleDto) {
     description: 'Subtitle of the article',
     example: 'Enhancing server-side applications with NestJS',
   })
+  @Expose()
   @IsOptional()
   @IsString()
   subtitle?: string;
@@ -33,6 +36,7 @@ export class UpdateArticleDto extends PartialType(CreateArticleDto) {
     description: 'Image URL of the article',
     example: 'https://example.com/new-image.png',
   })
+  @Expose()
   @IsOptional()
   @IsString()
   image?: string | null;
@@ -43,6 +47,7 @@ export class UpdateArticleDto extends PartialType(CreateArticleDto) {
     enum: ['IT', 'ECONOMICS', 'SCIENCE'],
     isArray: true,
   })
+  @Expose()
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
@@ -52,6 +57,7 @@ export class UpdateArticleDto extends PartialType(CreateArticleDto) {
     description: 'Content blocks of the article',
     type: [BlockDto],
   })
+  @Expose()
   @IsOptional()
   @IsArray()
   @ArrayNotEmpty()

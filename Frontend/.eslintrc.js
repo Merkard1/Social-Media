@@ -20,6 +20,7 @@ module.exports = {
   },
   plugins: ["react", "@typescript-eslint", "i18next", "unused-imports"],
   rules: {
+    "consistent-return": "warn",
     "jsx-a11y/tabindex-no-positive": "warn",
     "import/named": "error",
     "import/namespace": "error",

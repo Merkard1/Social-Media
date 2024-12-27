@@ -113,11 +113,6 @@ export class ArticlesService {
   ): Promise<BlockDto[]> {
     if (!blocks) return [];
 
-    // Map block image placeholders to actual files
-    // Suppose the frontend sets `src: 'BLOCK_IMAGE_0'` to indicate that the first uploaded block image corresponds here.
-    // `blockFiles` order must match the placeholder indexes.
-    // Example: If block.src = "BLOCK_IMAGE_0" then it corresponds to blockFiles[0].
-
     const updatedBlocks: BlockDto[] = [];
     for (let i = 0; i < blocks.length; i++) {
       const block = { ...blocks[i] };
@@ -141,15 +136,8 @@ export class ArticlesService {
             }
 
             block.src = newImageUrl;
-          } else {
-            // If no file provided for an IMAGE block that expects it, decide what to do:
-            // Either throw an error or leave src as is.
-            // For now, leave it as is or set to null if required.
           }
         } else {
-          // If block is IMAGE but no placeholder found, maybe user passed a direct URL?
-          // You can validate here. If oldBlocks exist and block did not change src, keep old image.
-          // If block changed from an old URL to no URL, delete old image.
           if (
             oldBlocks &&
             oldBlocks[i] &&
