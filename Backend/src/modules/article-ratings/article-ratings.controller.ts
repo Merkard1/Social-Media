@@ -15,8 +15,8 @@ import { HasUserRatedResponseDto } from './dto/has-user-rated-response.dto';
 export class RatingsController {
   constructor(private readonly ratingsService: RatingsService) {}
 
-  @UseGuards(AuthGuard('jwt'))
   @Post(':articleId')
+  @UseGuards(AuthGuard('jwt'))
   async rateArticle(
     @Param('articleId') articleId: string,
     @Body() rateArticleDto: CreateArticleRatingDto,
@@ -32,8 +32,8 @@ export class RatingsController {
     return { averageRating };
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @Get(':articleId/has-rated')
+  @UseGuards(AuthGuard('jwt'))
   async hasUserRated(
     @Param('articleId') articleId: string,
     @Request() req,

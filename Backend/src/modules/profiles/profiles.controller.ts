@@ -27,7 +27,11 @@ import { FileInterceptor } from '@nestjs/platform-express';
 export class ProfilesController {
   constructor(private readonly profilesService: ProfilesService) {}
 
-  @Get(':username')
+  /**
+   * Retrieve a profile by username.
+   * @param username - The username to search for.
+   * @returns The profile if found.
+   */
   @ApiOperation({ summary: 'Get profile by username' })
   @ApiParam({
     name: 'username',
@@ -40,30 +44,31 @@ export class ProfilesController {
     type: Profile,
   })
   @ApiResponse({ status: 404, description: 'Profile not found' })
+  @Get(':username')
   async getProfileByUsername(
     @Param('username') username: string,
   ): Promise<Profile> {
     return this.profilesService.findByUsername(username);
   }
 
-  @Patch(':username')
-  @ApiOperation({ summary: 'Update profile by username' })
-  @ApiParam({
-    name: 'username',
-    type: 'string',
-    description: 'Username of the profile to update',
-  })
+  /**
+   * Update a profile by username, optionally including an avatar image.
+   * @param username - The username of the profile to update.
+   * @param body - The profile update payload.
+   * @param file - Optional avatar image file.
+   * @returns The updated profile.
+   */
   @ApiBody({
     description: 'Profile update payload with optional avatar',
     schema: {
       type: 'object',
       properties: {
-        first: { type: 'string' },
-        lastname: { type: 'string' },
-        age: { type: 'number' },
-        currency: { type: 'string' },
-        country: { type: 'string' },
-        city: { type: 'string' },
+        first: { type: 'string', example: 'John' },
+        lastname: { type: 'string', example: 'Doe' },
+        age: { type: 'number', example: 30 },
+        currency: { type: 'string', example: 'USD' },
+        country: { type: 'string', example: 'USA' },
+        city: { type: 'string', example: 'New York' },
         avatar: {
           type: 'string',
           format: 'binary',
@@ -73,18 +78,25 @@ export class ProfilesController {
     },
   })
   @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'Update profile by username' })
+  @ApiParam({
+    name: 'username',
+    type: 'string',
+    description: 'Username of the profile to update',
+  })
   @ApiResponse({
     status: 200,
     description: 'Profile updated successfully',
     type: Profile,
   })
   @ApiResponse({ status: 404, description: 'Profile not found' })
+  @Patch(':username')
   @UseInterceptors(FileInterceptor('avatar'))
   async updateProfileByUsername(
     @Param('username') username: string,
     @Body() body: UpdateProfileDto,
     @UploadedFile() file?: Express.MulterS3File,
-  ) {
+  ): Promise<Profile> {
     const updateProfileDto: UpdateProfileDto = {
       first: body.first,
       lastname: body.lastname,
@@ -109,9 +121,11 @@ export class ProfilesController {
       }
 
       return updatedProfile;
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-      throw new InternalServerErrorException('Failed to update the profile');
+      throw new InternalServerErrorException(
+        'Failed to update the profile',
+        error,
+      );
     }
   }
 }

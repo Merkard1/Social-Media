@@ -33,10 +33,7 @@ import { UserDto } from './dto/user.dto';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // TODO Swagger
-  @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
-  @Get('search')
   @ApiOperation({ summary: 'Search users by username' })
   @ApiQuery({
     name: 'query',
@@ -61,6 +58,8 @@ export class UsersController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 404, description: 'Not Found' })
+  @Get('search')
+  @UseGuards(AuthGuard('jwt'))
   async searchUsers(@Query() searchUsersDto: SearchUsersDto) {
     return this.usersService.searchUsers(
       searchUsersDto.q,
@@ -69,9 +68,8 @@ export class UsersController {
     );
   }
 
-  @Post()
-  @ApiOperation({ summary: 'Create a new user' })
   @ApiBody({ type: CreateUserDto })
+  @ApiOperation({ summary: 'Create a new user' })
   @ApiResponse({
     status: 201,
     description: 'User created successfully',
@@ -82,12 +80,13 @@ export class UsersController {
     description: 'Bad Request',
     schema: { $ref: '#/components/schemas/ErrorResponse' },
   })
+  @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     const user = await this.usersService.create(createUserDto);
     return user;
   }
 
-  @Get('id/:id')
+  @ApiBearerAuth()
   @ApiOperation({ summary: 'Get user with profile by user ID' })
   @ApiParam({
     name: 'id',
@@ -104,6 +103,8 @@ export class UsersController {
     description: 'User not found',
     schema: { $ref: '#/components/schemas/ErrorResponse' },
   })
+  @Get('id/:id')
+  @UseGuards(AuthGuard('jwt'))
   async getUserWithProfile(
     @Param('id') id: string,
   ): Promise<Omit<UserDto, 'password'>> {
@@ -114,7 +115,6 @@ export class UsersController {
     return user;
   }
 
-  @Get('username/:username')
   @ApiOperation({ summary: 'Get user by username' })
   @ApiParam({
     name: 'username',
@@ -131,6 +131,7 @@ export class UsersController {
     description: 'User not found',
     schema: { $ref: '#/components/schemas/ErrorResponse' },
   })
+  @Get('username/:username')
   async findOne(@Param('username') username: string) {
     const user = await this.usersService.findOneByUsername(username);
     if (user) {
@@ -139,11 +140,9 @@ export class UsersController {
     throw new NotFoundException('User not found');
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
-  @Patch()
-  @ApiOperation({ summary: "Update the authenticated user's information" })
   @ApiBody({ type: UpdateUserDto })
+  @ApiOperation({ summary: "Update the authenticated user's information" })
   @ApiResponse({
     status: 200,
     description: 'User updated successfully',
@@ -154,6 +153,8 @@ export class UsersController {
     description: 'User not found',
     schema: { $ref: '#/components/schemas/ErrorResponse' },
   })
+  @Patch()
+  @UseGuards(AuthGuard('jwt'))
   async update(@Body() updateUserDto: UpdateUserDto, @Request() req) {
     const userId = req.user.userId || req.user.id;
     const updatedUser = await this.usersService.update(userId, updateUserDto);
@@ -163,9 +164,7 @@ export class UsersController {
     return updatedUser;
   }
 
-  @UseGuards(AuthGuard('jwt'))
   @ApiBearerAuth()
-  @Delete(':id')
   @ApiOperation({ summary: 'Delete a user by ID' })
   @ApiParam({
     name: 'id',
@@ -182,6 +181,8 @@ export class UsersController {
     description: 'User not found',
     schema: { $ref: '#/components/schemas/ErrorResponse' },
   })
+  @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async deleteUser(@Param('id') id: string): Promise<{ message: string }> {
     await this.usersService.remove(id);
     return { message: 'User deleted successfully' };

@@ -13,7 +13,6 @@ export interface Block {
   src?: string;
 }
 
-//  TODO
 export type newBlockType = TextBlock | CodeBlock;
 
 export interface TextBlock extends Block {

@@ -21,8 +21,8 @@ export class Block {
     example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
     description: 'Unique identifier for the block',
   })
-  @Expose()
   @Column()
+  @Expose()
   id: string;
 
   @ApiProperty({
@@ -30,40 +30,40 @@ export class Block {
     enum: ['TEXT', 'IMAGE', 'CODE'],
     description: 'Type of the block',
   })
-  @Expose()
   @Column()
+  @Expose()
   type: BlockType;
 
   @ApiPropertyOptional({
     example: 'Introduction',
     description: 'Title of the block, if applicable',
   })
-  @Expose()
   @Column({ nullable: true })
+  @Expose()
   title?: string;
 
   @ApiPropertyOptional({
     example: ['This is the first paragraph.', 'This is the second paragraph.'],
     description: 'Paragraphs contained within the block',
   })
-  @Expose()
   @Column('text', { array: true, nullable: true })
+  @Expose()
   paragraphs?: string[];
 
   @ApiPropertyOptional({
     example: "console.log('Hello, World!');",
     description: 'Code snippet contained within the block, if applicable',
   })
-  @Expose()
   @Column({ nullable: true })
+  @Expose()
   code?: string;
 
   @ApiPropertyOptional({
     example: 'https://example.com/image.jpg',
     description: 'Source URL for the image block, if applicable',
   })
-  @Expose()
   @Column({ nullable: true })
+  @Expose()
   src?: string;
 }
 
@@ -81,8 +81,8 @@ export class Article {
     example: 'Understanding NestJS',
     description: 'Title of the article',
   })
-  @Expose()
   @Column()
+  @Expose()
   title: string;
 
   @ApiProperty({
@@ -90,16 +90,16 @@ export class Article {
       'A comprehensive guide to building scalable server-side applications.',
     description: 'Subtitle or brief description of the article',
   })
-  @Expose()
   @Column()
+  @Expose()
   subtitle: string;
 
   @ApiPropertyOptional({
     example: 'https://example.com/article-image.jpg',
     description: 'URL of the main image for the article, if any',
   })
-  @Expose()
   @Column({ nullable: true })
+  @Expose()
   image?: string;
 
   @ApiProperty({
@@ -108,40 +108,40 @@ export class Article {
     isArray: true,
     description: 'Categories or types associated with the article',
   })
-  @Expose()
   @Column('text', { array: true })
+  @Expose()
   type: ArticleType[];
 
   @ApiProperty({
     type: [Block],
     description: 'Array of content blocks that make up the article',
   })
-  @Expose()
   @Column({ type: 'jsonb' })
+  @Expose()
   blocks: Block[];
 
   @ApiProperty({
     example: 150,
     description: 'Number of views the article has received',
   })
-  @Expose()
   @Column({ default: 0 })
+  @Expose()
   views: number;
 
   @ApiProperty({
     example: 4.5,
     description: 'Average rating of the article',
   })
-  @Expose()
   @Column({ type: 'float', default: 0 })
+  @Expose()
   averageRating: number;
 
   @ApiProperty({
     example: 30,
     description: 'Total number of ratings the article has received',
   })
-  @Expose()
   @Column({ default: 0 })
+  @Expose()
   numberOfRatings: number;
 
   @ApiProperty({
@@ -149,11 +149,11 @@ export class Article {
     description: 'User who authored the article',
   })
   @Expose()
+  @JoinColumn({ name: 'userId' })
   @ManyToOne(() => User, (user) => user.articles, {
     eager: true,
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'userId' })
   user: User;
 
   @ApiPropertyOptional({
@@ -178,8 +178,8 @@ export class Article {
     format: 'date-time',
     description: 'Timestamp when the article was created',
   })
-  @Expose()
   @CreateDateColumn()
+  @Expose()
   createdAt: Date;
 
   @ApiProperty({

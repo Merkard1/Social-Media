@@ -22,12 +22,12 @@ export class Chat {
 
   @ApiProperty({ type: () => [User] })
   @Expose()
-  @ManyToMany(() => User, (user) => user.chats, { cascade: true })
   @JoinTable({
     name: 'chat_participants',
     joinColumn: { name: 'chatId', referencedColumnName: 'id' },
     inverseJoinColumn: { name: 'userId', referencedColumnName: 'id' },
   })
+  @ManyToMany(() => User, (user) => user.chats, { cascade: true })
   participants: User[];
 
   @ApiProperty({ type: () => [Message] })
@@ -36,8 +36,8 @@ export class Chat {
   messages: Message[];
 
   @ApiProperty({ example: '2024-12-23T02:33:17.086Z' })
-  @Expose()
   @CreateDateColumn()
+  @Expose()
   createdAt: Date;
 
   @ApiProperty({ example: '2024-12-23T02:33:17.086Z' })

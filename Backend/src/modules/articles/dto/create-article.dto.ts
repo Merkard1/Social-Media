@@ -18,8 +18,8 @@ export class CreateArticleDto {
     example: 'Introduction to NestJS',
   })
   @Expose()
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   title: string;
 
   @ApiProperty({
@@ -27,8 +27,8 @@ export class CreateArticleDto {
     example: 'Building efficient server-side applications',
   })
   @Expose()
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   subtitle: string;
 
   @ApiPropertyOptional({
@@ -55,10 +55,10 @@ export class CreateArticleDto {
     description: 'Content blocks of the article',
     type: [BlockDto],
   })
+  @ArrayNotEmpty()
   @Expose()
   @IsArray()
-  @ValidateNested({ each: true })
   @Type(() => BlockDto)
-  @ArrayNotEmpty()
+  @ValidateNested({ each: true })
   blocks: BlockDto[];
 }

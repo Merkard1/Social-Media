@@ -21,19 +21,19 @@ export class Message {
   id: string;
 
   @ApiProperty({ example: 'a3e30b4b-658f-49aa-bd5f-5847406bb167' })
-  @Expose()
   @Column()
+  @Expose()
   senderId: string;
 
   @ApiProperty({ example: 'Hello there!' })
-  @Expose()
   @Column('text')
+  @Expose()
   content: string;
 
   @ApiProperty({ type: () => User })
   @Expose()
-  @ManyToOne(() => User, (user) => user.messages, { eager: true })
   @JoinColumn({ name: 'senderId' })
+  @ManyToOne(() => User, (user) => user.messages, { eager: true })
   sender: User;
 
   @ApiProperty({ type: () => Chat })
@@ -42,7 +42,7 @@ export class Message {
   chat: Chat;
 
   @ApiProperty({ example: '2024-12-23T02:35:38.664Z' })
-  @Expose()
   @CreateDateColumn()
+  @Expose()
   createdAt: Date;
 }

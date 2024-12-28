@@ -9,7 +9,6 @@ import { ArticleRatingsModule } from '../modules/article-ratings/article-ratings
 import { AuthModule } from '../modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { NotificationsGateway } from '../modules/notifications/notifications.gateway';
-import { UploadModule } from '../modules/upload/upload.module';
 import { S3Module } from '../modules/s3/s3.module';
 import { ChatsModule } from '@/modules/chats/chats.module';
 
@@ -37,7 +36,7 @@ import { ChatsModule } from '@/modules/chats/chats.module';
         logging: true,
       }),
     }),
-    UploadModule,
+    // UploadModule,
     S3Module,
     UsersModule,
     ProfilesModule,

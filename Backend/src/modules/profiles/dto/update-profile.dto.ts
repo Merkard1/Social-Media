@@ -6,44 +6,44 @@ import { Expose } from 'class-transformer';
 
 export class UpdateProfileDto extends PartialType(CreateProfileDto) {
   @ApiPropertyOptional({ example: 'John' })
+  @Expose()
   @IsOptional()
   @IsString()
-  @Expose()
   first?: string;
 
   @ApiPropertyOptional({ example: 'Doe' })
+  @Expose()
   @IsOptional()
   @IsString()
-  @Expose()
   lastname?: string;
 
   @ApiPropertyOptional({ example: 31 })
-  @IsOptional()
-  @IsInt()
   @Expose()
+  @IsInt()
+  @IsOptional()
   age?: number;
 
   @ApiPropertyOptional({ example: 'EUR' })
+  @Expose()
   @IsOptional()
   @IsString()
-  @Expose()
   currency?: string;
 
   @ApiPropertyOptional({ example: 'Germany' })
+  @Expose()
   @IsOptional()
   @IsString()
-  @Expose()
   country?: string;
 
   @ApiPropertyOptional({ example: 'Berlin' })
+  @Expose()
   @IsOptional()
   @IsString()
-  @Expose()
   city?: string;
 
   @ApiPropertyOptional({ example: 'https://example.com/new-avatar.jpg' })
+  @Expose()
   @IsOptional()
   @IsString()
-  @Expose()
   avatar?: string;
 }

@@ -31,18 +31,18 @@ export class User {
   id: string;
 
   @ApiProperty({ example: 'merkard' })
-  @Expose()
   @Column({ unique: true })
+  @Expose()
   username: string;
 
   @ApiProperty({ example: 'merkard@example.com' })
-  @Expose()
   @Column({ unique: true })
+  @Expose()
   email: string;
 
   @ApiHideProperty()
-  @Exclude()
   @Column()
+  @Exclude()
   password: string;
 
   @ApiProperty({
@@ -50,16 +50,16 @@ export class User {
     enum: ['USER', 'ADMIN', 'MANAGER'],
     description: 'Roles assigned to the user',
   })
-  @Expose()
   @Column('simple-array', { default: 'USER' })
+  @Expose()
   roles: Role[];
 
   @ApiPropertyOptional({
     example: { darkMode: true, betaAccess: false },
     description: 'Feature flags for the user',
   })
-  @Expose()
   @Column('jsonb', { nullable: true })
+  @Expose()
   features: Record<string, any>;
 
   @ApiPropertyOptional({
@@ -71,8 +71,8 @@ export class User {
     },
     description: 'JSON settings for the user',
   })
-  @Expose()
   @Column('jsonb', { nullable: true })
+  @Expose()
   jsonSettings: {
     theme?: string;
     isFirstVisit?: boolean;
@@ -82,12 +82,12 @@ export class User {
 
   @ApiPropertyOptional({ type: () => Profile })
   @Expose()
+  @JoinColumn()
   @OneToOne(() => Profile, (profile) => profile.user, {
     cascade: true,
     eager: true,
     onDelete: 'CASCADE',
   })
-  @JoinColumn()
   profile: Profile;
 
   @ApiPropertyOptional({ type: () => [Article] })

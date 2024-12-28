@@ -1,15 +1,15 @@
 import { IsString, IsNotEmpty, IsUUID } from 'class-validator';
 
 export class CreateNotificationDto {
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   title: string;
 
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   description: string;
 
-  @IsUUID()
   @IsNotEmpty()
+  @IsUUID()
   userId: string;
 }

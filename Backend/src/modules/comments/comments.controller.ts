@@ -13,14 +13,28 @@ import { CommentsService } from './comments.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CommentResponseDto } from './dto/comment-response.dto';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('Comments')
 @Controller('articles/:articleId/comments')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
-  // Create a new comment for an article
-  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Create a new comment for an article' })
+  @ApiResponse({
+    status: 201,
+    description: 'Comment successfully created',
+    type: CommentResponseDto,
+  })
+  @ApiResponse({ status: 404, description: 'Article or user not found' })
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   async createComment(
     @Param('articleId') articleId: string,
     @Body() createCommentDto: CreateCommentDto,
@@ -37,7 +51,13 @@ export class CommentsController {
     return this.transformToResponseDto(comment);
   }
 
-  // Get all comments for an article
+  @ApiOperation({ summary: 'Retrieve all comments for an article' })
+  @ApiResponse({
+    status: 200,
+    description: 'Successfully retrieved comments',
+    type: [CommentResponseDto],
+  })
+  @ApiResponse({ status: 404, description: 'Article not found' })
   @Get()
   async getComments(
     @Param('articleId') articleId: string,
@@ -47,9 +67,17 @@ export class CommentsController {
     return comments.map((comment) => this.transformToResponseDto(comment));
   }
 
-  // Update a comment
-  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update a comment' })
+  @ApiResponse({
+    status: 200,
+    description: 'Comment successfully updated',
+    type: CommentResponseDto,
+  })
+  @ApiResponse({ status: 404, description: 'Comment not found' })
+  @ApiResponse({ status: 403, description: 'Unauthorized to update comment' })
   @Put(':commentId')
+  @UseGuards(AuthGuard('jwt'))
   async updateComment(
     @Param('articleId') articleId: string,
     @Param('commentId') commentId: string,
@@ -67,9 +95,22 @@ export class CommentsController {
     return this.transformToResponseDto(updatedComment);
   }
 
-  // Delete a comment
-  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Delete a comment' })
+  @ApiResponse({
+    status: 200,
+    description: 'Comment successfully deleted',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'Comment deleted successfully' },
+      },
+    },
+  })
+  @ApiResponse({ status: 404, description: 'Comment not found' })
+  @ApiResponse({ status: 403, description: 'Unauthorized to delete comment' })
   @Delete(':commentId')
+  @UseGuards(AuthGuard('jwt'))
   async deleteComment(
     @Param('articleId') articleId: string,
     @Param('commentId') commentId: string,
@@ -80,7 +121,6 @@ export class CommentsController {
     return { message: 'Comment deleted successfully' };
   }
 
-  // Helper method to transform a Comment entity to CommentResponseDto
   private transformToResponseDto(comment: any): CommentResponseDto {
     return {
       id: comment.id,

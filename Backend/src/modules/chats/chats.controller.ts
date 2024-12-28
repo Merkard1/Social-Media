@@ -25,26 +25,26 @@ import { ChatDto } from './dto/chat.dto';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { MessageDto } from './dto/message.dto';
 
+@ApiBearerAuth()
 @ApiTags('Chats')
 @Controller('chats')
 @UseGuards(AuthGuard('jwt'))
-@ApiBearerAuth()
 export class ChatsController {
   constructor(private readonly chatsService: ChatsService) {}
 
-  @Get()
   @ApiOperation({ summary: 'Get all chats for the authenticated user' })
   @ApiResponse({ status: 200, type: [ChatDto] })
+  @Get()
   async getAllChats(@Req() req): Promise<ChatDto[]> {
     const userId = req.user.id;
     const chats = await this.chatsService.getAllChatsForUser(userId);
     return plainToInstance(ChatDto, chats, { excludeExtraneousValues: true });
   }
 
-  @Post('initiate')
-  @ApiOperation({ summary: 'Initiate a new chat' })
   @ApiBody({ type: CreateChatDto })
+  @ApiOperation({ summary: 'Initiate a new chat' })
   @ApiResponse({ status: 201, type: ChatDto })
+  @Post('initiate')
   async initiateChat(
     @Body() createChatDto: CreateChatDto,
     @Request() req,
@@ -57,9 +57,9 @@ export class ChatsController {
     return plainToInstance(ChatDto, chat, { excludeExtraneousValues: true });
   }
 
-  @Get(':chatId/messages')
   @ApiOperation({ summary: 'Get all messages from a specific chat' })
   @ApiResponse({ status: 200, type: [MessageDto] })
+  @Get(':chatId/messages')
   async getAllMessages(
     @Param('chatId') chatId: string,
     @Req() req,
@@ -74,10 +74,10 @@ export class ChatsController {
     });
   }
 
-  @Post(':chatId/messages')
-  @ApiOperation({ summary: 'Send a new message within a chat' })
   @ApiBody({ type: CreateMessageDto })
+  @ApiOperation({ summary: 'Send a new message within a chat' })
   @ApiResponse({ status: 201, type: MessageDto })
+  @Post(':chatId/messages')
   async sendMessage(
     @Param('chatId') chatId: string,
     @Body() dto: CreateMessageDto,

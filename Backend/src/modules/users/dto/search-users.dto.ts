@@ -17,7 +17,7 @@ export class SearchUsersDto {
 
   @ApiPropertyOptional({ description: 'Number of users per page', example: 10 })
   @IsOptional()
-  @Min(1)
   @Max(100)
+  @Min(1)
   limit?: number;
 }

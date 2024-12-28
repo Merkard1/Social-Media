@@ -19,8 +19,8 @@ export class BlockDto {
     enum: ['TEXT', 'IMAGE', 'CODE'],
   })
   @Expose()
-  @IsString()
   @IsIn(['TEXT', 'IMAGE', 'CODE'])
+  @IsString()
   type: BlockType;
 
   @ApiPropertyOptional({
@@ -41,8 +41,8 @@ export class BlockDto {
     type: [String],
   })
   @Expose()
-  @IsOptional()
   @IsArray()
+  @IsOptional()
   @IsString({ each: true })
   paragraphs?: string[];
 

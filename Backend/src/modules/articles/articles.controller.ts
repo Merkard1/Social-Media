@@ -31,37 +31,58 @@ import {
   ApiConsumes,
   ApiOperation,
   ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { Article } from '@/modules/articles/entities/article.entity';
 
+@ApiTags('Articles')
 @Controller('articles')
 export class ArticlesController {
   private readonly logger = new Logger(ArticlesController.name);
+
   constructor(private readonly articlesService: ArticlesService) {}
 
-  /**
-   * Create a new article
-   */
-  @ApiOperation({ summary: 'Create a new article' })
-  @ApiResponse({ status: 201, type: Article })
   @ApiBearerAuth()
-  @ApiConsumes('multipart/form-data')
   @ApiBody({
-    description: 'Article creation payload',
+    description: 'Payload for creating an article',
     schema: {
       type: 'object',
       properties: {
-        title: { type: 'string' },
-        subtitle: { type: 'string' },
-        type: { type: 'string', description: 'JSON string of ArticleType[]' },
-        blocks: { type: 'string', description: 'JSON string of BlockDto[]' },
+        title: { type: 'string', example: 'Introduction to NestJS' },
+        subtitle: {
+          type: 'string',
+          example: 'Building efficient server-side applications',
+        },
+        type: {
+          type: 'string',
+          description: 'JSON string of ArticleType[]',
+          example: '["IT", "SCIENCE"]',
+        },
+        blocks: {
+          type: 'string',
+          description: 'JSON string of BlockDto[]',
+          example:
+            '[{"type":"TEXT","title":"Introduction","paragraphs":["Paragraph 1"]}]',
+        },
         image: { type: 'string', format: 'binary' },
         'blockImages[]': { type: 'string', format: 'binary' },
       },
     },
   })
-  @UseGuards(AuthGuard('jwt'))
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'Create a new article' })
+  @ApiResponse({
+    status: 201,
+    description: 'Article successfully created',
+    type: Article,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Validation error in the request payload',
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized access' })
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'image', maxCount: 1 },
@@ -95,9 +116,6 @@ export class ArticlesController {
     );
   }
 
-  /**
-   * Get all articles with support for query parameters
-   */
   @ApiOperation({ summary: 'Retrieve all articles' })
   @ApiResponse({ status: 200, type: [Article] })
   @Get()
@@ -105,41 +123,47 @@ export class ArticlesController {
     return this.articlesService.findAll(query);
   }
 
-  /**
-   * Get a single article by ID
-   */
   @ApiOperation({ summary: 'Retrieve an article by its ID' })
   @ApiResponse({ status: 200, type: Article })
-  @ApiResponse({ status: 404 })
+  @ApiResponse({ status: 404, description: 'Article not found' })
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return this.articlesService.findOneById(id);
   }
 
-  /**
-   * Update an existing article
-   */
-  @ApiOperation({ summary: 'Update an existing article' })
-  @ApiResponse({ status: 200, description: 'Article updated successfully' })
-  @ApiResponse({ status: 404 })
   @ApiBearerAuth()
-  @ApiConsumes('multipart/form-data')
   @ApiBody({
-    description: 'Article update payload',
+    description: 'Payload for updating an article',
     schema: {
       type: 'object',
       properties: {
-        title: { type: 'string' },
-        subtitle: { type: 'string' },
-        type: { type: 'string', description: 'JSON of ArticleType[]' },
-        blocks: { type: 'string', description: 'JSON of BlockDto[]' },
+        title: { type: 'string', example: 'Updated Title' },
+        subtitle: { type: 'string', example: 'Updated Subtitle' },
+        type: {
+          type: 'string',
+          description: 'JSON of ArticleType[]',
+          example: '["IT"]',
+        },
+        blocks: {
+          type: 'string',
+          description: 'JSON of BlockDto[]',
+          example: '[{"type":"TEXT","title":"Updated Introduction"}]',
+        },
         image: { type: 'string', format: 'binary' },
         'blockImages[]': { type: 'string', format: 'binary' },
       },
     },
   })
-  @UseGuards(AuthGuard('jwt'), ArticleOwnerGuard)
+  @ApiConsumes('multipart/form-data')
+  @ApiOperation({ summary: 'Update an existing article' })
+  @ApiResponse({
+    status: 200,
+    description: 'Article updated successfully',
+    type: Article,
+  })
+  @ApiResponse({ status: 404, description: 'Article not found' })
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'), ArticleOwnerGuard)
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'image', maxCount: 1 },
@@ -182,34 +206,22 @@ export class ArticlesController {
     }
   }
 
-  /**
-   * Delete an article by ID
-   */
-  @ApiOperation({ summary: 'Delete an article by its ID' })
-  @ApiResponse({
-    status: 204,
-    description: 'Article deleted successfully',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Article not found',
-  })
   @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'), ArticleOwnerGuard)
+  @ApiOperation({ summary: 'Delete an article by its ID' })
+  @ApiResponse({ status: 204, description: 'Article deleted successfully' })
+  @ApiResponse({ status: 404, description: 'Article not found' })
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(AuthGuard('jwt'), ArticleOwnerGuard)
   async remove(@Param('id') id: string) {
     await this.articlesService.remove(id);
   }
 
-  /**
-   * Remove image from an article
-   */
-  @ApiOperation({ summary: 'Remove image from an article' })
-  @ApiResponse({ status: 200 })
   @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'), ArticleOwnerGuard)
+  @ApiOperation({ summary: 'Remove image from an article' })
+  @ApiResponse({ status: 200, description: 'Image removed successfully' })
   @Delete(':id/image')
+  @UseGuards(AuthGuard('jwt'), ArticleOwnerGuard)
   async removeArticleImage(@Param('id') id: string) {
     try {
       const updatedArticle = await this.articlesService.setImage(id, null);

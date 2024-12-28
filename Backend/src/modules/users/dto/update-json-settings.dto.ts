@@ -14,23 +14,23 @@ export class UpdateJsonSettingsDto {
     example: false,
     description: "Indicates if it is the user's first visit",
   })
-  @IsOptional()
   @IsBoolean()
+  @IsOptional()
   isFirstVisit?: boolean;
 
   @ApiPropertyOptional({
     example: false,
     description: 'Indicates if the articles page was opened',
   })
-  @IsOptional()
   @IsBoolean()
+  @IsOptional()
   isArticlesPageWasOpened?: boolean;
 
   @ApiPropertyOptional({
     example: true,
     description: 'Indicates if the settings page has been opened',
   })
-  @IsOptional()
   @IsBoolean()
+  @IsOptional()
   settingsPageHasBeenOpen?: boolean;
 }

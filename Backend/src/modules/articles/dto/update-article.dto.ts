@@ -48,8 +48,8 @@ export class UpdateArticleDto extends PartialType(CreateArticleDto) {
     isArray: true,
   })
   @Expose()
-  @IsOptional()
   @IsArray()
+  @IsOptional()
   @IsString({ each: true })
   type?: ArticleType[];
 
@@ -57,11 +57,11 @@ export class UpdateArticleDto extends PartialType(CreateArticleDto) {
     description: 'Content blocks of the article',
     type: [BlockDto],
   })
-  @Expose()
-  @IsOptional()
-  @IsArray()
   @ArrayNotEmpty()
-  @ValidateNested({ each: true })
+  @Expose()
+  @IsArray()
+  @IsOptional()
   @Type(() => BlockDto)
+  @ValidateNested({ each: true })
   blocks?: BlockDto[];
 }

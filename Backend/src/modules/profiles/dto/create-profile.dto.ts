@@ -4,43 +4,43 @@ import { Expose } from 'class-transformer';
 
 export class CreateProfileDto {
   @ApiProperty({ example: 'John' })
-  @IsString()
-  @IsNotEmpty()
   @Expose()
+  @IsNotEmpty()
+  @IsString()
   first: string;
 
   @ApiProperty({ example: 'Doe' })
-  @IsString()
-  @IsNotEmpty()
   @Expose()
+  @IsNotEmpty()
+  @IsString()
   lastname: string;
 
   @ApiProperty({ example: 30 })
-  @IsInt()
   @Expose()
+  @IsInt()
   age: number;
 
   @ApiProperty({ example: 'USD' })
-  @IsString()
-  @IsNotEmpty()
   @Expose()
+  @IsNotEmpty()
+  @IsString()
   currency: string;
 
   @ApiProperty({ example: 'USA' })
-  @IsString()
-  @IsNotEmpty()
   @Expose()
+  @IsNotEmpty()
+  @IsString()
   country: string;
 
   @ApiProperty({ example: 'New York' })
-  @IsString()
-  @IsNotEmpty()
   @Expose()
+  @IsNotEmpty()
+  @IsString()
   city: string;
 
   @ApiPropertyOptional({ example: 'https://example.com/avatar.jpg' })
-  @IsString()
-  @IsOptional()
   @Expose()
+  @IsOptional()
+  @IsString()
   avatar?: string;
 }

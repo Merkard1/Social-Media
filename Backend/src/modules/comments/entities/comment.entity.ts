@@ -8,7 +8,6 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 
-
 @Entity()
 export class Comment {
   @PrimaryGeneratedColumn('uuid')

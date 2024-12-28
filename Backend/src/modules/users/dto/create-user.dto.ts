@@ -12,8 +12,8 @@ import { JsonSettingsDto } from './json-settings.dto';
 
 export class CreateUserDto {
   @ApiProperty({ example: 'johndoe' })
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   username: string;
 
   @ApiProperty({ example: 'johndoe@example.com' })
@@ -22,13 +22,13 @@ export class CreateUserDto {
   email: string;
 
   @ApiProperty({ example: 'StrongPassword123!', format: 'password' })
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   password: string;
 
   @ApiProperty({ example: 'StrongPassword123!', format: 'password' })
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   repeatPassword: string;
 
   @ApiPropertyOptional({
@@ -45,7 +45,7 @@ export class CreateUserDto {
     description: 'JSON settings for the user',
   })
   @IsOptional()
-  @ValidateNested()
   @Type(() => JsonSettingsDto)
+  @ValidateNested()
   jsonSettings?: JsonSettingsDto;
 }

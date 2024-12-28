@@ -19,8 +19,8 @@ export class Notification {
   @Column()
   description: string;
 
-  @ManyToOne(() => Article, { nullable: true })
   @JoinColumn({ name: 'articleId' })
+  @ManyToOne(() => Article, { nullable: true })
   article: Article;
 
   @ManyToOne(() => User, (user) => user.sentNotifications)

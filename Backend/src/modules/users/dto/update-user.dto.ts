@@ -43,7 +43,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     description: 'JSON settings for the user',
   })
   @IsOptional()
-  @ValidateNested()
   @Type(() => JsonSettingsDto)
+  @ValidateNested()
   jsonSettings?: JsonSettingsDto;
 }

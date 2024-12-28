@@ -6,53 +6,65 @@ import { Expose } from 'class-transformer';
 
 @Entity()
 export class Profile {
-  @ApiProperty({ example: '60d0fe4f5311236168a109ca' })
+  @ApiProperty({
+    example: '60d0fe4f5311236168a109ca',
+    description: 'Unique ID of the profile',
+  })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty({ example: 'John' })
+  @ApiProperty({ example: 'John', description: 'First name of the user' })
   @Column({ nullable: true, default: '' })
-  @IsString()
   @Expose()
+  @IsString()
   first: string;
 
-  @ApiProperty({ example: 'Doe' })
+  @ApiProperty({ example: 'Doe', description: 'Last name of the user' })
   @Column({ nullable: true, default: '' })
-  @IsString()
   @Expose()
+  @IsString()
   lastname: string;
 
-  @ApiProperty({ example: 30 })
+  @ApiProperty({ example: 30, description: 'Age of the user' })
   @Column({ nullable: true, default: 0 })
-  @IsNumber()
   @Expose()
+  @IsNumber()
   age: number;
 
-  @ApiProperty({ example: 'USD' })
+  @ApiProperty({
+    example: 'USD',
+    description: 'Preferred currency of the user',
+  })
   @Column({ nullable: true, default: '' })
-  @IsString()
   @Expose()
+  @IsString()
   currency: string;
 
-  @ApiProperty({ example: 'USA' })
+  @ApiProperty({ example: 'USA', description: 'Country of the user' })
   @Column({ nullable: true, default: '' })
-  @IsString()
   @Expose()
+  @IsString()
   country: string;
 
-  @ApiProperty({ example: 'New York' })
+  @ApiProperty({ example: 'New York', description: 'City of the user' })
   @Column({ nullable: true, default: '' })
-  @IsString()
   @Expose()
+  @IsString()
   city: string;
 
-  @ApiPropertyOptional({ example: 'https://example.com/avatar.jpg' })
+  @ApiPropertyOptional({
+    example: 'https://example.com/avatar.jpg',
+    description: 'Avatar image URL',
+  })
   @Column({ nullable: true })
-  @IsString()
   @Expose()
+  @IsString()
   avatar: string;
 
-  @ApiProperty({ type: () => User })
+  @ApiProperty({
+    type: () => User,
+    description: 'User associated with the profile',
+  })
   @OneToOne(() => User, (user) => user.profile, {
     onDelete: 'CASCADE',
   })
