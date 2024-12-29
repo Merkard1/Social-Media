@@ -16,19 +16,38 @@ PostgreSQL (if running without Docker)
 
 ## Project start
 
+- Command to run the project in development mode:
+
 ```
-docker-compose -f docker-compose.dev.yml up -d - Command to run the project in development mode
-docker-compose -f docker-compose.prod.yml up -d - Command to run the project in production mode
-docker-compose -f docker-compose.dev.yml down - Command to stop the project in development mode
-docker-compose -f docker-compose.prod.yml down - Command to stop the project in production mode
+docker-compose -f docker-compose.dev.yml up -d
+```
+
+- Command to run the project in production mode:
+
+```
+docker-compose -f docker-compose.prod.yml up -d
+```
+
+- Command to stop the project in development mode
+
+```
+docker-compose -f docker-compose.dev.yml down
+```
+
+- Command to stop the project in production mode
+
+```
+docker-compose -f docker-compose.prod.yml down
 ```
 
 ---
 
 ## Scripts
 
-`docker-compose -f docker-compose.dev.yml logs frontend` - see logs for frontend
-`docker-compose -f docker-compose.dev.yml logs backend` - see logs for backend
+- see logs for frontend:
+  `docker-compose -f docker-compose.dev.yml logs frontend`
+- see logs for backend:
+  `docker-compose -f docker-compose.dev.yml logs backend`
 
 ---
 
