@@ -1,3 +1,5 @@
+### Social Media Frontend
+
 ## Description
 
 This is a web application built with React and TypeScript using the Feature Sliced Design (FSD) approach for better structure and scalability. It uses Webpack for building the project and Redux Toolkit for managing state. The app supports multiple languages with i18next and includes a component-driven development environment with Storybook. It also has thorough testing with Jest for unit tests and Loki for visual tests. Continuous integration is set up with GitHub Actions to streamline development and deployment.
@@ -6,12 +8,12 @@ This is a web application built with React and TypeScript using the Feature Slic
 
 ```
 npm install - install dependencies
-npm run start - run json server + frontend project in dev mode
+npm run start - frontend project in dev mode
 ```
 
 ---
 
-## Скрипты
+## Scripts
 
 -  `start` - Runs the frontend project with the JSON server.
 -  `start:dev` - Starts the frontend project using Webpack dev server on port 3000.
@@ -111,13 +113,10 @@ The scripts folder contains various scripts for refactoring, simplifying code wr
 
 ---
 
-## CI pipeline и pre commit хуки
+## CI pipeline
 
 The github actions configuration is located in /.github/workflows.
 In CI, all types of tests, project and storybook builds, and linting are run.
-
-
-Pre-commit hooks check the project with linters, the config is in /.github.
 
 ---
 
@@ -148,6 +147,14 @@ is used.
 - [EditableArticleCard](/Frontend/src/4_features/EditableArticleCard)
 - [EditableProfileCard](/Frontend/src/4_features/EditableProfileCard)
 - [LangSwitcher](/Frontend/src/4_features/LangSwitcher)
+- [notificationButton](/Frontend/src/4_features/notificationButton)
+- [PageLoader](/Frontend/src/4_features/PageLoader)
+- [registration](/Frontend/src/4_features/registration)
+- [ScrollRestoration](/Frontend/src/4_features/ScrollRestoration)
+- [scrollToTopButton](/Frontend/src/4_features/scrollToTopButton)
+- [ThemeSwitcher](/Frontend/src/4_features/ThemeSwitcher)
+- [uiDesignSwitcher](/Frontend/src/4_features/uiDesignSwitcher)
+- [UserSearch](/Frontend/src/4_features/UserSearch)
 
 ---
 
@@ -155,11 +162,10 @@ is used.
 
 - [Article](/Frontend/src/5_entities/Article)
 - [Auth](/Frontend/src/5_entities/Auth)
+- [Chat](/Frontend/src/5_entities/Chat)
 - [Comment](/Frontend/src/5_entities/Comment)
 - [Country](/Frontend/src/5_entities/Country)
 - [Currency](/Frontend/src/5_entities/Currency)
-- [Dialog](/Frontend/src/5_entities/Dialog)
-- [ImageLoader](/Frontend/src/6_shared/ui/ImageUploader)
 - [Message](/Frontend/src/5_entities/Message)
 - [Notification](/Frontend/src/5_entities/Notification)
 - [Profile](/Frontend/src/5_entities/Profile)

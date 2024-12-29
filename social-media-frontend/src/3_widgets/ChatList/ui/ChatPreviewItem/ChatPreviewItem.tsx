@@ -25,6 +25,7 @@ export const ChatPreviewItem = (props: ChatPreviewItemProps) => {
 
   const participant = chat.participants.filter((user) => user.id !== currentUser.id);
 
+  const lastMessage = chat.messages.slice(-1).pop()?.content;
   const time = formatMessageTime(chat?.messages[0]?.createdAt);
 
   return (
@@ -36,7 +37,7 @@ export const ChatPreviewItem = (props: ChatPreviewItemProps) => {
             <Text text={participant[0].username} bold />
             <Text text={time} />
           </HStack>
-          <Text text={chat.messages[0].content} />
+          <Text text={lastMessage} />
         </VStack>
       </HStack>
     </Card>

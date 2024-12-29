@@ -1,7 +1,7 @@
 services:
   backend:
     build:
-      context: ./backend
+      context: ./social-media-backend
       dockerfile: Dockerfile.dev
     container_name: backend
     restart: unless-stopped
@@ -17,21 +17,21 @@ services:
       - DATABASE_PASSWORD=LordStarkWinter
       - DATABASE_NAME=nestdb
     volumes:
-      - ./backend:/app
+      - ./social-media-backend:/app
       - /app/node_modules
     networks:
       - app-network
 
   frontend:
     build:
-      context: ./frontend
+      context: ./social-media-frontend
       dockerfile: Dockerfile.dev
     container_name: frontend
     restart: unless-stopped
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/app
+      - ./social-media-frontend:/app
       - /app/node_modules
     environment:
       - NODE_ENV=development

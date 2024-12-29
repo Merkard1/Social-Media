@@ -6,10 +6,10 @@ import { getArticlesDetailsData } from "@/5_entities/Article";
 import { getUserAuthData } from "@/5_entities/User";
 
 import { createCommentForArticle } from "../../../api/commentApi";
+import { Comment } from "../../types/comment";
 import {
   fetchCommentsByArticleId,
-} from "../../services/fetchCommentsByArticleId/fetchCommentsByArticleId";
-import { Comment } from "../../types/comment";
+} from "../fetchCommentsByArticleId/fetchCommentsByArticleId";
 
 export const addCommentForArticle = createAsyncThunk<
     Comment,
