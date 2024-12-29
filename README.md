@@ -34,5 +34,5 @@ docker-compose -f docker-compose.prod.yml down - Command to stop the project in 
 
 ## Structure
 
-- [Frontend](/Frontend)
+- [Frontend](/social-media-frontend)
 - [Backend](/social-media-backend)
