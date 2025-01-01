@@ -1,10 +1,13 @@
 {
-  "Cancel": "",
-  "Edit": "",
-  "Here you can search and view articles on various topics": {
-    "": ""
-  },
-  "Profile": "",
-  "Save": "",
-  "Welcome": ""
+  "All": "",
+  "Economics": "",
+  "IT": "",
+  "Science": "",
+  "Search": "",
+  "Sort with": "",
+  "ascending": "",
+  "date": "",
+  "descending": "",
+  "name": "",
+  "views": ""
 }

@@ -47,7 +47,6 @@ export const Conversation = (props: ConversationProps) => {
     setContent("");
   }, [content, selectedChat, currentUser]);
 
-  // Send on Enter
   const handleKeyPress = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === "Enter") {
@@ -63,7 +62,7 @@ export const Conversation = (props: ConversationProps) => {
       <ChatWindow chatId={selectedChat.id} />
       <HStack max gap="16">
         <Input
-          placeholder={t("Write a message") ?? "Write a message..."}
+          placeholder={`${t("Write a message")}...`}
           value={content}
           onChange={onChangeMessage}
           onKeyPress={handleKeyPress}

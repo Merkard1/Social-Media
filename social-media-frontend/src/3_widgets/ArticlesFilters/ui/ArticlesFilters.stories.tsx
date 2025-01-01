@@ -26,7 +26,7 @@ export default {
     },
     type: {
       control: "select",
-      options: ["all", "it", "economics", "science"],
+      options: ["ALL", "IT", "ECONOMICS", "SCIENCE"],
       description: "Article type",
     },
     onChangeSearch: { action: "onChangeSearch" },

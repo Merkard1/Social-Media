@@ -5,7 +5,6 @@ import EyeIcon from "@/6_shared/assets/icons/eye.svg";
 import { getRouteArticleDetails } from "@/6_shared/const/router";
 import { classNames } from "@/6_shared/lib/classNames/classNames";
 import { formatDateToCustom } from "@/6_shared/lib/dateFormat/dateFormat";
-import useMediaQuery from "@/6_shared/lib/hooks/useMedia/useMedia";
 import { AppImage } from "@/6_shared/ui/AppImage/AppImage";
 import { AppLink } from "@/6_shared/ui/AppLink/AppLink";
 import { Avatar } from "@/6_shared/ui/Avatar/Avatar";
@@ -30,8 +29,7 @@ interface ArticleListItemProps {
 
 export const ArticleListItem = memo((props: ArticleListItemProps) => {
   const { className, article, view, target } = props;
-  const isBelowLargeScreen = useMediaQuery("(max-width: 1200px)");
-  const { t } = useTranslation();
+  const { t } = useTranslation("articles");
   const { title, createdAt, image, id, subtitle, blocks } = article;
 
   const userInfo = (
@@ -91,7 +89,8 @@ export const ArticleListItem = memo((props: ArticleListItemProps) => {
               to={getRouteArticleDetails(id)}
             >
               <Button variant="outline">
-                {t("Читать далее...")}
+                {t("Read more")}
+                ...
               </Button>
             </AppLink>
             {views}

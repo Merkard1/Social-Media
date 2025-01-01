@@ -29,7 +29,7 @@ const chatSlice = buildSlice({
     addChat(state, action: PayloadAction<Chat>) {
       state.chats.push(action.payload);
     },
-    setSelectedChat(state, action: PayloadAction<Chat>) {
+    setSelectedChat(state, action: PayloadAction<Chat | null>) {
       state.selectedChat = action.payload;
     },
     clearSelectedChat(state) {

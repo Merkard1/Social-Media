@@ -2,7 +2,7 @@
 
 ## Description
 
-The ui folder contains reusable and composable components for rendering articles
+The ui folder contains reusable and composable components for rendering, creating, editing articles
 
 ---
 
@@ -12,14 +12,20 @@ The ui folder contains reusable and composable components for rendering articles
 - [articlesPageSlice](/social-media-frontend/src/5_entities/Article/model/slice/articlesPageSlice.ts) 
 - [articleUpsertSlice](/social-media-frontend/src/5_entities/Article/model/slice/articleUpsertSlice.ts) 
 
+---
+
 ### Types
 - [Consts](/social-media-frontend/src/5_entities/Article/model/consts) 
 - [Types](/social-media-frontend/src/5_entities/Article/model/types/) 
+
+---
 
 ### Selectors
 - [articleDetailsSelectors](/social-media-frontend/src/5_entities/Article/model/selectors/articleDetailsSelectors) 
 - [articlesPageSelectors](/social-media-frontend/src/5_entities/Article/model/selectors/articlesPageSelectors)
 - [articleUpsertSelectors](/social-media-frontend/src/5_entities/Article/model/selectors/articleUpsertSelectors) 
+
+---
 
 ### Types
 - [Consts](/social-media-frontend/src/5_entities/Article/model/consts) - Article enums

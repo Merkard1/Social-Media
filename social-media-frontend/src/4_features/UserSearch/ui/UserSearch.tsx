@@ -14,7 +14,7 @@ interface UserSearchProps {
 
 export const UserSearch = memo((props: UserSearchProps) => {
   const { onSearchChange } = props;
-  const { t } = useTranslation();
+  const { t } = useTranslation("chat");
   const dispatch = useAppDispatch();
 
   const fetchData = useCallback(

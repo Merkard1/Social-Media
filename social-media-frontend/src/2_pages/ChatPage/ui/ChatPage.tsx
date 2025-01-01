@@ -13,7 +13,6 @@ import {
 import {
   usersListReducer,
   useUserAuthData,
-  useUsersListAllUsers,
 } from "@/5_entities/User";
 
 import socketService from "@/6_shared/api/socketService";
@@ -22,6 +21,7 @@ import {
   ReducersList,
 } from "@/6_shared/lib/components/DynamicModuleLoader/DynamicModuleLoader";
 import { useAppDispatch } from "@/6_shared/lib/hooks/useAppDispatch/useAppDispatch";
+import useMediaQuery from "@/6_shared/lib/hooks/useMedia/useMedia";
 import { Card } from "@/6_shared/ui/Card/Card";
 import { VStack } from "@/6_shared/ui/Stack";
 
@@ -39,7 +39,7 @@ const ChatPage = (props: ChatPageProps) => {
   const currentUser = useUserAuthData();
   const chats = useChatsList();
   const selectedChat = useChatsSelectedChat();
-  const usersList = useUsersListAllUsers();
+  const isBelowLargeScreen = useMediaQuery("(max-width: 1200px)");
 
   useEffect(() => {
     if (currentUser?.id) {
@@ -84,11 +84,28 @@ const ChatPage = (props: ChatPageProps) => {
     };
   }, [chats, currentUser?.id, dispatch]);
 
+  if (isBelowLargeScreen) {
+    return (
+      <DynamicModuleLoader reducers={reducers}>
+        <Card className={cls.ChatPage} border="round" padding="24">
+          {!selectedChat ? (
+            <VStack className={cls.ChatSidebar}>
+              <ChatSidebar currentUser={currentUser!} />
+            </VStack>)
+            : (
+              <Conversation
+                currentUser={currentUser!}
+                selectedChat={selectedChat}
+              />)}
+        </Card>
+      </DynamicModuleLoader>);
+  }
+
   return (
     <DynamicModuleLoader reducers={reducers}>
       <Card className={cls.ChatPage} border="round" padding="24">
         <VStack className={cls.ChatSidebar}>
-          {currentUser && <ChatSidebar currentUser={currentUser} />}
+          <ChatSidebar currentUser={currentUser!} />
         </VStack>
         {selectedChat && (
           <Conversation

@@ -1,0 +1,9 @@
+.backIconBtn {
+  rotate: 90deg;
+}
+
+@media (min-width: 1200px) {
+  .backIconBtn {
+    display: none;
+  }
+}

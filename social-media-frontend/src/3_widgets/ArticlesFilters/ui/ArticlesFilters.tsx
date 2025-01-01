@@ -40,7 +40,7 @@ export const ArticlesFilters = memo((props: ArticlesFiltersProps) => {
     order,
     type,
   } = props;
-  const { t } = useTranslation();
+  const { t } = useTranslation("articles");
 
   return (
     <Card
@@ -54,7 +54,7 @@ export const ArticlesFilters = memo((props: ArticlesFiltersProps) => {
           onChange={onChangeSearch}
           value={search}
           size="s"
-          placeholder={t("Поиск")}
+          placeholder={t("Search")}
           addonLeft={<Icon Svg={SearchIcon} />}
         />
         <VStack gap="16">

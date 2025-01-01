@@ -22,6 +22,7 @@ import { AppRoutes, getRouteAbout,
   getRouteProfile,
   getRouteSettings } from "@/6_shared/const/router";
 
+import { preload } from "./Preload";
 import { AppRoutesProps } from "./routeType";
 
 export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
@@ -29,18 +30,18 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
     path: getRouteMain(),
     element: <MainPage />,
     preload: [
-      () => import("@/2_pages/AboutPage/ui/AboutPage.async"),
-      () => import("@/2_pages/ProfilePage/ui/ProfilePage.async"),
-      () => import("@/2_pages/UpsertArticlePage/ui/UpsertArticlePage.async"),
+      preload.AboutPagePreload,
+      preload.ProfilePagePreload,
+      preload.UpsertArticlePagePreload,
     ],
   },
   [AppRoutes.ABOUT]: {
     path: getRouteAbout(),
     element: <AboutPage />,
     preload: [
-      () => import("@/2_pages/MainPage/ui/MainPage.async"),
-      () => import("@/2_pages/ProfilePage/ui/ProfilePage.async"),
-      () => import("@/2_pages/UpsertArticlePage/ui/UpsertArticlePage.async"),
+      preload.MainPagePreload,
+      preload.ProfilePagePreload,
+      preload.UpsertArticlePagePreload,
     ],
   },
   [AppRoutes.PROFILE]: {
@@ -48,9 +49,9 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
     element: <ProfilePage />,
     authOnly: true,
     preload: [
-      () => import("@/2_pages/MainPage/ui/MainPage.async"),
-      () => import("@/2_pages/ChatPage/ui/ChatPage.async"),
-      () => import("@/2_pages/UpsertArticlePage/ui/UpsertArticlePage.async"),
+      preload.MainPagePreload,
+      preload.ChatPagePreload,
+      preload.UpsertArticlePagePreload,
     ],
   },
   [AppRoutes.CHAT]: {
@@ -58,8 +59,8 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
     element: <ChatPage />,
     authOnly: true,
     preload: [
-      () => import("@/2_pages/ProfilePage/ui/ProfilePage.async"),
-      () => import("@/2_pages/UpsertArticlePage/ui/UpsertArticlePage.async"),
+      preload.ProfilePagePreload,
+      preload.UpsertArticlePagePreload,
     ],
   },
   // Articles
@@ -68,7 +69,7 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
     element: <ArticlesPage />,
     authOnly: true,
     preload: [
-      () => import("@/2_pages/ArticleDetailsPage/ui/ArticleDetailsPage/ArticleDetailsPage.async"),
+      preload.ArticleDetailsPagePreload,
     ],
   },
   [AppRoutes.ARTICLE_DETAILS]: {
@@ -76,7 +77,7 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
     element: <ArticleDetailsPage />,
     authOnly: true,
     preload: [
-      () => import("@/2_pages/UpsertArticlePage/ui/UpsertArticlePage.async"),
+      preload.UpsertArticlePagePreload,
     ],
   },
   [AppRoutes.ARTICLE_CREATE]: {
@@ -115,5 +116,8 @@ export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
   [AppRoutes.NOT_FOUND]: {
     path: "/*",
     element: <NotFoundPage />,
+    preload: [
+      preload.ArticlesPagePreload,
+    ],
   },
 };
